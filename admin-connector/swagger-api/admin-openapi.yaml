@@ -1,0 +1,217 @@
+openapi: 3.0.0
+info:
+  title: Сервис CMS
+  description: |
+    Сервис для управления контентом  
+    
+    Плагины:
+    - [configurations](https://github.com/aeroideaservices/focus/-/blob/develop/configurations/rest/openapi.yaml)
+    - [forms](https://github.com/aeroideaservices/focus/-/blob/develop/forms/rest/openapi.yaml)
+    - [mail-templates](https://github.com/aeroideaservices/focus/-/blob/develop/mail-templates/rest/openapi.yaml)
+    - [media](https://github.com/aeroideaservices/focus/-/blob/develop/media/rest/openapi.yaml)
+    - [menu](https://github.com/aeroideaservices/focus/-/blob/develop/menu/rest/openapi.yaml)
+    - [models](https://github.com/aeroideaservices/focus/-/blob/develop/models/rest/openapi.yaml)
+    
+    Для доступа к методам плагинов необходимо передавать заголовки `Authorization` с токеном авторизации и `Service-Code` с кодом плагина
+
+  version: 1.0.0
+
+servers:
+  - url: https://krakend.farmperspektiva.aeroidea.ru/api/v1/admin
+    description: CMS API на стенде
+
+paths:
+  /privileges/check:
+    post:
+      tags: [ Privileges ]
+      security:
+        - OAuth2: [ admin ]
+      summary: Проверка прав доступа к привилегии
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivilegeCheckRequest"
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+        401:
+          $ref: '#/components/responses/401Error'
+        403:
+          $ref: '#/components/responses/403Error'
+
+  /services:
+    get:
+      tags:
+        - Admin
+      security:
+        - OAuth2: [ admin ]
+      responses:
+        200:
+          description: Метод успешно отработал
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminServices'
+        401:
+          $ref: '#/components/responses/401Error'
+        403:
+          $ref: '#/components/responses/403Error'
+        500:
+          $ref: '#/components/responses/500Error'
+  /services/{service-code}:
+    get:
+      tags:
+        - Admin
+      security:
+        - OAuth2: [ admin ]
+      parameters:
+        - $ref: "#/components/parameters/serviceCode"
+      responses:
+        200:
+          description: Метод успешно отработал
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminService'
+        401:
+          $ref: '#/components/responses/401Error'
+        403:
+          $ref: '#/components/responses/403Error'
+        404:
+          $ref: '#/components/responses/404Error'
+        500:
+          $ref: '#/components/responses/500Error'
+
+components:
+  parameters:
+    serviceCode:
+      name: service-code
+      in: path
+      required: true
+      description: Код сервиса, к которому идет запрос
+      schema:
+        type: string
+        example: catalog
+
+
+  schemas:
+    # -------------------- ADMIN -------------------------
+    AdminServices:
+      type: array
+      description: Доступные сервисы
+      items:
+        $ref: "#/components/schemas/AdminService"
+      example:
+        - code: demo
+          name: Демо
+          plugins:
+            - configurations
+            - forms
+            - mail-templates
+            - media
+            - menu
+            - models
+        - code: content
+          name: Контент
+          plugins:
+            - configurations
+            - media
+            - models
+
+    AdminService:
+      type: object
+      description: Доступные сервисы
+      properties:
+        code:
+          type: string
+          description: Код сервиса
+          example: content
+        name:
+          type: string
+          description: Название сервиса
+          example: Контент
+        plugins:
+          type: array
+          items:
+            type: string
+          example:
+            - configurations
+            - forms
+            - mail-templates
+            - media
+            - menu
+            - models
+
+    PrivilegeCheckRequest:
+      type: object
+      title: Запрос проверки привилегий
+      properties:
+        privilege:
+          type: string
+          example: "api-connector.promo.some-promo.get"
+
+    # -------------------- END ADMIN -------------------------
+
+
+    Error:
+      required:
+        - applicationErrorCode
+        - message
+      type: object
+      description: Описание ошибки для всех методов
+      properties:
+        applicationErrorCode:
+          type: string
+          description: Код ошибки, к которому привел вызов метода
+          example: tooManyRequests
+        message:
+          type: string
+          description: Человекочитаемое сообщение об ошибке
+          example: Ошибка отправки СМС-сообщения
+        debug:
+          type: string
+          description: Дополнительная отладочная информация
+          example: 'org.postgresql.util.PSQLException: ERROR: canceling statement
+            due to user request'
+
+  responses:
+    204:
+      description: No Content
+
+    401Error:
+      description: Ошибка аутентификации
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    403Error:
+      description: Недостаточно прав для выполнения запроса
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    404Error:
+      description: Запрашиваемый ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    500Error:
+      description: Серверная ошибка
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: /api/v1/oauth/token
+          scopes:
+            admin: Скоуп операции администрирования данных.

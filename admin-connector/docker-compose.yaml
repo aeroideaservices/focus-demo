@@ -1,0 +1,12 @@
+version: '3.2'
+
+services:
+  admin: # Микросервис "CMS". GolangApp
+    container_name: ${SERVICE}_golang_app
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - "${HTTP_PORT}:${HTTP_PORT}"
+    env_file:
+      - .env
