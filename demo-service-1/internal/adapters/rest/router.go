@@ -3,8 +3,6 @@ package rest
 import (
 	"demo/internal/adapters/rest/handlers"
 	confRest "github.com/aeroideaservices/focus/configurations/rest"
-	formsRest "github.com/aeroideaservices/focus/forms/rest"
-	mailTemplatesRest "github.com/aeroideaservices/focus/mail-templates/rest"
 	"github.com/aeroideaservices/focus/menu/rest"
 	"net/http"
 
@@ -23,8 +21,6 @@ type Router struct {
 	websocketsHandler *handlers.WebsocketsHandler
 
 	focusConfigurationsRouter *confRest.Router
-	focusFormsRouter          *formsRest.Router
-	focusMailTemplatesRouter  *mailTemplatesRest.Router
 	focusMediaRouter          *mediaRest.Router
 	focusMenuRouter           *rest.Router
 	focusModelsRouter         *modelsRest.Router
@@ -46,8 +42,6 @@ func NewRouter(
 	websocketsHandler *handlers.WebsocketsHandler,
 
 	focusConfigurationsRouter *confRest.Router,
-	focusFormsRouter *formsRest.Router,
-	focusMailTemplatesRouter *mailTemplatesRest.Router,
 	focusMediaRouter *mediaRest.Router,
 	focusMenuRouter *rest.Router,
 	focusModelsRouter *modelsRest.Router,
@@ -61,8 +55,6 @@ func NewRouter(
 		websocketsHandler: websocketsHandler,
 
 		focusConfigurationsRouter: focusConfigurationsRouter,
-		focusFormsRouter:          focusFormsRouter,
-		focusMailTemplatesRouter:  focusMailTemplatesRouter,
 		focusMediaRouter:          focusMediaRouter,
 		focusMenuRouter:           focusMenuRouter,
 		focusModelsRouter:         focusModelsRouter,
@@ -104,8 +96,6 @@ func (r Router) Router() *gin.Engine {
 	focus.Group("health").Group("check").GET("", healthCheck)
 	focus.GET("wss", r.websocketsHandler.Subscribe)
 	r.focusConfigurationsRouter.SetRoutes(focus)
-	r.focusFormsRouter.SetRoutes(focus)
-	r.focusMailTemplatesRouter.SetRoutes(focus)
 	r.focusMediaRouter.SetRoutes(focus)
 	r.focusMenuRouter.SetRoutes(focus)
 	r.focusModelsRouter.SetRoutes(focus)

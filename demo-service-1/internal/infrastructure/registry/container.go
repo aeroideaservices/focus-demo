@@ -18,8 +18,6 @@ import (
 	"gorm.io/gorm"
 
 	confRest "github.com/aeroideaservices/focus/configurations/rest"
-	formsRest "github.com/aeroideaservices/focus/forms/rest"
-	mailTemplatesRest "github.com/aeroideaservices/focus/mail-templates/rest"
 	mediaRest "github.com/aeroideaservices/focus/media/rest"
 	menuRest "github.com/aeroideaservices/focus/menu/rest"
 	modelsRest "github.com/aeroideaservices/focus/models/rest"
@@ -177,8 +175,6 @@ var definitions = []di.Def{
 			websocketsHandler := ctn.Get("websocketsHandler").(*handlers.WebsocketsHandler)
 
 			focusConfigurationsRouter := ctn.Get("focus.configurations.router").(*confRest.Router)
-			focusFormsRouter := ctn.Get("focus.forms.router").(*formsRest.Router)
-			focusMailTemplatesRouter := ctn.Get("focus.mailTemplates.router").(*mailTemplatesRest.Router)
 			focusMediaRouter := ctn.Get("focus.media.router").(*mediaRest.Router)
 			focusMenuRouter := ctn.Get("focus.menu.router").(*menuRest.Router)
 			focusModelsRouter := ctn.Get("focus.models.router").(*modelsRest.Router)
@@ -197,8 +193,6 @@ var definitions = []di.Def{
 				websocketsHandler,
 
 				focusConfigurationsRouter,
-				focusFormsRouter,
-				focusMailTemplatesRouter,
 				focusMediaRouter,
 				focusMenuRouter,
 				focusModelsRouter,
