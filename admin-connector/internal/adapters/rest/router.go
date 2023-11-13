@@ -7,7 +7,7 @@ import (
 	"github.com/aeroideaservices/focus/services/access_control"
 	ginService "github.com/aeroideaservices/focus/services/error_handler/gin"
 	"github.com/aeroideaservices/focus/services/errors"
-	"github.com/aeroideaservices/focus/services/gin_middleware"
+	gin_middleware "github.com/aeroideaservices/focus/services/gin-middleware"
 	"github.com/gin-contrib/timeout"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"

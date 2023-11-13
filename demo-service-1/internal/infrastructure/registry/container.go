@@ -54,14 +54,6 @@ func NewContainer() (*Container, error) {
 		return nil, err
 	}
 
-	if err = builder.Add(services_definitions.FormsDefinitions...); err != nil {
-		return nil, err
-	}
-
-	if err = builder.Add(services_definitions.MailTemplatesDefinitions...); err != nil {
-		return nil, err
-	}
-
 	if err = builder.Add(services_definitions.MediaDefinitions...); err != nil {
 		return nil, err
 	}

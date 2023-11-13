@@ -10,9 +10,9 @@ import (
 	"admin-connector/internal/infrastructure/env"
 	"fmt"
 	"github.com/aeroideaservices/focus/services/access_control"
-	"github.com/aeroideaservices/focus/services/error-translator"
+	et "github.com/aeroideaservices/focus/services/error-translator"
 	"github.com/aeroideaservices/focus/services/error_handler/gin"
-	"github.com/aeroideaservices/focus/services/gin_middleware"
+	gin_middleware "github.com/aeroideaservices/focus/services/gin-middleware"
 	"github.com/aeroideaservices/focus/services/validation"
 	gin2 "github.com/gin-gonic/gin"
 	"github.com/go-playground/locales/en"
@@ -22,8 +22,6 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/exp/maps"
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
 	"strings"
 )
 
@@ -233,20 +231,23 @@ var definitions = []di.Def{
 		Name: "focus.access.jwtRSACert",
 	},
 	{
+		Name: "focus.errorHandler",
 		Build: func(ctn di.Container) (interface{}, error) {
 			logger := ctn.Get("logger").(*zap.SugaredLogger)
-			translator := ctn.Get("focus.errorTranslator").(*translator.ErrorTranslator)
-			return gin_middleware.NewErrorHandler(translator, logger), nil
+			errTrans := ctn.Get("focus.errorTranslator").(*et.Translator)
+			errHandler := gin_middleware.NewErrorHandler(logger).SetTranslator(errTrans)
+
+			return errHandler, nil
 		},
-		Name: "focus.errorHandler",
 	},
 	{
+		Name: "focus.universalTranslator",
 		Build: func(ctn di.Container) (interface{}, error) {
-			defaultTranslator := ctn.Get("translator").(*translator.Translator)
-			universalTranslator := ctn.Get("universalTranslator").(*ut.UniversalTranslator)
-			return translator.NewErrorTranslator(defaultTranslator, universalTranslator), nil
+			russian := ru.New()
+			utTranslator := ut.New(russian, russian)
+
+			return utTranslator, nil
 		},
-		Name: "focus.errorTranslator",
 	},
 	{
 		Build: func(ctn di.Container) (interface{}, error) {
@@ -255,19 +256,6 @@ var definitions = []di.Def{
 			return ut.New(russian, russian, english), nil
 		},
 		Name: "universalTranslator",
-	},
-	{
-		Build: func(ctn di.Container) (interface{}, error) {
-			rus := message.NewPrinter(language.Russian)
-			eng := message.NewPrinter(language.English)
-
-			translationsMap := map[string]*message.Printer{
-				language.Russian.String(): rus,
-				language.English.String(): eng,
-			}
-			return translator.NewTranslator(translationsMap, rus), nil
-		},
-		Name: "translator",
 	},
 }
 
