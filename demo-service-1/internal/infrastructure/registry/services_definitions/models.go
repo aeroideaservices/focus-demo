@@ -2,20 +2,19 @@ package services_definitions
 
 import (
 	"context"
-	"github.com/aeroideaservices/focus/services/callbacks"
-	"github.com/google/uuid"
-	"github.com/sarulabs/di/v2"
-	"net/http"
-
 	"github.com/aeroideaservices/focus/media/plugin/actions"
 	"github.com/aeroideaservices/focus/media/plugin/entity"
-	"github.com/aeroideaservices/focus/models/aws_s3"
+	models_s3 "github.com/aeroideaservices/focus/models/aws_s3"
 	"github.com/aeroideaservices/focus/models/examples"
 	"github.com/aeroideaservices/focus/models/plugin"
 	"github.com/aeroideaservices/focus/models/plugin/form"
 	"github.com/aeroideaservices/focus/models/postgres"
 	"github.com/aeroideaservices/focus/models/rest"
 	"github.com/aeroideaservices/focus/models/xlsx"
+	"github.com/aeroideaservices/focus/services/callbacks"
+	"github.com/google/uuid"
+	"github.com/sarulabs/di/v2"
+	"net/http"
 
 	"demo/internal/infrastructure/env"
 )
@@ -186,7 +185,7 @@ var ModelsDefinitions = appendArr([]di.Def{
 			}, nil
 		},
 	},
-}, plugin.Definitions, postgres.Definitions, rest.Definitions, xlsx.Definitions, aws_s3.Definitions)
+}, plugin.Definitions, postgres.Definitions, rest.Definitions, xlsx.Definitions, models_s3.Definitions)
 
 func appendArr[T any](defs ...[]T) []T {
 	var res []T
