@@ -1,0 +1,9 @@
+[
+    {
+        "id": "bc0153ba-6a05-461f-ad9e-3cabe82cce7e",
+        "subject": "Тема письма",
+        "sender": "mail@mail.ru",
+        "recipients": ["mail2@mail.ru"],
+        "template": "<html></>"
+    }
+]

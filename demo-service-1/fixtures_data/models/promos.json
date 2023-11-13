@@ -1,0 +1,24 @@
+[
+    {
+        "id": "572dded6-043e-430f-ba28-e6e6bf0c3f0b",
+        "code": "skidka-na-mebel-dlya-sada",
+        "title": "Скидка на мебель для сада!",
+        "imageId": null,
+        "active": true,
+        "activeFrom": "2023-05-15T10:00:00Z",
+        "activeTo": "2023-06-16T00:00:00Z",
+        "redirectLink": null,
+        "includedKladrIds": [
+            "7600000000000"
+        ],
+        "sort": 100,
+        "filteredCatalogLink": null,
+        "categoryId": null,
+        "products": [
+            {
+                "id": "c0011de7-6d69-4b85-a77f-bf63a947d1a4"
+            }
+        ],
+        "description": "<div>Только до 15 июня!</div>"
+    }
+]

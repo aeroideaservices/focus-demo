@@ -1,0 +1,164 @@
+### auth
+POST https://keycloak.farmperspektiva.aeroidea.ru/auth/realms/Test/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+grant_type=password&client_id=focus&client_secret=d5d89a18-e76d-47da-af94-8dafb8c1c250&username={{username}}&password={{password}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.hasOwnProperty("access_token"), "Dont have access_token")
+    })
+
+    client.global.set("access", response.body.access_token)
+%}
+
+###
+GET    {{baseUrl}}/forms
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+POST   {{baseUrl}}/forms
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name": "string",
+    "code": "string",
+    "saveButtonName": "string",
+    "description": "string",
+    "mailTemplatesIds": [
+    ]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Dont have id")
+    })
+
+    client.global.set("form-id", response.body.id)
+%}
+
+###
+GET    {{baseUrl}}/forms/{{form-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+PUT    {{baseUrl}}/forms/{{form-id}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name": "string",
+    "code": "string",
+    "saveButtonName": "string",
+    "description": "string",
+    "mailTemplatesIds": [
+    ]
+}
+
+###
+GET    {{baseUrl}}/forms/{{form-id}}/settings
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+GET    {{baseUrl}}/forms/{{form-id}}/fields
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+POST   {{baseUrl}}/forms/{{form-id}}/fields
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name": "ФИО",
+    "code": "fio",
+    "active": true,
+    "required": true,
+    "sort": 500,
+    "type": "string",
+    "isFilterable": false,
+    "isShownInResultsList": false,
+    "selectValues": [
+        "string"
+    ]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Dont have id")
+    })
+
+    client.global.set("form-field-id", response.body.id)
+%}
+
+###
+GET    {{baseUrl}}/forms/{{form-id}}/fields/{{form-field-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+PUT    {{baseUrl}}/forms/{{form-id}}/fields/{{form-field-id}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name": "ФИО",
+    "code": "fio",
+    "active": true,
+    "required": true,
+    "sort": 500,
+    "type": "string",
+    "isFilterable": false,
+    "isShownInResultsList": false,
+    "selectValues": [
+        "string"
+    ]
+}
+
+###
+GET    {{baseUrl}}/forms/{{form-id}}/results
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+DELETE {{baseUrl}}/forms/{{form-id}}/results
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+GET    {{baseUrl}}/forms/{{form-id}}/results/{{form-result-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+DELETE {{baseUrl}}/forms/{{form-id}}/results/{{form-result-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+DELETE {{baseUrl}}/forms/{{form-id}}/fields/{{form-field-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+DELETE {{baseUrl}}/forms/{{form-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}

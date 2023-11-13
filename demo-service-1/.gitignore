@@ -1,0 +1,3 @@
+/.env
+/.idea
+/http_tests/http-client.private.env.json

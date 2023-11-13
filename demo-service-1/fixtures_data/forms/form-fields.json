@@ -1,0 +1,15 @@
+[
+    {
+        "id":  "3624977a-1c2a-4f94-9c21-771cd825f3d1",
+        "name": "ФИО",
+        "code":  "fio",
+        "active": true,
+        "required":  true,
+        "sort": 10,
+        "type":  "string",
+        "isFilterable": true,
+        "isShownInResultsList":  true,
+        "selectValues": null,
+        "formId": "c7ec6b3f-bb46-49f0-b545-46c2601e75c0"
+    }
+]
