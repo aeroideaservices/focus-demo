@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Ivan123",
+      "email": "ivan@gmail.com"
+    },
+    {
+      "id": 2,
+      "name": "Boris",
+      "email": "boris@gmail.com"
+    },
+    {
+      "id": 3,
+      "name": "Oleg",
+      "email": "oleg@gmail.com"
+    },
+    {
+      "id": 4,
+      "name": "Sergey",
+      "email": "sergey@gmail.com"
+    },
+    {
+      "id": 5,
+      "name": "Egor",
+      "email": "egor@gmail.com"
+    }
+  ]
+}
+
+  
