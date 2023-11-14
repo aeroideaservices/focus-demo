@@ -241,6 +241,15 @@ var definitions = []di.Def{
 		},
 	},
 	{
+		Name: "focus.errorTranslator",
+		Build: func(ctn di.Container) (interface{}, error) {
+			uTranslator := ctn.Get("focus.universalTranslator").(*ut.UniversalTranslator)
+			ru, _ := uTranslator.GetTranslator("ru")
+			etTranslator := et.New(ru)
+			return etTranslator, nil
+		},
+	},
+	{
 		Name: "focus.universalTranslator",
 		Build: func(ctn di.Container) (interface{}, error) {
 			russian := ru.New()
