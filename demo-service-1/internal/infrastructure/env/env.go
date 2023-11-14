@@ -39,7 +39,7 @@ var (
 	AwsEndpoint        = Getter("AWS_ENDPOINT", "")
 	AwsAccessKeyID     = Getter("AWS_ACCESS_KEY_ID", "")
 	AwsSecretAccessKey = Getter("AWS_SECRET_ACCESS_KEY", "")
-	AwsBucket          = Getter("AWS_BUCKET", "")
+	AwsBucket          = Getter("AWS_BUCKET", "demo")
 	AwsRegion          = Getter("AWS_REGION", "")
 )
 

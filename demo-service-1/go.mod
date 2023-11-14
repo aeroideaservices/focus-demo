@@ -1,6 +1,6 @@
 module demo
 
-go 1.19
+go 1.21
 
 require (
 	github.com/WinterYukky/gorm-extra-clause-plugin v0.1.6
@@ -15,7 +15,7 @@ require (
 	github.com/aeroideaservices/focus/menu/postgres v1.0.0
 	github.com/aeroideaservices/focus/menu/rest v1.0.0
 	github.com/aeroideaservices/focus/models/aws_s3 v1.0.1
-	github.com/aeroideaservices/focus/models/examples v1.0.0
+	github.com/aeroideaservices/focus/models/examples v1.0.1
 	github.com/aeroideaservices/focus/models/plugin v1.0.0
 	github.com/aeroideaservices/focus/models/postgres v1.0.0
 	github.com/aeroideaservices/focus/models/rest v1.0.0
@@ -48,6 +48,7 @@ require (
 )
 
 require (
+	github.com/HdrHistogram/hdrhistogram-go v1.1.2 // indirect
 	github.com/aeroideaservices/focus/services/db/clause v1.0.0 // indirect
 	github.com/aeroideaservices/focus/services/db/db_types v1.0.0 // indirect
 	github.com/aeroideaservices/focus/services/formatting/strings v1.0.0 // indirect
@@ -84,6 +85,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.3 // indirect
+	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect

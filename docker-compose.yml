@@ -5,10 +5,10 @@ volumes:
     driver: local
 
 services:
-  postgres:
+  postgres_keycloak:
     image: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./.docker/postgres/keycloak/postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -17,7 +17,7 @@ services:
     image: quay.io/keycloak/keycloak:legacy
     environment:
       DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
+      DB_ADDR: postgres_keycloak
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_SCHEMA: public
@@ -29,7 +29,7 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - postgres
+      - postgres_keycloak
   minio:
     image: minio/minio:latest
     volumes:
@@ -41,3 +41,25 @@ services:
       MINIO_ROOT_USER: minio1234567890
       MINIO_ROOT_PASSWORD: minio1234567890
     command: server /data --console-address ":9001"
+
+  postgres_dms1:
+    ports:
+      - "5401:5432"
+    image: postgres
+    volumes:
+      - ./.docker/postgres/dms1/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: dms1
+      POSTGRES_USER: dms1
+      POSTGRES_PASSWORD: dms1
+
+  postgres_dms2:
+    ports:
+      - "5402:5432"
+    image: postgres
+    volumes:
+      - ./.docker/postgres/dms2/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: dms2
+      POSTGRES_USER: dms2
+      POSTGRES_PASSWORD: dms2
