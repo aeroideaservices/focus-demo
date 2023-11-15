@@ -7,6 +7,8 @@ volumes:
 services:
   postgres_keycloak:
     image: postgres
+    ports:
+      - 5444:5432
     volumes:
       - ./.docker/postgres/keycloak/postgres_data:/var/lib/postgresql/data
     environment:
