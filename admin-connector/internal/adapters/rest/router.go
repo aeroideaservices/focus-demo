@@ -53,10 +53,26 @@ func (r Router) requestTimeoutResponse(c *gin.Context) {
 	r.errorService.HandleError(c, errors.RequestTimeout.New("request timeout"))
 }
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Expose-Headers", "*")
+		c.Header("Access-Control-Allow-Methods", "PUT, GET, POST, OPTIONS, DELETE, PATCH")
+		c.Header("Access-Control-Allow-Headers", "*")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
+
 func (r Router) Router() *gin.Engine {
 	gin.SetMode(env.GinMode)
 	router := gin.New()
-
+	router.Use(CORSMiddleware())
 	timeoutMiddleware := func(c *gin.Context) {
 		if !strings.HasSuffix(c.Request.RequestURI, "/wss") {
 			timeout.New( // request timeout

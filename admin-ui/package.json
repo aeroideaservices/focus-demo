@@ -11,7 +11,6 @@
     "build": "craco build",
     "mock": "nodemon ./mock/server.js",
     "lint": "tsc --noEmit && eslint --fix ./src/**/*.ts",
-    "prepare": "husky install",
     "check": "yarn && yarn run lint && yarn run build && yarn run start",
     "favicons": "real-favicon generate src/assets/meta/meta-description.json src/assets/meta/meta-data.json ./public/meta && cpy --flat ./public/meta/favicon.ico ./public"
   },

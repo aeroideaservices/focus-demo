@@ -8,7 +8,6 @@ require (
 	github.com/aeroideaservices/focus/services/error_handler/gin v1.0.0
 	github.com/aeroideaservices/focus/services/errors v1.0.0
 	github.com/aeroideaservices/focus/services/gin-middleware v1.0.0
-	github.com/aeroideaservices/focus/services/gin_middleware v1.0.1
 	github.com/aeroideaservices/focus/services/validation v1.0.0
 	github.com/gin-contrib/timeout v0.0.3
 	github.com/gin-contrib/zap v0.1.0
