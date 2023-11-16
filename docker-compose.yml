@@ -11,6 +11,7 @@ services:
       - 5444:5432
     volumes:
       - ./.docker/postgres/keycloak/postgres_data:/var/lib/postgresql/data
+      - ./keycloak/dump_keycloak.sql:/keycloak/dump_keycloak.sql
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -43,6 +44,19 @@ services:
       MINIO_ROOT_USER: minio1234567890
       MINIO_ROOT_PASSWORD: minio1234567890
     command: server /data --console-address ":9001"
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add local_minio http://minio:9000 minio1234567890 minio1234567890;
+      /usr/bin/mc rm -r --force local_minio/demo;
+      /usr/bin/mc mb local_minio/demo;
+      /usr/bin/mc policy download local_minio/demo;
+      exit 0;
+      "
 
   postgres_dms1:
     ports:

@@ -11,7 +11,8 @@ SET standard_conforming_strings = on;
 -- Drop databases (except postgres and template1)
 --
 
-DROP DATABASE keycloak;
+\c postgres
+DROP DATABASE keycloak  WITH (FORCE);
 
 
 
