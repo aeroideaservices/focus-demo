@@ -14,7 +14,7 @@ func (CategoryFixture) GetEntity() any {
 }
 
 func (f CategoryFixture) FixturesData() (any, error) {
-	jsonFile, err := os.Open("fixtures_data/categories.json")
+	jsonFile, err := os.Open("fixtures_data/models/categories.json")
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (ProductFixture) GetEntity() any {
 }
 
 func (f ProductFixture) FixturesData() (any, error) {
-	jsonFile, err := os.Open("fixtures_data/products.json")
+	jsonFile, err := os.Open("fixtures_data/models/products.json")
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (PromoFixture) GetEntity() any {
 }
 
 func (f PromoFixture) FixturesData() (any, error) {
-	jsonFile, err := os.Open("fixtures_data/promos.json")
+	jsonFile, err := os.Open("fixtures_data/models/promos.json")
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func (StoreFixture) GetEntity() any {
 }
 
 func (f StoreFixture) FixturesData() (any, error) {
-	jsonFile, err := os.Open("fixtures_data/stores.json")
+	jsonFile, err := os.Open("fixtures_data/models/stores.json")
 	if err != nil {
 		return nil, err
 	}
