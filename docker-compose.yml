@@ -5,6 +5,34 @@ volumes:
     driver: local
 
 services:
+  admin-connector:
+    volumes:
+      - ./app/:/app
+    build:
+      context: ./admin-connector
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - "8081:8081"
+    env_file:
+      - env/common/.env.admin-connector
+      - env/docker/.env.admin-connector
+
+  dms1:
+    volumes:
+      - ./app/:/app
+    build:
+      context: ./demo-service-1
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - env/common/.env.dms1
+      - env/docker/.env.dms1
+    depends_on:
+      - minio
+      - createbuckets
+      - postgres_dms1
+
   postgres_keycloak:
     image: postgres
     ports:

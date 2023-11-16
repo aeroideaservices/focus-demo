@@ -1,11 +1,15 @@
 # Инструкции
 
-1. Создать БД kc
+### Создать БД kc
 
 ```sql
 docker-compose exec -t postgres_keycloak pg_dumpall -c -U keycloak > keycloak/dump_keycloak.sql
 ```
-см: https://stackoverflow.com/questions/24718706/backup-restore-a-dockerized-postgresql-database
+
+### Восстановить БД из kc
+```sql
+docker-compose exec -T postgres_keycloak psql -U keycloak < keycloak/dump_keycloak.sql
+```
 
 # Установка
 
@@ -14,6 +18,4 @@ docker-compose exec -t postgres_keycloak pg_dumpall -c -U keycloak > keycloak/du
 3. Закатить фикстуры в demo-service (вписать)
 
 
-```sql
-docker-compose exec -T postgres_keycloak psql -U keycloak < keycloak/dump_keycloak.sql
-```
+https://youtu.be/RgZyX-e6W9E?si=_yjaIVVnI-aRRCl9

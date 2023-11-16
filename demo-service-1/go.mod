@@ -20,7 +20,7 @@ require (
 	github.com/aeroideaservices/focus/models/postgres v1.0.0
 	github.com/aeroideaservices/focus/models/rest v1.0.0
 	github.com/aeroideaservices/focus/models/xlsx v1.0.0
-	github.com/aeroideaservices/focus/services/callbacks v1.0.0
+	github.com/aeroideaservices/focus/services/callbacks v1.0.4
 	github.com/aeroideaservices/focus/services/error-translator v1.0.0
 	github.com/aeroideaservices/focus/services/errors v1.0.0
 	github.com/aeroideaservices/focus/services/gin-middleware v1.0.0
