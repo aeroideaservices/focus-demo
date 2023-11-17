@@ -5,6 +5,15 @@ volumes:
     driver: local
 
 services:
+  admin-ui:
+    container_name: admin-ui
+    build:
+      context: ./admin-ui
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - env/common/.env.admin-ui
   admin-connector:
     container_name: admin-connector
     volumes:
