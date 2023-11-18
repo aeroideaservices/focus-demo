@@ -14,12 +14,10 @@ import (
 )
 
 type Router struct {
-	ginMode           string
-	apiSettings       APISettings
-	fixturesHandler   *handlers.FixturesHandler
-	optionsHandler    *handlers.OptionsHandler
-	websocketsHandler *handlers.WebsocketsHandler
-
+	ginMode                   string
+	apiSettings               APISettings
+	fixturesHandler           *handlers.FixturesHandler
+	optionsHandler            *handlers.OptionsHandler
 	focusConfigurationsRouter *confRest.Router
 	focusMediaRouter          *mediaRest.Router
 	focusMenuRouter           *rest.Router
@@ -39,8 +37,6 @@ func NewRouter(
 	apiSettings APISettings,
 	fixturesHandler *handlers.FixturesHandler,
 	optionsHandler *handlers.OptionsHandler,
-	websocketsHandler *handlers.WebsocketsHandler,
-
 	focusConfigurationsRouter *confRest.Router,
 	focusMediaRouter *mediaRest.Router,
 	focusMenuRouter *rest.Router,
@@ -48,12 +44,10 @@ func NewRouter(
 	errorHandler *middleware.ErrorHandler,
 ) *Router {
 	return &Router{
-		ginMode:           ginMode,
-		apiSettings:       apiSettings,
-		fixturesHandler:   fixturesHandler,
-		optionsHandler:    optionsHandler,
-		websocketsHandler: websocketsHandler,
-
+		ginMode:                   ginMode,
+		apiSettings:               apiSettings,
+		fixturesHandler:           fixturesHandler,
+		optionsHandler:            optionsHandler,
 		focusConfigurationsRouter: focusConfigurationsRouter,
 		focusMediaRouter:          focusMediaRouter,
 		focusMenuRouter:           focusMenuRouter,
@@ -94,7 +88,6 @@ func (r Router) Router() *gin.Engine {
 	// cms focus
 	focus := v1.Group(r.apiSettings.FocusPath)
 	focus.Group("health").Group("check").GET("", healthCheck)
-	focus.GET("wss", r.websocketsHandler.Subscribe)
 	r.focusConfigurationsRouter.SetRoutes(focus)
 	r.focusMediaRouter.SetRoutes(focus)
 	r.focusMenuRouter.SetRoutes(focus)

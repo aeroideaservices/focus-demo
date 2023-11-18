@@ -1,11 +1,9 @@
 package registry
 
 import (
-	"demo/internal/adapters/websockets"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/olahol/melody"
 	"github.com/sarulabs/di/v2"
 	"github.com/urfave/cli/v2"
 	"os"
@@ -161,17 +159,13 @@ var definitions = []di.Def{
 		Build: func(ctn di.Container) (interface{}, error) {
 			logger := ctn.Get("logger").(*zap.SugaredLogger)
 			logger.Info("building router")
-
 			fixturesHandler := ctn.Get("fixturesHandler").(*handlers.FixturesHandler)
 			optionsHandler := ctn.Get("optionsHandler").(*handlers.OptionsHandler)
-			websocketsHandler := ctn.Get("websocketsHandler").(*handlers.WebsocketsHandler)
-
 			focusConfigurationsRouter := ctn.Get("focus.configurations.router").(*confRest.Router)
 			focusMediaRouter := ctn.Get("focus.media.router").(*mediaRest.Router)
 			focusMenuRouter := ctn.Get("focus.menu.router").(*menuRest.Router)
 			focusModelsRouter := ctn.Get("focus.models.router").(*modelsRest.Router)
 			errorHandler := ctn.Get("focus.errorHandler").(*middleware.ErrorHandler)
-
 			router := rest.NewRouter(
 				env.GinMode,
 				rest.APISettings{
@@ -182,15 +176,12 @@ var definitions = []di.Def{
 				},
 				fixturesHandler,
 				optionsHandler,
-				websocketsHandler,
-
 				focusConfigurationsRouter,
 				focusMediaRouter,
 				focusMenuRouter,
 				focusModelsRouter,
 				errorHandler,
 			)
-
 			logger.Info("router has built")
 			return router, nil
 		},
@@ -274,35 +265,6 @@ var definitions = []di.Def{
 		Build: func(ctn di.Container) (interface{}, error) {
 			fixtureService := ctn.Get("fixturesService").(*fixtures.FixtureService)
 			return handlers.NewFixturesHandler(fixtureService), nil
-		},
-	},
-	{
-		Name: "websocketsHandler",
-		Build: func(ctn di.Container) (interface{}, error) {
-			ws := ctn.Get("notifier.websockets").(*websockets.Websockets)
-			return handlers.NewWebsocketsHandler(ws), nil
-		},
-	},
-	{
-		Name: "notifier.websockets",
-		Build: func(ctn di.Container) (interface{}, error) {
-			logger := ctn.Get("focus.logger").(*zap.SugaredLogger)
-			ws := ctn.Get("melody.websockets").(*melody.Melody)
-			return websockets.NewWebsockets(ws, logger), nil
-		},
-	},
-	{
-		Name: "melody.websockets",
-		Build: func(ctn di.Container) (interface{}, error) {
-			ws := melody.New()
-			logger := ctn.Get("focus.logger").(*zap.SugaredLogger)
-			ws.HandleError(func(session *melody.Session, err error) {
-				logger.Errorw("websockets err", err)
-			})
-			return ws, nil
-		},
-		Close: func(obj interface{}) error {
-			return obj.(*melody.Melody).Close()
 		},
 	},
 }

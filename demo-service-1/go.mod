@@ -21,8 +21,8 @@ require (
 	github.com/aeroideaservices/focus/models/rest v1.0.0
 	github.com/aeroideaservices/focus/models/xlsx v1.0.0
 	github.com/aeroideaservices/focus/services/callbacks v1.0.4
+	github.com/aeroideaservices/focus/services/db/db_types v1.0.0
 	github.com/aeroideaservices/focus/services/error-translator v1.0.0
-	github.com/aeroideaservices/focus/services/errors v1.0.0
 	github.com/aeroideaservices/focus/services/gin-middleware v1.0.0
 	github.com/aeroideaservices/focus/services/validation v1.0.0
 	github.com/aws/aws-sdk-go-v2 v1.18.0
@@ -33,9 +33,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/google/uuid v1.4.0
 	github.com/lib/pq v1.10.9
-	github.com/olahol/melody v1.1.4
 	github.com/opentracing/opentracing-go v1.2.0
-	github.com/pkg/errors v0.9.1
 	github.com/pressly/goose/v3 v3.11.2
 	github.com/rs/zerolog v1.29.1
 	github.com/sarulabs/di/v2 v2.4.2
@@ -50,7 +48,7 @@ require (
 require (
 	github.com/HdrHistogram/hdrhistogram-go v1.1.2 // indirect
 	github.com/aeroideaservices/focus/services/db/clause v1.0.0 // indirect
-	github.com/aeroideaservices/focus/services/db/db_types v1.0.0 // indirect
+	github.com/aeroideaservices/focus/services/errors v1.0.0 // indirect
 	github.com/aeroideaservices/focus/services/formatting/strings v1.0.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.33 // indirect
@@ -68,7 +66,6 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/validator/v10 v10.14.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
-	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.3.1 // indirect
@@ -83,6 +80,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.3 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect

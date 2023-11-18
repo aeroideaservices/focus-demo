@@ -1,6 +1,7 @@
 package fixtures
 
 import (
+	entity "demo/internal/domain/entitiy"
 	"encoding/json"
 	"github.com/aeroideaservices/focus/models/examples"
 	"io"
@@ -10,7 +11,7 @@ import (
 type CategoryFixture struct{}
 
 func (CategoryFixture) GetEntity() any {
-	return &examples.Category{}
+	return &entity.Category{}
 }
 
 func (f CategoryFixture) FixturesData() (any, error) {

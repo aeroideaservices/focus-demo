@@ -2,10 +2,10 @@ package services_definitions
 
 import (
 	"context"
+	demoEntity "demo/internal/domain/entitiy"
 	"github.com/aeroideaservices/focus/media/plugin/actions"
 	"github.com/aeroideaservices/focus/media/plugin/entity"
 	models_s3 "github.com/aeroideaservices/focus/models/aws_s3"
-	"github.com/aeroideaservices/focus/models/examples"
 	"github.com/aeroideaservices/focus/models/plugin"
 	"github.com/aeroideaservices/focus/models/plugin/form"
 	"github.com/aeroideaservices/focus/models/postgres"
@@ -30,10 +30,10 @@ var ModelsDefinitions = appendArr([]di.Def{
 			}
 
 			return []any{
-				&examples.Category{},
-				&examples.Product{},
-				&examples.Store{},
-				&examples.Promo{},
+				&demoEntity.Category{},
+				&demoEntity.Product{},
+				&demoEntity.Store{},
+				&demoEntity.Promo{},
 			}, nil
 		},
 	},
@@ -148,23 +148,6 @@ var ModelsDefinitions = appendArr([]di.Def{
 							"fields": []string{"externalId", "name"},
 						},
 						Paginated: true,
-					},
-				},
-				"selectKladrIds": form.ViewExtras{
-					"identifier": "kladrId",
-					"display":    []string{"value"},
-					"request": form.Request{
-						URI:  "https://krakend.farmperspektiva.aeroidea.ru/api/v1/geo/suggest/address",
-						Meth: http.MethodPost,
-						Body: map[string]any{
-							"count":     20,
-							"fromBound": "region",
-							"toBound":   "settlement",
-						},
-					},
-					"getRequest": form.Request{
-						URI:  "https://krakend.farmperspektiva.aeroidea.ru/api/v1/geo/findById/address-list",
-						Meth: http.MethodGet,
 					},
 				},
 				"productGallery": form.ViewExtras{

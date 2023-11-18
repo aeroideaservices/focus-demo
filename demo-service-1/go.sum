@@ -39,8 +39,6 @@ github.com/aeroideaservices/focus/models/rest v1.0.0 h1:m/rAp9YCtacAnaYllCyT5tX5
 github.com/aeroideaservices/focus/models/rest v1.0.0/go.mod h1:/D2LBjSgnL4AAR+zEKe1Qv5LEvvyAnNrdGGmYcQXg4s=
 github.com/aeroideaservices/focus/models/xlsx v1.0.0 h1:p3uZogED57FEhznxeOCiUeLGqHLFMceGyP6FgS6zp3k=
 github.com/aeroideaservices/focus/models/xlsx v1.0.0/go.mod h1:LUteskmzIFN0NTD9uuQE05U/KgmytRdnFadQJ+g7s6o=
-github.com/aeroideaservices/focus/services/callbacks v1.0.0 h1:MTZn1nMqU5vTitzGqswWGWOoeaFwyBM/tRTR78y2lHo=
-github.com/aeroideaservices/focus/services/callbacks v1.0.0/go.mod h1:ijhfnIgW6BVA3dB8F0b+PtnkXwWUiUeSNt6rcBFFASg=
 github.com/aeroideaservices/focus/services/callbacks v1.0.4 h1:efixoTWfboauc0FlF6du9TPaaIxhkoGW8/ZXFCEqeTA=
 github.com/aeroideaservices/focus/services/callbacks v1.0.4/go.mod h1:jxk9ouLbiNchDRSShXwhUnmhlaCARMvMC0s925DrOnU=
 github.com/aeroideaservices/focus/services/db/clause v1.0.0 h1:qiBTQoYCAYfGHqElu2uJghOjknJIwCbmlCCBlpdsjDw=
@@ -146,8 +144,6 @@ github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/
 github.com/google/renameio v0.1.0/go.mod h1:KWCgfxg9yswjAJkECMjeO8J8rahYeXnNhOm40UhjYkI=
 github.com/google/uuid v1.4.0 h1:MtMxsa51/r9yyhkyLsVeVt0B+BGQZzpQiTQ4eHZ8bc4=
 github.com/google/uuid v1.4.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
-github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/jackc/chunkreader v1.0.0/go.mod h1:RT6O25fNZIuasFJRyZ4R/Y2BbhasbmZXF9QQ7T3kePo=
 github.com/jackc/chunkreader/v2 v2.0.0/go.mod h1:odVSm741yZoC3dpHEUXIqA9tQRhFrgOHwnPIn9lDKlk=
 github.com/jackc/chunkreader/v2 v2.0.1/go.mod h1:odVSm741yZoC3dpHEUXIqA9tQRhFrgOHwnPIn9lDKlk=
@@ -251,8 +247,6 @@ github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjY
 github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 h1:RWengNIwukTxcDr9M+97sNutRR1RKhG96O6jWumTTnw=
 github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826/go.mod h1:TaXosZuwdSHYgviHp1DAtfrULt5eUgsSMsZf+YrPgl8=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
-github.com/olahol/melody v1.1.4 h1:RQHfKZkQmDxI0+SLZRNBCn4LiXdqxLKRGSkT8Dyoe/E=
-github.com/olahol/melody v1.1.4/go.mod h1:GgkTl6Y7yWj/HtfD48Q5vLKPVoZOH+Qqgfa7CvJgJM4=
 github.com/opentracing/opentracing-go v1.2.0 h1:uEJPy/1a5RIPAJ0Ov+OIO8OxWu77jEv+1B0VhjKrZUs=
 github.com/opentracing/opentracing-go v1.2.0/go.mod h1:GxEUsuufX4nBwe+T+Wl9TAgYrxe9dPLANfrWvHYVTgc=
 github.com/pelletier/go-toml/v2 v2.0.8 h1:0ctb6s9mE31h0/lhu+J6OPmVeDxJn+kYnJc2jZR9tGQ=

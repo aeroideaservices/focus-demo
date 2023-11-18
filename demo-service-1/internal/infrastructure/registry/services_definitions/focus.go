@@ -1,11 +1,8 @@
 package services_definitions
 
 import (
-	"demo/internal/service/notify"
-	"github.com/aeroideaservices/focus/services/callbacks"
 	"github.com/go-playground/locales/ru"
 	ut "github.com/go-playground/universal-translator"
-	"github.com/google/uuid"
 	"github.com/sarulabs/di/v2"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -82,28 +79,6 @@ var FocusDefinitions = []di.Def{
 		Name: "focus.awsS3.bucketName",
 		Build: func(ctn di.Container) (interface{}, error) {
 			return ctn.Get("awsS3.bucketName"), nil
-		},
-	},
-	{
-		Name: "focus.callbacks.test",
-		Build: func(ctn di.Container) (interface{}, error) {
-			logger := ctn.Get("focus.logger").(*zap.SugaredLogger)
-			notifier := ctn.Get("notifier.websockets").(notify.Notifier)
-
-			return func(plugin, entity string) callbacks.Callbacks {
-				fun := func(callback string, ids ...uuid.UUID) {
-					notification := map[string]any{"plugin": plugin, "entity": entity, "callback": callback, "ids": ids}
-					if err := notifier.NotifyAll(notification); err != nil {
-						logger.Warnw("error notify", "err", err, "notification", notification)
-					}
-				}
-
-				return callbacks.Callbacks{
-					AfterCreate: func(ids ...uuid.UUID) { fun("afterCreate", ids...) },
-					AfterUpdate: func(ids ...uuid.UUID) { fun("afterUpdate", ids...) },
-					AfterDelete: func(ids ...uuid.UUID) { fun("afterDelete", ids...) },
-				}
-			}, nil
 		},
 	},
 }
