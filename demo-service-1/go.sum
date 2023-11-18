@@ -41,6 +41,8 @@ github.com/aeroideaservices/focus/models/xlsx v1.0.0 h1:p3uZogED57FEhznxeOCiUeLG
 github.com/aeroideaservices/focus/models/xlsx v1.0.0/go.mod h1:LUteskmzIFN0NTD9uuQE05U/KgmytRdnFadQJ+g7s6o=
 github.com/aeroideaservices/focus/services/callbacks v1.0.0 h1:MTZn1nMqU5vTitzGqswWGWOoeaFwyBM/tRTR78y2lHo=
 github.com/aeroideaservices/focus/services/callbacks v1.0.0/go.mod h1:ijhfnIgW6BVA3dB8F0b+PtnkXwWUiUeSNt6rcBFFASg=
+github.com/aeroideaservices/focus/services/callbacks v1.0.4 h1:efixoTWfboauc0FlF6du9TPaaIxhkoGW8/ZXFCEqeTA=
+github.com/aeroideaservices/focus/services/callbacks v1.0.4/go.mod h1:jxk9ouLbiNchDRSShXwhUnmhlaCARMvMC0s925DrOnU=
 github.com/aeroideaservices/focus/services/db/clause v1.0.0 h1:qiBTQoYCAYfGHqElu2uJghOjknJIwCbmlCCBlpdsjDw=
 github.com/aeroideaservices/focus/services/db/clause v1.0.0/go.mod h1:XmGmmTQTWSJdd4DyIB92YiaRBO4a7nGLSqhBRRFDRas=
 github.com/aeroideaservices/focus/services/db/db_types v1.0.0 h1:uptgg3FEn92FqxceUm/HlTHVvqPPv8DcLYiax5957L4=
