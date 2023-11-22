@@ -10,11 +10,11 @@ POST {{demoBaseUrl}}/fixtures/run
 %}
 
 ### auth
-POST https://keycloak.farmperspektiva.aeroidea.ru/auth/realms/Test/protocol/openid-connect/token
+POST http://127.0.0.1:8088/auth/realms/master/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 Accept: application/json
 
-grant_type=password&client_id=focus&client_secret=d5d89a18-e76d-47da-af94-8dafb8c1c250&username={{username}}&password={{password}}
+grant_type=password&client_id=focus&client_secret=wg4tu0juuDYombim5Ri7ZEVUR3TaPKrJ&username={{username}}&password={{password}}
 
 > {%
     client.test("Request executed successfully", function () {
