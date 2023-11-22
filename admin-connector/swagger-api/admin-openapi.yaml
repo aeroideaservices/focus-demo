@@ -118,6 +118,7 @@ components:
             - configurations
             - media
             - models
+        - icon: IconAdjustmentsStar
 
     AdminService:
       type: object
@@ -142,6 +143,10 @@ components:
             - media
             - menu
             - models
+        icon:
+          type: string
+          description: Иконка для сервиса
+          example: IconAdjustmentsStar
 
     PrivilegeCheckRequest:
       type: object

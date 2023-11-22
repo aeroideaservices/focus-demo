@@ -11,6 +11,7 @@ type ServicePreview struct {
 	Code    string   `json:"code"`
 	Name    string   `json:"name"`
 	Plugins []string `json:"plugins"`
+	Icon    string   `json:"icon"`
 }
 
 type GetServiceDto struct {

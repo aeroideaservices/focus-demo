@@ -65,7 +65,11 @@ func GetPluginServices(key string) []entity.Service {
 		if err != nil {
 			continue
 		}
-		services = append(services, entity.Service{Code: res[0], Name: res[1], Endpoint: *endpoint})
+		var icon string
+		if len(res) > 3 {
+			icon = res[3]
+		}
+		services = append(services, entity.Service{Code: res[0], Name: res[1], Endpoint: *endpoint, Icon: icon})
 	}
 
 	return services

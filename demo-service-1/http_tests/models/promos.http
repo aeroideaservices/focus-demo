@@ -75,9 +75,7 @@ Content-Type: application/json
     client.test("Request executed successfully", function () {
         const type = response.contentType.mimeType
         client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
-        client.assert(response.status === 400, "Response status is not 400")
-        client.assert(response.body.code === 400, "code is not 400")
-        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+        client.assert(response.status === 200, "Response status is not 200")
     })
 %}
 
@@ -97,9 +95,7 @@ Authorization: {{access}}
     client.test("Request executed successfully", function () {
         const type = response.contentType.mimeType
         client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
-        client.assert(response.status === 400, "Response status is not 400")
-        client.assert(response.body.code === 400, "code is not 400")
-        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+        client.assert(response.status === 200, "Response status is not 200")
     })
 %}
 
@@ -112,7 +108,7 @@ Authorization: {{access}}
 {
     "title": "Супер акция!",
     "code": "code-11",
-    "image": "8f85c70d-242a-4db7-8225-db02766d7dbb",
+    "image": null,
     "active": false,
     "activeFrom": "2023-06-01T13:00:00Z",
     "activeTo": "2023-06-20T13:00:00Z",
@@ -129,7 +125,7 @@ Authorization: {{access}}
     "date": "2023-06-01T13:00:00Z",
     "shortDescription": "123",
     "previewDescription": "123",
-    "description": "\"123"
+    "description": "{\"text\": \"123456\"}"
 }
 
 > {%

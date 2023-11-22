@@ -98,8 +98,6 @@ func (r Router) Router() *gin.Engine {
 
 	router.NoRoute(r.accessMiddleware.CheckAccess, r.redirectMiddleware.Redirect)
 
-	service.GET("/wss", r.accessMiddleware.CheckAccess, r.serviceHandler.WSS)
-
 	servicesGroup := service.Group("services", r.accessMiddleware.CheckAccess)
 	servicesGroup.GET("", r.serviceHandler.GetList)
 	servicesGroup.GET(":serviceCode", r.serviceHandler.Get)

@@ -41,6 +41,7 @@ func (uc ServiceUseCase) GetList(_ context.Context, dto GetServicesListDto) []*S
 			}
 			plugins := append(serviceMap[service.Code].Plugins, plugin)
 			serviceMap[service.Code].Plugins = plugins
+			serviceMap[service.Code].Icon = service.Icon
 		}
 	}
 
@@ -64,7 +65,7 @@ func (uc ServiceUseCase) Get(_ context.Context, dto GetServiceDto) (*ServicePrev
 	for plugin, services := range uc.pluginsServices {
 		if idx := slices.IndexFunc(services, func(service entity.Service) bool { return service.Code == dto.ServiceCode }); idx != -1 {
 			if service == nil {
-				service = &ServicePreview{Code: services[idx].Code, Name: services[idx].Name}
+				service = &ServicePreview{Code: services[idx].Code, Name: services[idx].Name, Icon: services[idx].Icon}
 			}
 			if !hasAccess(dto.Role, service.Code, plugin) {
 				continue

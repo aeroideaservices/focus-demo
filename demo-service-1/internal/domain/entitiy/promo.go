@@ -13,7 +13,7 @@ type Promo struct {
 	Code                string               `focus:"title:Код;shownInList;disabled:update;unique;viewExtra:sluggableOnTitle;sortable;filterable" validate:"required,sluggable"`
 	Title               string               `focus:"title:Название;sortable;filterable;position:2" validate:"required"`
 	ImageId             *uuid.UUID           `focus:"-" validate:"-"`
-	Image               *entity.Media        `focus:"title:Иконка;media;hidden:list;viewExtra:promosMedia" validate:"required"`
+	Image               *entity.Media        `focus:"title:Иконка;media;hidden:list;viewExtra:promosMedia"`
 	Active              bool                 `focus:"title:Активность;filterable"`
 	ActiveFrom          datetime.DateTimeUTC `focus:"title:Дата начала акции;view:dateTimePicker;filterable;time" validate:"required,notBlank"`
 	ActiveTo            datetime.DateTimeUTC `focus:"title:Дата окончания акции;view:dateTimePicker;filterable;time" validate:"required,notBlank,gtfield=ActiveFrom"`
