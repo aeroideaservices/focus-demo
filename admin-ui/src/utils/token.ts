@@ -1,4 +1,4 @@
-import { IToken } from '@/types';
+import { TToken } from '@/types';
 
 import { apiAuthByRefresh } from '@/api/auth/auth';
 
@@ -44,7 +44,7 @@ export const tokenGetAndRefresh = async (): Promise<string | null> => {
   return null;
 };
 
-export const saveToken = (token: IToken) => {
+export const saveToken = (token: TToken) => {
   setCookie(
     'token',
     JSON.stringify({

@@ -49,14 +49,12 @@ const labels: RichTextEditorLabels = {
   unsetColorControlLabel: 'Сбросить цвет',
   hrControlLabel: 'Горизонтальная линия',
 
-  // Link editor
   linkEditorInputLabel: 'Введите URL',
   linkEditorInputPlaceholder: 'https://example.com/',
   linkEditorExternalLink: 'Открыть ссылку в новой вкладке',
   linkEditorInternalLink: 'Открыть ссылку в той же вкладке',
   linkEditorSave: 'Сохранить',
 
-  // Color picker control
   colorPickerCancel: 'Отмена',
   colorPickerClear: 'Очистить цвет',
   colorPickerColorPicker: 'Выбор цвета',
@@ -161,7 +159,7 @@ const TextEditor: FC<TextEditorProps> = ({ content, onChange, ...props }) => {
 
   return (
     <Input.Wrapper {...props}>
-      <RichTextEditor editor={editor} labels={labels} className={classes.rewrite}>
+      <RichTextEditor editor={editor} labels={labels}>
         <RichTextEditor.Toolbar sticky stickyOffset={60}>
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Bold />
@@ -200,7 +198,7 @@ const TextEditor: FC<TextEditorProps> = ({ content, onChange, ...props }) => {
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
 
-        <RichTextEditor.Content mih={props.mih} />
+        <RichTextEditor.Content />
       </RichTextEditor>
     </Input.Wrapper>
   );

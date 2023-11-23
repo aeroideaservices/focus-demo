@@ -41,7 +41,6 @@ const SearchableSelectV2: FC<SearchableSelectProps | SearchableMultiSelectProps>
   const [selectData, setSelectData] = useState<TSelectData[]>([]);
 
   const handleSearch = (value: string) => {
-    // Поиск в обычных селектах
     if (value.length >= 3 && extra?.request) {
       setSearchFetching(true);
 
@@ -56,7 +55,6 @@ const SearchableSelectV2: FC<SearchableSelectProps | SearchableMultiSelectProps>
       }).finally(() => setSearchFetching(false));
     }
 
-    // Поиск для кладр
     if (field.type === FormFieldTypeEnum.KLADRSELECT && value.length >= 3) {
       setSearchFetching(true);
 
@@ -113,7 +111,6 @@ const SearchableSelectV2: FC<SearchableSelectProps | SearchableMultiSelectProps>
     );
   };
 
-  // Установка изначальных значений если они есть
   useEffect(() => {
     if (props.value && field.type === FormFieldTypeEnum.SELECT) {
       getSelectValue(field, props.value).then((res) => {

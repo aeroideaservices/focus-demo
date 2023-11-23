@@ -8,6 +8,7 @@ import { DateFilter } from '../components/DateFilter';
 import { DateRangeFilter } from '../components/DateRangeFilter';
 import { MultiSelectFilter } from '../components/MultiSelectFilter';
 import { NumericFilter } from '../components/NumericFilter';
+import { StringFilter } from '../components/StringFilter';
 import { ActiveFiltersMap, TFilter, TFilterProps, TFiltersConfig } from '../types';
 
 const filtersMap = {
@@ -16,7 +17,7 @@ const filtersMap = {
   [FilterViewTypeEnum.DATE_RANGE]: DateRangeFilter,
   [FilterViewTypeEnum.DATE]: DateFilter,
   [FilterViewTypeEnum.CHECKBOX]: CheckboxFilter,
-  [FilterViewTypeEnum.STRING]: null,
+  [FilterViewTypeEnum.STRING]: StringFilter,
   [FilterViewTypeEnum.INT]: NumericFilter,
 };
 
@@ -26,7 +27,7 @@ const getFilter = (type: FilterViewTypeEnum) => {
 
 export const renderFilters = (filtersConfig: TFiltersConfig, activeFilters: ActiveFiltersMap) => {
   return filtersConfig.map((filterProps) => (
-    <Box key={filterProps.code} sx={{ flex: '1 0 0', minWidth: '120px' }}>
+    <Box key={filterProps.code} sx={{ flex: '1 0 0' }}>
       {filtersMap[filterProps.viewType]
         ? createElement(getFilter(filterProps.viewType), {
             ...filterProps,

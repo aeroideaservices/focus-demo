@@ -94,7 +94,6 @@ const DroppableDropDown: FC<IDroppableDropDown> = ({
 
   const handleOpen = (e: any) => {
     const { menuId } = params;
-    // you may need a Map here
     const splittedPath = path ? path.split('.') : [];
 
     if (e?.target?.classList.value.includes('can')) {

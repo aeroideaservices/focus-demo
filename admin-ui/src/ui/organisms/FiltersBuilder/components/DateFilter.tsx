@@ -7,7 +7,6 @@ import { useActiveFilters } from '../utils/useActiveFilters';
 export const DateFilter: FC<TFilterProps<FilterTypes.IFilterDate>> = memo(
   ({
     code,
-    // name,
     initialValue = null,
     value = initialValue,
     placeholder = 'Укажите период',
@@ -21,7 +20,6 @@ export const DateFilter: FC<TFilterProps<FilterTypes.IFilterDate>> = memo(
 
     return (
       <DatePicker
-        // label={name}
         {...inputProps}
         {...{ placeholder }}
         value={value ? new Date(value) : null}

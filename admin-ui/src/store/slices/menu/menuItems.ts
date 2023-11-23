@@ -233,10 +233,8 @@ export const menuItemsSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { menuItems: IMenuItemState };
 
-// Modals
 export const selectEditMenuItemModal = (state: TSelectorState) =>
   state.menuItems.modals.editMenuItemOpenModal;
 export const selectAddMenuItemsModal = (state: TSelectorState) =>
@@ -244,7 +242,6 @@ export const selectAddMenuItemsModal = (state: TSelectorState) =>
 export const selectDelMenuItemsModal = (state: TSelectorState) =>
   state.menuItems.modals.delMenuItemModal;
 
-// Statuses
 export const selectFetchingGetMenuItems = (state: TSelectorState) =>
   state.menuItems.status.fetchingGetMenuItems;
 
@@ -260,7 +257,6 @@ export const selectTreeIds = (state: TSelectorState) => state.menuItems.treeIds;
 export const selectDropAccept = (state: TSelectorState) => state.menuItems.dropAccept;
 export const selectCurrentPath = (state: TSelectorState) => state.menuItems.currentPath;
 
-// Reducers and actions
 export const {
   setEditMenuItemModalOpened,
   setAddMenuItemsModalOpened,

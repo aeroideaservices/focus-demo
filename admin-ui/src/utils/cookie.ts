@@ -9,7 +9,6 @@ export const setCookie = (name: string, value: string, options: Record<string, u
   options = {
     path: '/',
     SameSite: 'Strict',
-    // при необходимости добавьте другие значения по умолчанию
     ...options,
   };
 

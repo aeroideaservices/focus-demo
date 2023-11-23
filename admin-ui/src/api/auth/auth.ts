@@ -9,7 +9,7 @@ import { URLS } from '@/api/urls';
 const api = axios.create({
   baseURL: process.env.PUBLIC_API_URL,
   paramsSerializer: (params) => {
-    return qs.stringify(params, { indices: false }); // param=value1&param=value2
+    return qs.stringify(params, { indices: false });
   },
 });
 

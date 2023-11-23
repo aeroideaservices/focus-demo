@@ -61,29 +61,29 @@ export const URLS = {
   },
   models_v2: {
     models: {
-      getModels: '/models-v2', // Получение списка моделей
-      getModel: (modelCode: string) => `/models-v2/${modelCode}`, // Получение описания модели
+      getModels: '/models-v2',
+      getModel: (modelCode: string) => `/models-v2/${modelCode}`,
     },
     modelFieldValues: {
       getModelFieldValues: (modelCode: string, fieldCode: string) =>
-        `/models-v2/${modelCode}/fields/${fieldCode}`, // Получение значений для параметра фильтрации. Тип (список)
+        `/models-v2/${modelCode}/fields/${fieldCode}`,
     },
     modelElements: {
-      addModelElements: (modelCode: string) => `/models-v2/${modelCode}/elements`, // Создание элемента модели
-      getModelElementsList: (modelCode: string) => `/models-v2/${modelCode}/elements/list`, // Получение списка элементов модели
-      delModelElements: (modelCode: string) => `/models-v2/${modelCode}/elements/batch-delete`, // Массовое удаление элементов модели
+      addModelElements: (modelCode: string) => `/models-v2/${modelCode}/elements`,
+      getModelElementsList: (modelCode: string) => `/models-v2/${modelCode}/elements/list`,
+      delModelElements: (modelCode: string) => `/models-v2/${modelCode}/elements/batch-delete`,
     },
     modelElement: {
       getModelElement: (modelCode: string, modelElementId: string) =>
-        `/models-v2/${modelCode}/elements/${modelElementId}`, // Получение элемента модели
+        `/models-v2/${modelCode}/elements/${modelElementId}`,
       putModelElement: (modelCode: string, modelElementId: string) =>
-        `/models-v2/${modelCode}/elements/${modelElementId}`, // Изменение элемента модели
+        `/models-v2/${modelCode}/elements/${modelElementId}`,
       delModelElement: (modelCode: string, modelElementId: string) =>
-        `/models-v2/${modelCode}/elements/${modelElementId}`, // Удаление элемента модели
+        `/models-v2/${modelCode}/elements/${modelElementId}`,
     },
     modelExport: {
-      getModelExport: (modelCode: string) => `/models-v2/${modelCode}/export`, // Получение информации о последнем экспорте модели
-      postModelExport: (modelCode: string) => `/models-v2/${modelCode}/export`, // Инициация экспорта модели
+      getModelExport: (modelCode: string) => `/models-v2/${modelCode}/export`,
+      postModelExport: (modelCode: string) => `/models-v2/${modelCode}/export`,
     },
   },
   menus: {

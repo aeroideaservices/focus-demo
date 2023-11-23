@@ -158,10 +158,8 @@ export const mediaFoldersSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { mediaFolders: IMediaFoldersState };
 
-// Statuses
 export const selectFetchingGetFolders = (state: TSelectorState) =>
   state.mediaFolders.status.fetchingGetFolders;
 export const selectFetchingAddFolder = (state: TSelectorState) =>
@@ -175,7 +173,6 @@ export const selectFetchingMoveFolder = (state: TSelectorState) =>
 export const selectFetchingRenameFolder = (state: TSelectorState) =>
   state.mediaFolders.status.fetchingRenameFolder;
 
-// Modals
 export const selectDelFolderModal = (state: TSelectorState) =>
   state.mediaFolders.modals.delFolderModal;
 export const selectAddFolderModal = (state: TSelectorState) =>
@@ -186,7 +183,6 @@ export const selectRenameFolderModal = (state: TSelectorState) =>
 export const selectCurrentFolder = (state: TSelectorState) => state.mediaFolders.current;
 export const selectRootFolder = (state: TSelectorState) => state.mediaFolders.rootFolder;
 
-// Reducers and actions
 export const {
   setDelFolderModalOpened,
   setAddFolderModalOpened,

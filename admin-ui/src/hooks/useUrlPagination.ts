@@ -4,7 +4,7 @@ import qs from 'qs';
 
 import { LIMIT } from '@/constants/common';
 
-import { getFilterFromRouter } from '@/ui/pages/ModelContainer_v2/utils/getFilterFromRouter';
+import { getFilterFromRouter } from '@/ui/pages/ModelContainer/utils/getFilterFromRouter';
 
 /**
  * @callback SetPageHandler - Callback for changing the page

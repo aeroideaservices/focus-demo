@@ -48,7 +48,6 @@ const ellipsisBreadcrumbsItem = {
 /**
  * Adds get params to file previews. It disables image caching.
  *
- * Motivated by https://tracker.yandex.ru/FARM-1825
  * @param {Array<IFolderType | IFileType>} items
  * @returns {Array<IFolderType | IFileType>}
  */
@@ -150,10 +149,8 @@ export const mediaSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { media: IMediaState };
 
-// Statuses
 export const selectFetchingGetMedia = (state: TSelectorState) =>
   state.media.status.fetchingGetMedia;
 export const selectFetchingGetFolders = (state: TSelectorState) =>
@@ -166,7 +163,6 @@ export const selectMoveInFolder = (state: TSelectorState) => state.media.moveInF
 export const selectBreadcrumbs = (state: TSelectorState) => state.media.breadcrumbs;
 export const selectSelectedId = (state: TSelectorState) => state.media.selectedId;
 
-// Reducers and actions
 export const { setMoveInFolder, setMedia, setSelectedId } = mediaSlice.actions;
 
 export default mediaSlice.reducer;

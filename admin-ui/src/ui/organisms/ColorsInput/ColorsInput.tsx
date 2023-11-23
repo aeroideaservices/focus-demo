@@ -65,7 +65,6 @@ const ColorsInput: FC<ColorsInputProps> = ({ id, onChange, ...props }) => {
     handlersCount.increment();
   };
 
-  // Удаление элемента
   useEffect(() => {
     if (currentId && currentId.length > 0) {
       setInputState([...inputState.filter((item) => item.id !== currentId)]);
@@ -76,7 +75,6 @@ const ColorsInput: FC<ColorsInputProps> = ({ id, onChange, ...props }) => {
     handlerChangeInput();
   }, [inputState]);
 
-  // Добавляем цвета пришедшие с бека в разметку
   useEffect(() => {
     if (props.value && props.value.length > 1) {
       props.value.slice(1).map((el, i) => addInput(i, el));

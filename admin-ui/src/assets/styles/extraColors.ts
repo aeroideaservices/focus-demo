@@ -53,11 +53,3 @@ export const extraColors: Record<
     '#444e64',
   ],
 };
-
-// TODO убрал так-как этот кусок вызывает ошибку при сборке на сервере
-// скорее всего необходимо переходить с npm на yarn что бы избежать ее
-// declare module '@mantine/core' {
-//   export interface MantineThemeColorsOverride {
-//     colors: Record<DefaultMantineColor | ExtraColors, Tuple<string, 10>>;
-//   }
-// }

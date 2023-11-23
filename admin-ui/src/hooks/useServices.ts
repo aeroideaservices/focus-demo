@@ -54,9 +54,6 @@ export const useServices = () => {
     saveServiceToLS(serviceCode);
 
     if (newService && currentPlugin) {
-      if (!newService?.plugins.includes(currentPlugin)) {
-        navigate(PLUGIN_PATHS[getDefaultPlugin(newService)]);
-      }
       if (match?.params.slug) {
         navigate(PLUGIN_PATHS[currentPlugin]);
       }

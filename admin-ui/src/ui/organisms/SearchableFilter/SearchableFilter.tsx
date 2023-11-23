@@ -54,7 +54,6 @@ const SearchableFilter: FC<SearchableFilterProps> = ({ field, cb, ...props }) =>
   const [selectedData, setSelectedData] = useState<string[]>(transformValue(field.value));
 
   const handleSearch = async (value: string) => {
-    // Поиск в фильтрах
     if (value.length >= 3 && extra?.request) {
       setSearchFetching(true);
 

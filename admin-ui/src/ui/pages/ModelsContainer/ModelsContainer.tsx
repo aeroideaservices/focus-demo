@@ -2,6 +2,7 @@ import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Group, Pagination } from '@mantine/core';
 
+import { LIMIT } from '@/constants/common';
 import { TABLE_MODELS } from '@/constants/tableHeaders';
 import { useServices } from '@/hooks/useServices';
 import { useURLPagination } from '@/hooks/useUrlPagination';
@@ -22,9 +23,10 @@ import {
   selectFetchingGetModels,
   selectModels,
   selectModelsTotal,
+  setModels,
 } from '@/store/slices/models/models';
 
-const ModelsContainer: FC = () => {
+const ModelsContainerV2: FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const fetchingModels = useSelector(selectFetchingGetModels);
@@ -35,45 +37,46 @@ const ModelsContainer: FC = () => {
     useURLPagination(modelsTotal);
 
   useEffect(() => {
-    dispatch(fetchGetModelsAction({ params: { limit: currentLimit, offset: currentOffset } }));
+    dispatch(fetchGetModelsAction({ limit: currentLimit, offset: currentOffset }));
+
+    return () => {
+      dispatch(setModels(null));
+    };
   }, [currentLimit, currentOffset, currentService]);
 
   return (
     <Page>
       <PageHeader title="Модели" />
-
       <PageBody>
-        <>
-          {(!models || models.length === 0 || fetchingModels) && (
-            <PageLoader zIndex={100} loading={fetchingModels} text="У вас пока нет моделей" />
+        {(!models || models.length === 0 || fetchingModels) && (
+          <PageLoader loading={fetchingModels} text="У вас пока нет моделей" />
+        )}
+
+        {models && models.length > 0 && (
+          <>
+            <Group mb={24} position="right" grow>
+              <ShowElements defaultValue={LIMIT} changeCallback={setLimit} />
+            </Group>
+
+            <Box sx={{ flex: '1 0 0' }}>
+              <TableExt config={TABLE_MODELS} rows={models} buttons={ModelsTableButtons} />
+            </Box>
+          </>
+        )}
+
+        <PageFooter>
+          {pagesCount > 1 && (
+            <Pagination
+              position={'right'}
+              value={currentPage}
+              total={pagesCount}
+              onChange={setPage}
+            />
           )}
-
-          {models && models.length > 0 && (
-            <>
-              <Group mb={24} position="right" grow>
-                <ShowElements defaultValue={currentLimit} changeCallback={setLimit} />
-              </Group>
-
-              <Box h={0} sx={{ flex: '1 0 0' }}>
-                <TableExt config={TABLE_MODELS} rows={models} buttons={ModelsTableButtons} />
-              </Box>
-
-              <PageFooter>
-                {pagesCount > 1 && (
-                  <Pagination
-                    position={'right'}
-                    value={currentPage}
-                    total={pagesCount}
-                    onChange={setPage}
-                  />
-                )}
-              </PageFooter>
-            </>
-          )}
-        </>
+        </PageFooter>
       </PageBody>
     </Page>
   );
 };
 
-export default ModelsContainer;
+export default ModelsContainerV2;

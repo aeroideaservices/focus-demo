@@ -6,5 +6,3 @@ export { default as api } from './instance';
 export * from './media/media';
 export * from './media/mediaFiles';
 export * from './media/mediaFolders';
-export * from './models/model';
-export * from './models/models';

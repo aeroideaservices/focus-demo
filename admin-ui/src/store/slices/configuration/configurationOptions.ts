@@ -45,19 +45,6 @@ const initialState: IConfigurationOptionsState = {
   offset: OFFSET,
 };
 
-// export const fetchGetConfigurationOptionsAction = createAsyncThunk(
-//   '/GetConfigurationOptions',
-//   async (data: TGetConfigurationOptionsReq, { rejectWithValue }) => {
-//     const result = await tryGetConfigurationOptions(data);
-
-//     if (result) {
-//       return result;
-//     } else {
-//       return rejectWithValue(null);
-//     }
-//   }
-// );
-
 export const fetchGetConfigurationOptionsAction = createAxiosThunk(
   '/GetConfigurationOptions',
   apiGetConfigurationOptions
@@ -130,10 +117,8 @@ export const configurationOptionsSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { configurationOptions: IConfigurationOptionsState };
 
-// Statuses
 export const selectFetchingGetConfigurationOptions = (state: TSelectorState) =>
   state.configurationOptions.status.fetchingGetConfigurationOptions;
 export const selectFetchingAddConfigurationOptions = (state: TSelectorState) =>
@@ -141,7 +126,6 @@ export const selectFetchingAddConfigurationOptions = (state: TSelectorState) =>
 export const selectFetchingPutConfigurationOptions = (state: TSelectorState) =>
   state.configurationOptions.status.fetchingPutConfigurationOptions;
 
-// Modals
 export const selectAddConfigurationOptionsModal = (state: TSelectorState) =>
   state.configurationOptions.modals.addConfigurationOptionsModal;
 export const selectFillConfigurationOptionsModal = (state: TSelectorState) =>
@@ -154,7 +138,6 @@ export const selectConfigurationOptionsLimit = (state: TSelectorState) =>
 export const selectConfigurationOptionsOffset = (state: TSelectorState) =>
   state.configurationOptions.offset;
 
-// Reducers and actions
 export const {
   setAddConfigurationOptionsModalOpened,
   setConfigurationOptionsLimit,

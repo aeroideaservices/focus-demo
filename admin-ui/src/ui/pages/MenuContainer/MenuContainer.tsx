@@ -71,11 +71,10 @@ const MenuContainer: FC = () => {
   ];
 
   const onDragEndHandler = (item: any, index: any, fromWhere: any, prevIndex: any, isNew: any) => {
-    const splittedType = item?.type.split('.'); // from
-    const splittedFromWhere = fromWhere.split('.'); // to
+    const splittedType = item?.type.split('.');
+    const splittedFromWhere = fromWhere.split('.');
 
     if (!item?.type.includes('.') && !fromWhere.includes('.')) {
-      // FIRST LEVEL DRAG
       const items = Array.from(treeData);
       const [reorderedItem] = items.splice(item.dragIndex, 1);
 
@@ -95,7 +94,6 @@ const MenuContainer: FC = () => {
       splittedType[splittedType.length - 2] &&
       splittedFromWhere[splittedType.length - 2]
     ) {
-      // INNER LEVELS SAME LAYOUT
       const changedBranchTraice: any = [];
       const changedBranchTraiceIds: any = [];
 
@@ -103,17 +101,14 @@ const MenuContainer: FC = () => {
         const newTreeData = [...treeData];
 
         if (!innerIndex) {
-          // start
           acc = newTreeData.find((el: any) => el.id === innerItem);
           changedBranchTraice.push(acc);
           changedBranchTraiceIds.push(acc.id);
         } else if (innerIndex === splittedFromWhere.length - 1) {
-          // changed array
           const items = Array.from(acc[acc.id]);
           const [reorderedItem] = items.splice(item.dragIndex, 1);
 
           items.splice(prevIndex, 0, reorderedItem);
-          // array was placed in object
           acc = { ...acc, [acc.id]: items };
 
           const fullChangedBranch = changedBranchTraice
@@ -159,15 +154,12 @@ const MenuContainer: FC = () => {
         return acc;
       }, []);
     } else {
-      // FROM ONE LEVEL TO ANOTHER
       const changedBranchTraice: any = [];
       let addedElem: any = {};
       let newTreeData: any = [];
 
-      // first getting rid of item in its order array
       splittedType.reduce((acc: any, itemType: any, indexType: any) => {
         if (splittedType.length === 1) {
-          // if it is the first level
           const test = treeData.filter((el: any) => {
             if (el.id !== itemType) return el;
             else addedElem = el;
@@ -212,13 +204,11 @@ const MenuContainer: FC = () => {
         return acc;
       }, {});
 
-      // second adding the item to its new level array
       const changedBranchTraiceAdd: any = [];
       let parentIdToSend = '';
 
       splittedFromWhere.reduce((acc: any, innerItem: any, innerIndex: any) => {
         if (splittedFromWhere.length === 1) {
-          // if it is the first level
           newTreeData.splice(prevIndex, 0, addedElem);
 
           if (params.menuId)
@@ -231,14 +221,11 @@ const MenuContainer: FC = () => {
           dispatch(setTreeData(newTreeData));
           dispatch(setDropAccept([...dropAccept, item.id]));
         } else if (!innerIndex) {
-          // start
           acc = newTreeData.find((el: any) => el.id === innerItem);
           changedBranchTraiceAdd.push(acc);
         } else if (innerIndex === splittedFromWhere.length - 1) {
-          // changed array
           const items = [...acc[acc.id]];
           items.splice(prevIndex, 0, addedElem);
-          // array was placed in object
           acc = { ...acc, [acc.id]: items };
           parentIdToSend = acc.id;
 

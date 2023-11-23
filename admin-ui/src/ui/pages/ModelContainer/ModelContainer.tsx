@@ -1,16 +1,13 @@
-import { ModelExportStatusEnum } from '@/types';
+import { TObject } from '@/types/models_v2/models_v2';
 
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { Box, Button, Group, Pagination } from '@mantine/core';
-import { Flex } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { Box, Button, Flex, Group, Pagination } from '@mantine/core';
+import qs from 'qs';
 
-import { useFilters } from '@/hooks/useFilters';
 import { useURLPagination } from '@/hooks/useUrlPagination';
 
-import FiltersBuilder from '@/ui/organisms/FiltersBuilder/FiltersBuilder';
 import SelectedCounter from '@/ui/organisms/SelectedCounter/SelectedCounter';
 import ShowElements from '@/ui/organisms/ShowElements/ShowElements';
 import TableExt from '@/ui/organisms/TableExt/TableExt';
@@ -20,69 +17,47 @@ import PageHeader from '@/ui/templates/Page/components/PageHeader/PageHeader';
 import PageLoader from '@/ui/templates/Page/components/PageLoader/PageLoader';
 import Page from '@/ui/templates/Page/Page';
 
+import ModelFiltersBuilder from './components/ModelFiltersBuilder/ModelFiltersBuilder';
+import { removeModelFromFilter } from './components/ModelFiltersBuilder/utils/removeModelFromFilter';
 import ModelTableButtons from './components/ModelTableButtons/ModelTableButtons';
 import ModelTableModals from './components/ModelTableModals/ModelTableModals';
 import { generateElements } from './utils/generateElements';
+import { getFilterFromRouter } from './utils/getFilterFromRouter';
 import { getSortableKeys } from './utils/getSortableKeys';
 import { ModelContext } from './utils/modelContext';
 
 import { AppDispatch } from '@/store';
 import {
   fetchDelModelElementsAction,
-  fetchExportModel,
   fetchGetExportModel,
   fetchGetModelAction,
   fetchGetModelElementsAction,
-  fetchGetModelSettingsAction,
-  fetchModelElementFieldsAction,
+  fetchPostExportModel,
   selectFetchingGetModelElements,
-  selectModel,
   selectModelElements,
+  selectModelElementsSelected,
   selectModelElementsTotal,
-  selectModelExport,
-  selectModelSettingsFilterable,
-  selectModelSettingsShownInList,
-  selectModelSettingsSortable,
-  selectSelectedModelElements,
-  setModelElements,
-  setModelSettingsFilterable,
+  selectModelName,
+  selectModelViewsFilter,
+  selectModelViewsList,
+  setModelElementsSelected,
   setOpenNewModelElementModal,
-  setSelectedModelElements,
 } from '@/store/slices/models/model';
-import { selectServiceChanged } from '@/store/slices/service/service';
 
-const ModelContainer: FC = () => {
+const ModelContainerV2: FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { modelCode } = useParams<{ modelCode: string }>();
   const [modelExportLoading, setModelExportLoading] = useState<boolean>(false);
-  const model = useSelector(selectModel);
-  const modelSettingsFilterable = useSelector(selectModelSettingsFilterable);
-  const modelSettingsShowInList = useSelector(selectModelSettingsShownInList);
-  const modelSettingsSortable = useSelector(selectModelSettingsSortable);
+  const modelName = useSelector(selectModelName);
+  const modelViewsList = useSelector(selectModelViewsList);
+  const modelViewsFilter = useSelector(selectModelViewsFilter);
   const fetchingModelElements = useSelector(selectFetchingGetModelElements);
   const modelElements = useSelector(selectModelElements);
   const modelElementsTotal = useSelector(selectModelElementsTotal);
-  const selectedModelElements = useSelector(selectSelectedModelElements);
-  const serviceChanged = useSelector(selectServiceChanged);
-  const modelExport = useSelector(selectModelExport);
-  const { filters, onFiltersChange } = useFilters();
+  const modelElementsSelected = useSelector(selectModelElementsSelected);
   const { currentPage, setPage, pagesCount, currentOffset, currentLimit, setLimit } =
     useURLPagination(modelElementsTotal);
-
-  const [service] = useLocalStorage({ key: 'service' });
-  const mappedFilters = useMemo(
-    () =>
-      Object.keys(filters).map((key) => ({
-        code: key,
-        values: filters[key] instanceof Array ? filters[key] : [filters[key]?.toString()],
-      })),
-    [filters]
-  );
-
-  const showModelName = useMemo(
-    () => !fetchingModelElements && model?.name?.length,
-    [fetchingModelElements, model]
-  );
 
   const params = useMemo(
     () => ({
@@ -92,90 +67,76 @@ const ModelContainer: FC = () => {
     [currentLimit, currentOffset]
   );
 
-  const reloadHandler = () => {
-    if (!modelCode) return;
-    dispatch(
-      fetchGetModelElementsAction({
-        modelCode,
-        params,
-        data: { filter: { fields: mappedFilters } },
-      })
-    );
-  };
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'initial';
-      dispatch(setModelSettingsFilterable(null));
-      dispatch(setModelElements(null));
-    };
-  }, []);
-
-  useEffect(() => {
-    reloadHandler();
-  }, [filters, modelCode]);
-
-  useEffect(() => {
-    if (modelCode && service && !serviceChanged) {
-      dispatch(fetchGetModelAction({ code: modelCode }));
-      dispatch(fetchGetModelSettingsAction({ code: modelCode }));
-      dispatch(fetchGetModelElementsAction({ modelCode, params }));
-    }
-  }, [modelCode, currentLimit, currentOffset, service]);
+  const filter = useMemo(() => getFilterFromRouter(searchParams), [searchParams]);
 
   const breadcrumbs = [
     {
       name: 'Модели',
-      url: '/models',
+      url: '/models-v2',
     },
     {
-      name: `Элементы модели${showModelName ? `: ${model?.name}` : ''}`,
+      name: `Элементы модели${modelName ? `: ${modelName}` : ''}`,
     },
   ];
 
+  const reloadHandler = () => {
+    if (!modelCode) return;
+
+    dispatch(
+      fetchGetModelElementsAction({
+        modelCode,
+        params,
+        data: { filter: filter as TObject },
+      })
+    );
+  };
+
   const showSelectedCounter = () => {
-    if (selectedModelElements && selectedModelElements.length > 0) return true;
+    if (modelElementsSelected && modelElementsSelected.length > 0) return true;
 
     return false;
   };
 
   const delElementsHandler = async () => {
-    if (modelCode && selectedModelElements && service) {
+    if (modelCode && modelElementsSelected) {
       await dispatch(
         fetchDelModelElementsAction({
           modelCode,
-          data: { ids: selectedModelElements.map((el) => el.id) },
+          data: { pKeys: modelElementsSelected.map((el) => el.id) },
         })
       );
-      await dispatch(fetchGetModelElementsAction({ modelCode, params }));
+
+      const newFilters = filter;
+
+      modelElementsSelected.forEach((el) => {
+        removeModelFromFilter(el, newFilters);
+      });
+
+      const newParams = {
+        ...params,
+        ...newFilters,
+      };
+      const URLParams = qs.stringify(newParams, { indices: false });
+
+      setSearchParams(URLParams);
     }
   };
 
   const newModalElementHandler = () => {
     dispatch(setOpenNewModelElementModal(true));
-    if (modelCode && service) dispatch(fetchModelElementFieldsAction({ modelCode }));
   };
 
   const handleExportModel = (code?: string) => {
-    if (!modelExport && code) {
-      dispatch(fetchExportModel(code)).then(() => {
+    if (code) {
+      dispatch(fetchPostExportModel({ modelCode: code })).then(() => {
         setModelExportLoading(true);
+
         setTimeout(() => {
-          dispatch(fetchGetExportModel(code)).finally(() => setModelExportLoading(false));
-        }, 1000);
+          dispatch(fetchGetExportModel({ modelCode: code })).finally(() => {
+            setModelExportLoading(false);
+          });
+        }, 2000);
       });
-    } else if (modelExport && code) {
-      if (modelExport.status !== ModelExportStatusEnum.PENDING) {
-        dispatch(fetchExportModel(code)).then(() => {
-          setModelExportLoading(true);
-          setTimeout(() => {
-            dispatch(fetchGetExportModel(code)).finally(() => setModelExportLoading(false));
-          }, 1000);
-        });
-      } else {
-        dispatch(fetchGetExportModel(code));
-      }
     }
   };
 
@@ -194,47 +155,53 @@ const ModelContainer: FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (modelCode) {
+      dispatch(fetchGetModelAction(modelCode));
+    }
+  }, []);
+
+  useEffect(() => {
+    reloadHandler();
+  }, [searchParams]);
+
   return (
     <Page>
       <ModelContext.Provider value={reloadHandler}>
         <PageHeader
-          title={`Элементы модели${showModelName ? `: ${model?.name}` : ''}`}
-          backLink="/models"
+          title={`Элементы модели${modelName ? `: ${modelName}` : ''}`}
+          backLink="/models-v2"
           breadcrumbs={breadcrumbs}
           rightButton={getRightButton(modelCode)}
         />
 
         <PageBody>
-          <Flex align="flex-end" justify="space-between" mb={16}>
-            <Flex direction="column" align="stretch">
-              {/* <SearchInput searchAction={setQuery} /> - went to backlog */}
-              <FiltersBuilder
-                loading={false}
-                filtersConfig={modelSettingsFilterable || []}
-                onFiltersChange={onFiltersChange}
-              />
+          <Flex align="flex-start" justify="space-between" mb={24} gap={15}>
+            <Flex align="stretch" w={'100%'}>
+              {modelViewsFilter && modelViewsFilter.formFields && (
+                <ModelFiltersBuilder fields={modelViewsFilter.formFields} />
+              )}
             </Flex>
-            <Box>
-              <ShowElements defaultValue={params.limit} changeCallback={setLimit} />
-            </Box>
+            <ShowElements
+              pt={modelViewsFilter && modelViewsFilter.formFields ? 23 : 0}
+              defaultValue={params.limit}
+              changeCallback={setLimit}
+            />
           </Flex>
 
           {(!modelElements || modelElements.length === 0 || fetchingModelElements) && (
-            <PageLoader
-              loading={fetchingModelElements}
-              zIndex={100}
-              text="У модели пока нет элементов"
-            />
+            <PageLoader loading={fetchingModelElements} text="У модели пока нет элементов" />
           )}
-          {modelElements && modelElements.length > 0 && modelSettingsShowInList && (
+
+          {modelViewsList && modelElements && (
             <Box h={0} sx={{ flex: '1 0 0' }}>
               <TableExt
+                config={modelViewsList}
                 buttons={ModelTableButtons}
-                config={modelSettingsShowInList}
-                rows={generateElements(modelElements, modelSettingsShowInList)}
+                rows={generateElements(modelElements, modelViewsList)}
+                selectCallback={(values) => dispatch(setModelElementsSelected(values))}
+                sortableKeys={getSortableKeys(modelViewsList)}
                 selectable
-                selectCallback={(values) => dispatch(setSelectedModelElements(values))}
-                sortableKeys={getSortableKeys(modelSettingsSortable)}
               />
             </Box>
           )}
@@ -243,7 +210,7 @@ const ModelContainer: FC = () => {
             <Group position="apart" grow>
               {showSelectedCounter() && (
                 <SelectedCounter
-                  count={selectedModelElements && selectedModelElements.length}
+                  count={modelElementsSelected && modelElementsSelected.length}
                   buttonText="Удалить"
                   callback={delElementsHandler}
                 />
@@ -260,11 +227,10 @@ const ModelContainer: FC = () => {
             </Group>
           </PageFooter>
         </PageBody>
-
         <ModelTableModals />
       </ModelContext.Provider>
     </Page>
   );
 };
 
-export default ModelContainer;
+export default ModelContainerV2;

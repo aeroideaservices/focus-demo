@@ -68,12 +68,12 @@ export type TMediaUpload = {
 };
 
 export type TExtraField = {
-  utils?: TInputUtils[]; // Только для полей типа textInput
-  request?: TRequest; // Только для полей типа select
-  selectData?: TSelectData[]; // Только для полей типа select
-  productsHints?: TProductsHints; // Только для полей типа editorJs
-  mediaUpload?: TMediaUpload; // Только для полей типа editorJs
-  folderId?: string; // Для полей с медиа
+  utils?: TInputUtils[];
+  request?: TRequest;
+  selectData?: TSelectData[];
+  productsHints?: TProductsHints;
+  mediaUpload?: TMediaUpload;
+  folderId?: string;
   identifier?: string;
   display?: string[];
   kladrSelect?: {

@@ -4,7 +4,6 @@ import { IListRes, TAnyOf } from '@/types/models_v2/models_v2';
 import api from '../instance';
 import { URLS } from '../urls';
 
-// Получение значений для параметра фильтрации. Тип (список)
 export const apiGetModelFieldValues = ({ modelCode, fieldCode, params }: IModelFieldValuesReq) =>
   api.get<IListRes<TAnyOf>>(
     URLS.models_v2.modelFieldValues.getModelFieldValues(modelCode, fieldCode),

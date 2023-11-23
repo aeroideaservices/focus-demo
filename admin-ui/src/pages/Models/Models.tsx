@@ -7,7 +7,7 @@ import { TITLE_MODELS } from '@/constants/titles';
 import ModelContainer from '@/ui/pages/ModelContainer/ModelContainer';
 import ModelsContainer from '@/ui/pages/ModelsContainer/ModelsContainer';
 
-const Models: FC = () => {
+const ModelsV2: FC = () => {
   useDocumentTitle(TITLE_MODELS);
 
   return (
@@ -18,4 +18,4 @@ const Models: FC = () => {
   );
 };
 
-export default Models;
+export default ModelsV2;

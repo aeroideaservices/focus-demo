@@ -41,7 +41,6 @@ import {
 
 const MediaContainer: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  // const [searchParams, setSearchParams] = useSearchParams();
   const { folderId } = useParams();
   const viewport = useRef<HTMLDivElement>(null);
   const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
@@ -119,9 +118,6 @@ const MediaContainer: FC = () => {
     const viewportHeight = viewportScrollHeight - viewportClientHeight;
     const scrollPositionHeight = scrollPosition.y;
 
-    // 1. Проверяем что скролл внизу
-    // 2. Проверяем что общее кол-во медиа в сторе меньше общего кол-ва
-    // 3. Проверяем что запрос не идет
     if (
       viewportHeight - scrollPositionHeight < 100 &&
       mediaItems &&

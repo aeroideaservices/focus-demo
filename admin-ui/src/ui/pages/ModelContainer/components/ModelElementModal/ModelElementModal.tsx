@@ -1,22 +1,25 @@
-import { TModelField } from '@/types';
-
 import { FC, useContext } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Modal, ModalProps, Text } from '@mantine/core';
 
 import { LoaderOverlay } from '@/ui/organisms/LoaderOverlay/LoaderOverlay';
 
+import { getFileds } from '../../utils/getFileds';
 import { ModelContext } from '../../utils/modelContext';
 import ModelFormBuilder from '../ModelFormBuilder/ModelFormBuilder';
 
 import { AppDispatch } from '@/store';
 import {
   fetchAddModelElementAction,
-  fetchChangeModelElementAction,
+  fetchPutModelElementAction,
   selectCurrentModelElement,
-  selectFetchingGetModelElementFields,
-  selectModelElementFields,
+  selectCurrentModelElementData,
+  selectFetchingAddModelElement,
+  selectFetchingGetModelElement,
+  selectModelViewsCreate,
+  selectModelViewsUpdate,
 } from '@/store/slices/models/model';
 import { selectCurrentService } from '@/store/slices/service/service';
 
@@ -27,31 +30,28 @@ interface IModelElementModal extends ModalProps {
 
 const ModelElementModal: FC<IModelElementModal> = ({ title, type, ...props }) => {
   const dispatch: AppDispatch = useDispatch();
-  const urlParams = useParams();
-  const modelCode = urlParams.modelCode;
-  const fetchingModelElementFields = useSelector(selectFetchingGetModelElementFields);
-  const modelElementFields = useSelector(selectModelElementFields);
+  const { modelCode } = useParams<{ modelCode: string }>();
+  const modelViewsCreate = useSelector(selectModelViewsCreate);
+  const modelViewsUpdate = useSelector(selectModelViewsUpdate);
+  const fetchingGetModelElement = useSelector(selectFetchingGetModelElement);
+  const fetchingAddModelElement = useSelector(selectFetchingAddModelElement);
+  const currentModelElement = useSelector(selectCurrentModelElement);
+  const currentModelElementData = useSelector(selectCurrentModelElementData);
   const service = useSelector(selectCurrentService);
-  const currentElement = useSelector(selectCurrentModelElement);
   const reloadCallback = useContext(ModelContext);
 
-  const submitHandler = async (values: Record<string, unknown>) => {
+  const submitHandler = async (values: any) => {
     if (modelCode && service && type === 'new') {
-      await dispatch(
-        fetchAddModelElementAction({
-          modelCode,
-          data: { fieldValues: values.fieldValues as TModelField[] },
-        })
-      );
+      await dispatch(fetchAddModelElementAction({ modelCode, data: values }));
+
       reloadCallback();
-    } else if (modelCode && service && type === 'edit' && currentElement?.id) {
-      await dispatch(
-        fetchChangeModelElementAction({
-          modelCode,
-          elementId: currentElement.id,
-          data: { fieldValues: values.fieldValues },
-        })
-      );
+    }
+
+    if (modelCode && service && type === 'edit') {
+      const { id: modelElementId } = currentModelElement as Record<string, string>;
+
+      await dispatch(fetchPutModelElementAction({ modelCode, modelElementId, data: values }));
+
       reloadCallback();
     }
   };
@@ -62,16 +62,30 @@ const ModelElementModal: FC<IModelElementModal> = ({ title, type, ...props }) =>
       size={765}
       {...props}
       title={
-        <Text fz={22} fw={700}>
+        <Text fw={700} fz="xl">
           {title}
         </Text>
       }
     >
-      <LoaderOverlay visible={fetchingModelElementFields} />
-      {modelElementFields && modelElementFields.length > 0 ? (
-        <ModelFormBuilder options={modelElementFields} onSubmit={submitHandler} type={type} />
-      ) : (
-        <Text align="center">Опций не найдено</Text>
+      <LoaderOverlay visible={fetchingGetModelElement} />
+
+      {modelViewsCreate && type === 'new' && (
+        <ModelFormBuilder
+          fields={modelViewsCreate.formFields}
+          validation={modelViewsCreate.validation}
+          onSubmit={submitHandler}
+          loading={fetchingAddModelElement}
+        />
+      )}
+
+      {modelViewsUpdate && type === 'edit' && (
+        <ModelFormBuilder
+          fields={getFileds(modelViewsUpdate.formFields, currentModelElementData)}
+          validation={modelViewsUpdate.validation}
+          onSubmit={submitHandler}
+          loading={fetchingAddModelElement}
+          type={type}
+        />
       )}
     </Modal>
   );
