@@ -51,15 +51,20 @@ const ellipsisBreadcrumbsItem = {
  * @param {Array<IFolderType | IFileType>} items
  * @returns {Array<IFolderType | IFileType>}
  */
-const getMappedMedia = (items: Array<IFolderType | IFileType>) =>
-  items.map((item) => {
-    if (item.resourceType === ResourceType.FILE && item.fileFields.url)
-      return {
-        ...item,
-        fileFields: { ...item.fileFields, url: `${item.fileFields.url}?${item.fileFields.id}` },
-      };
-    return item;
-  });
+const getMappedMedia = (items: Array<IFolderType | IFileType>) => {
+  if (items) {
+    items.map((item) => {
+      if (item.resourceType === ResourceType.FILE && item.fileFields.url)
+        return {
+          ...item,
+          fileFields: { ...item.fileFields, url: `${item.fileFields.url}?${item.fileFields.id}` },
+        };
+      return item;
+    });
+  }
+
+  return [];
+};
 
 export const fetchGetMedia = createAxiosThunk('getMedia', apiGetMedia);
 export const fetchGetMediaMore = createAxiosThunk('getMediaMore', apiGetMedia);
@@ -137,10 +142,12 @@ export const mediaSlice = createSlice({
       })
       .addCase(fetchGetFolders.fulfilled, (state, action) => {
         state.status.fetchingGetFolders = false;
-        state.folders = action.payload.map((folder) => ({
-          resourceType: ResourceType.FOLDER,
-          folderFields: folder,
-        }));
+        state.folders = action.payload
+          ? action.payload.map((folder) => ({
+              resourceType: ResourceType.FOLDER,
+              folderFields: folder,
+            }))
+          : null;
       })
       .addCase(fetchGetFolders.rejected, (state) => {
         state.status.fetchingGetFolders = false;
