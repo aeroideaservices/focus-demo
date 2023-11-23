@@ -125,13 +125,15 @@ export const menuItemsSlice = createSlice({
       .addCase(fetchGetMenuItemsAction.fulfilled, (state, action) => {
         state.status.fetchingGetMenuItems = false;
         state.menuItems = action.payload;
-        state.dropAccept = action.payload?.map((item: any) => item.id);
-        state.treeData = action.payload?.map((item: any) => ({
-          level: 1,
-          data: item,
-          [item.id]: null,
-          id: item.id,
-        }));
+        state.dropAccept = action.payload ? action.payload.map((item: any) => item.id) : null;
+        state.treeData = action.payload
+          ? action.payload?.map((item: any) => ({
+              level: 1,
+              data: item,
+              [item.id]: null,
+              id: item.id,
+            }))
+          : null;
       })
       .addCase(fetchGetMenuItemsAction.rejected, (state) => {
         state.status.fetchingGetMenuItems = false;
@@ -208,17 +210,23 @@ export const menuItemsSlice = createSlice({
 
       state.treeData = newTreeData;
 
-      const dropChildrenAccept = action.payload.result.map(
-        (item: any) => `${action.payload.path}.${item.id}`
-      );
+      const dropChildrenAccept = action.payload.result
+        ? action.payload.result.map((item: any) => `${action.payload.path}.${item.id}`)
+        : [];
       state.dropAccept = [...state.dropAccept, ...dropChildrenAccept];
 
       const test = state.treeIds.find((el: any) => el.includes(action?.payload?.id));
+
       test.split('.').reduce((acc: any, item: any, index: any) => {
-        if (!index) acc = state?.treeData?.find((el: any) => el[item])[item];
-        else if (index === test.split('.').length) {
+        if (!index) {
+          acc = state?.treeData?.find((el: any) => el[item])
+            ? state?.treeData?.find((el: any) => el[item])[item]
+            : {};
+        } else if (index === test.split('.').length) {
           acc.find((el: any) => el[item] === null)[item] = childrenData;
-        } else acc = acc?.find((el: any) => el[item])[item];
+        } else {
+          if (acc.find((el: any) => el[item])) acc = acc.find((el: any) => el[item])[item];
+        }
 
         return acc;
       }, {});
