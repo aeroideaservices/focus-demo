@@ -27,23 +27,6 @@ services:
       - env/common/.env.admin-connector
       - env/docker/.env.admin-connector
 
-  dms1:
-    container_name: dms1
-    volumes:
-      - ./app/:/app
-    build:
-      context: ./demo-service-1
-      dockerfile: ./.docker/Dockerfile
-    ports:
-      - "8080:8080"
-    env_file:
-      - env/common/.env.dms1
-      - env/docker/.env.dms1
-    depends_on:
-      - minio
-      - createbuckets
-      - postgres_dms1
-
   postgres_keycloak:
     container_name: postgres_keycloak
     image: postgres
@@ -111,14 +94,46 @@ services:
       POSTGRES_USER: dms1
       POSTGRES_PASSWORD: dms1
 
-  postgres_dms2:
-    container_name: postgres_dms2
+  dms1:
+    container_name: dms1
+    volumes:
+      - ./app/:/app
+    build:
+      context: ./demo-service-1
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - env/common/.env.dms1
+      - env/docker/.env.dms1
+    depends_on:
+      - minio
+      - createbuckets
+      - postgres_dms1
+
+  postgres_delivery:
+    container_name: postgres_delivery
     ports:
       - "5402:5432"
     image: postgres
     volumes:
-      - ./.docker/postgres/dms2/postgres_data:/var/lib/postgresql/data
+      - ./.docker/postgres/delivery/postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: dms2
-      POSTGRES_USER: dms2
-      POSTGRES_PASSWORD: dms2
+      POSTGRES_DB: delivery
+      POSTGRES_USER: delivery
+      POSTGRES_PASSWORD: delivery
+
+  delivery:
+    container_name: delivery
+    volumes:
+      - ./app/:/app
+    build:
+      context: ./delivery
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - "8187:8187"
+    env_file:
+      - env/common/.env.delivery
+      - env/docker/.env.delivery
+    depends_on:
+      - postgres_delivery
