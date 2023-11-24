@@ -48,19 +48,23 @@ const ellipsisBreadcrumbsItem = {
 /**
  * Adds get params to file previews. It disables image caching.
  *
- * Motivated by https://tracker.yandex.ru/FARM-1825
  * @param {Array<IFolderType | IFileType>} items
  * @returns {Array<IFolderType | IFileType>}
  */
-const getMappedMedia = (items: Array<IFolderType | IFileType>) =>
-  items.map((item) => {
-    if (item.resourceType === ResourceType.FILE && item.fileFields.url)
-      return {
-        ...item,
-        fileFields: { ...item.fileFields, url: `${item.fileFields.url}?${item.fileFields.id}` },
-      };
-    return item;
-  });
+const getMappedMedia = (items: Array<IFolderType | IFileType>) => {
+  if (items) {
+    items.map((item) => {
+      if (item.resourceType === ResourceType.FILE && item.fileFields.url)
+        return {
+          ...item,
+          fileFields: { ...item.fileFields, url: `${item.fileFields.url}?${item.fileFields.id}` },
+        };
+      return item;
+    });
+  }
+
+  return [];
+};
 
 export const fetchGetMedia = createAxiosThunk('getMedia', apiGetMedia);
 export const fetchGetMediaMore = createAxiosThunk('getMediaMore', apiGetMedia);
@@ -138,10 +142,12 @@ export const mediaSlice = createSlice({
       })
       .addCase(fetchGetFolders.fulfilled, (state, action) => {
         state.status.fetchingGetFolders = false;
-        state.folders = action.payload.map((folder) => ({
-          resourceType: ResourceType.FOLDER,
-          folderFields: folder,
-        }));
+        state.folders = action.payload
+          ? action.payload.map((folder) => ({
+              resourceType: ResourceType.FOLDER,
+              folderFields: folder,
+            }))
+          : null;
       })
       .addCase(fetchGetFolders.rejected, (state) => {
         state.status.fetchingGetFolders = false;
@@ -150,10 +156,8 @@ export const mediaSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { media: IMediaState };
 
-// Statuses
 export const selectFetchingGetMedia = (state: TSelectorState) =>
   state.media.status.fetchingGetMedia;
 export const selectFetchingGetFolders = (state: TSelectorState) =>
@@ -166,7 +170,6 @@ export const selectMoveInFolder = (state: TSelectorState) => state.media.moveInF
 export const selectBreadcrumbs = (state: TSelectorState) => state.media.breadcrumbs;
 export const selectSelectedId = (state: TSelectorState) => state.media.selectedId;
 
-// Reducers and actions
 export const { setMoveInFolder, setMedia, setSelectedId } = mediaSlice.actions;
 
 export default mediaSlice.reducer;

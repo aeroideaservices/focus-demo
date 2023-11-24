@@ -6,9 +6,7 @@ import { tokenGetAndRefresh } from '@/utils/token';
 
 const api = axios.create({
   baseURL: process.env.PUBLIC_API_URL,
-  paramsSerializer: (params) => {
-    return qs.stringify(params, { indices: false }); // param=value1&param=value2
-  },
+  paramsSerializer: (params) => qs.stringify(params, { indices: false }),
 });
 
 export const objectToJson = (obj: Record<string, unknown>): string => {
@@ -22,15 +20,11 @@ const requestMiddleware = async (config: any) => {
   let accessToken = null;
 
   if (!(window.location.pathname === '/auth')) {
-    // Если токена нет в cookie сбрасываем пользователя на стр входа
     if (!cookiesToken) {
       setCookie('token', '');
       window.location.assign('/auth');
     }
 
-    // Проверяем время жизни refreshToken из cookie - если протух,
-    // сбрасываем пользователя на стр входа
-    // если нет, то обновляем токен
     if (tokenInfo && tokenInfo.refreshExpiresAt && now > tokenInfo.refreshExpiresAt) {
       setCookie('token', '');
       window.location.assign('/auth');
@@ -43,14 +37,6 @@ const requestMiddleware = async (config: any) => {
     accessToken = JSON.parse(cookiesToken).access_token;
   }
 
-  // при запросе на рефреш токен им нужен не access токен, который берется из куков
-  // а рефреш токен, который прокидывается в конкретных запросах. По этому для них
-  // мы accesstoken не прокидываем!
-  // const ifThrowToken =
-  //   accessToken &&
-  //   config.url !== URLS.users.auth.customerRefresh &&
-  //   config.url !== URLS.users.signIn.authByRefresh;
-  // const tokenFromHeaders = ifThrowToken ? { Authorization: `Bearer ${accessToken}` } : undefined;
   const tokenFromHeaders = { Authorization: `Bearer ${accessToken}` };
 
   return {
@@ -73,18 +59,11 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-api.interceptors.request.use(requestMiddleware, (error) => {
-  return Promise.reject(error);
-});
+api.interceptors.request.use(requestMiddleware, (error) => Promise.reject(error));
 
 api.interceptors.response.use(
-  (response) => {
-    // Type response middleware here
-    return response;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (response) => response,
+  (error) => Promise.reject(error)
 );
 
 export default api;

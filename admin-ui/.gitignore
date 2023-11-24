@@ -27,4 +27,5 @@ tsconfig.tsbuildinfo
 *.sw?
 
 # lock files
-*.lock
+package-lock.json
+yarn.lock

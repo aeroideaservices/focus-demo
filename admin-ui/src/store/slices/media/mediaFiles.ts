@@ -151,10 +151,8 @@ export const mediaFilesSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { mediaFiles: IMediaFilesState };
 
-// Statuses
 export const selectFetchingAddFile = (state: TSelectorState) =>
   state.mediaFiles.status.fetchingAddFile;
 export const selectFetchingGetFileInfo = (state: TSelectorState) =>
@@ -166,7 +164,6 @@ export const selectFetchingMoveFile = (state: TSelectorState) =>
 export const selectFetchingRenameFile = (state: TSelectorState) =>
   state.mediaFiles.status.fetchingRenameFile;
 
-// Modals
 export const selectAddFileModal = (state: TSelectorState) => state.mediaFiles.modals.addFileModal;
 export const selectDelFileModal = (state: TSelectorState) => state.mediaFiles.modals.delFileModal;
 export const selectRenameFileModal = (state: TSelectorState) =>
@@ -175,7 +172,6 @@ export const selectMoveFoleModal = (state: TSelectorState) => state.mediaFiles.m
 
 export const selectCurrentFile = (state: TSelectorState) => state.mediaFiles.current;
 
-// Reducers and actions
 export const {
   setAddFileModalOpened,
   setDelFileModalOpened,

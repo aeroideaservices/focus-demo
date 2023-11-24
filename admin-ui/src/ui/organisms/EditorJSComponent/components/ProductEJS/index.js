@@ -465,7 +465,7 @@ class ProductEJS {
   makeInputSearch(productId) {
     const search = make('input', this.CSS.searchInput, {
       type: 'text',
-      placeholder: 'Введите название товара или код из 1С',
+      placeholder: 'Введите название товара или идентификатор',
     });
 
     this.setInputSearchListener(search, productId);

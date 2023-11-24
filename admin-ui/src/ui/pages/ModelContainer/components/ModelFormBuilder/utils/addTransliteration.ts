@@ -1,29 +1,34 @@
+import { InputUtilsEnum, TExtraField, TFormField } from '@/types/models_v2/models_v2';
+
 import { UseFormReturnType } from '@mantine/form';
 
 import { transliteration } from '@/utils/transliteration';
 
-import { TField } from '../../../utils/getInitialValuesModelForm';
-
-import { checkFieldOnSluggable } from './checkFieldOnSluggable';
-import { getSluggableFieldIndex } from './getSluggableFieldIndex';
-import { TSlugField } from './getSluggableObjects';
+import { getFieldIndex } from './getFieldIndex';
 
 export const addTransliteration = (
-  item: TField,
-  slugObjArr: TSlugField[] | null,
   formObj: UseFormReturnType<{
-    fields: TField[];
+    fields: TFormField[];
   }>,
-  type: string
-) => {
-  if (checkFieldOnSluggable(item.code, slugObjArr)) {
-    return (el: React.FormEvent<HTMLInputElement>) => {
-      return type !== 'edit'
-        ? formObj
-            .getInputProps(`fields.${getSluggableFieldIndex(item.code, slugObjArr)}.value`)
-            .onChange(transliteration(el.currentTarget.value, { onlyLower: true }))
-        : undefined;
-    };
+  type: 'new' | 'edit',
+  extra?: TExtraField
+): React.FormEventHandler<HTMLInputElement> | undefined => {
+  if (!extra || !extra.utils) return undefined;
+  const { utils } = extra;
+
+  for (let index = 0; index < utils.length; index++) {
+    switch (utils[index].code) {
+      case InputUtilsEnum.SLUGIFY:
+        return type !== 'edit'
+          ? (el: React.FormEvent<HTMLInputElement>) => {
+              formObj
+                .getInputProps(`fields.${getFieldIndex(formObj, utils[index].field)}.value`)
+                .onChange(transliteration(el.currentTarget.value, { onlyLower: true }));
+            }
+          : undefined;
+      default:
+        break;
+    }
   }
 
   return undefined;

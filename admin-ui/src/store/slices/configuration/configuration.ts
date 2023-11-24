@@ -103,10 +103,8 @@ export const configurationSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { configuration: IConfigurationState };
 
-// Statuses
 export const selectFetchingGetConfiguration = (state: TSelectorState) =>
   state.configuration.status.fetchingGetConfiguration;
 export const selectFetchingPutConfiguration = (state: TSelectorState) =>
@@ -114,15 +112,12 @@ export const selectFetchingPutConfiguration = (state: TSelectorState) =>
 export const selectFetchingDelConfiguration = (state: TSelectorState) =>
   state.configuration.status.fetchingDelConfiguration;
 
-// Modals
 export const selectDelConfigurationModal = (state: TSelectorState) =>
   state?.configuration?.modals?.delConfigurationModal;
 export const selectEditConfigurationModal = (state: TSelectorState) =>
   state?.configuration?.modals?.editConfigurationModal;
 
 export const selectConfiguration = (state: TSelectorState) => state?.configuration?.configuration;
-
-// Reducers and actions
 
 export const { setOpenDelConfigurationModal, setEditConfigurationModalOpen } =
   configurationSlice.actions;

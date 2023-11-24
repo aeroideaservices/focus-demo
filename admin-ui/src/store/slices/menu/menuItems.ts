@@ -125,13 +125,15 @@ export const menuItemsSlice = createSlice({
       .addCase(fetchGetMenuItemsAction.fulfilled, (state, action) => {
         state.status.fetchingGetMenuItems = false;
         state.menuItems = action.payload;
-        state.dropAccept = action.payload?.map((item: any) => item.id);
-        state.treeData = action.payload?.map((item: any) => ({
-          level: 1,
-          data: item,
-          [item.id]: null,
-          id: item.id,
-        }));
+        state.dropAccept = action.payload ? action.payload.map((item: any) => item.id) : null;
+        state.treeData = action.payload
+          ? action.payload?.map((item: any) => ({
+              level: 1,
+              data: item,
+              [item.id]: null,
+              id: item.id,
+            }))
+          : null;
       })
       .addCase(fetchGetMenuItemsAction.rejected, (state) => {
         state.status.fetchingGetMenuItems = false;
@@ -208,17 +210,23 @@ export const menuItemsSlice = createSlice({
 
       state.treeData = newTreeData;
 
-      const dropChildrenAccept = action.payload.result.map(
-        (item: any) => `${action.payload.path}.${item.id}`
-      );
+      const dropChildrenAccept = action.payload.result
+        ? action.payload.result.map((item: any) => `${action.payload.path}.${item.id}`)
+        : [];
       state.dropAccept = [...state.dropAccept, ...dropChildrenAccept];
 
       const test = state.treeIds.find((el: any) => el.includes(action?.payload?.id));
+
       test.split('.').reduce((acc: any, item: any, index: any) => {
-        if (!index) acc = state?.treeData?.find((el: any) => el[item])[item];
-        else if (index === test.split('.').length) {
+        if (!index) {
+          acc = state?.treeData?.find((el: any) => el[item])
+            ? state?.treeData?.find((el: any) => el[item])[item]
+            : {};
+        } else if (index === test.split('.').length) {
           acc.find((el: any) => el[item] === null)[item] = childrenData;
-        } else acc = acc?.find((el: any) => el[item])[item];
+        } else {
+          if (acc.find((el: any) => el[item])) acc = acc.find((el: any) => el[item])[item];
+        }
 
         return acc;
       }, {});
@@ -233,10 +241,8 @@ export const menuItemsSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { menuItems: IMenuItemState };
 
-// Modals
 export const selectEditMenuItemModal = (state: TSelectorState) =>
   state.menuItems.modals.editMenuItemOpenModal;
 export const selectAddMenuItemsModal = (state: TSelectorState) =>
@@ -244,7 +250,6 @@ export const selectAddMenuItemsModal = (state: TSelectorState) =>
 export const selectDelMenuItemsModal = (state: TSelectorState) =>
   state.menuItems.modals.delMenuItemModal;
 
-// Statuses
 export const selectFetchingGetMenuItems = (state: TSelectorState) =>
   state.menuItems.status.fetchingGetMenuItems;
 
@@ -260,7 +265,6 @@ export const selectTreeIds = (state: TSelectorState) => state.menuItems.treeIds;
 export const selectDropAccept = (state: TSelectorState) => state.menuItems.dropAccept;
 export const selectCurrentPath = (state: TSelectorState) => state.menuItems.currentPath;
 
-// Reducers and actions
 export const {
   setEditMenuItemModalOpened,
   setAddMenuItemsModalOpened,

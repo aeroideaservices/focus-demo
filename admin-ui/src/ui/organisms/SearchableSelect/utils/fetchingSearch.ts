@@ -5,9 +5,6 @@ import { api } from '@/api';
 import { getSearchData, MultiSelectDataProps } from './getSearchData';
 import getSearchDataKladdr from './getSearchDataKladdr';
 
-// TODO вся функция по сути один большой костыль
-// данную логику необходимо переписать универсально
-// но это можно сделать только совместно с бекендом
 const fetchingSearch = async (
   value: string,
   options: TFormBuilderRequest,

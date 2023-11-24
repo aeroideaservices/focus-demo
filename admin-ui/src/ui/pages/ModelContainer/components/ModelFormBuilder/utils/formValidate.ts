@@ -34,8 +34,6 @@ export const formValidate = (
     };
     const yupSchema = buildYup(schema, builderConfig);
 
-    // Проверка и преобразование числового поля
-    // TODO кусок с try нужно выносить так как он много повторяется
     switch (field.type) {
       case FormFieldTypeEnum.INTINPUT:
       case FormFieldTypeEnum.FLOATINPUT:

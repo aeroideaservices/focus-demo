@@ -6,9 +6,9 @@ import { PUBLIC_API_URL } from '@/constants/common';
 import { getCookie } from './cookie';
 
 const apiInstance = axios.create({
-  baseURL: PUBLIC_API_URL, // TODO нужно заменить на переменную
+  baseURL: PUBLIC_API_URL,
   paramsSerializer: (params) => {
-    return qs.stringify(params, { indices: false }); // param=value1&param=value2
+    return qs.stringify(params, { indices: false });
   },
 });
 

@@ -2,7 +2,6 @@ import { TTableConfig } from '@/types';
 import { TModelTableElement } from '@/types/models_v2/models_v2';
 
 import { FC, memo, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { TableProps } from '@mantine/core';
 import { Checkbox, ScrollArea, Table } from '@mantine/core';
 import { isEqual } from 'lodash';
@@ -12,8 +11,6 @@ import { getTableRows } from './utils/getTableRows';
 import { includeRow } from './utils/includeRow';
 import { sortData } from './utils/sortData';
 import { useStyles } from './style';
-
-import { selectSelectedModelElements } from '@/store/slices/models/model';
 
 interface ITableExt extends TableProps {
   config: TTableConfig[] | TModelTableElement[];
@@ -29,7 +26,6 @@ const TableExt: FC<ITableExt> = memo(
   ({ config, rows, scrollheight, buttons, selectable, selectCallback, sortableKeys, ...props }) => {
     const { classes, cx } = useStyles();
     const [scrolled, setScrolled] = useState(false);
-    const selectedModelElements = useSelector(selectSelectedModelElements);
     const [selection, setSelection] = useState<Record<string, string>[]>([]);
     const [sortBy, setSortBy] = useState<string | null>(null);
     const [sortedData, setSortedData] = useState<Record<string, any>[] | null>(null);
@@ -38,12 +34,6 @@ const TableExt: FC<ITableExt> = memo(
     useEffect(() => {
       setSortedData(rows);
     }, [rows]);
-
-    useEffect(() => {
-      if (!selectedModelElements) {
-        setSelection([]);
-      }
-    }, [selectedModelElements]);
 
     useEffect(() => {
       if (selectCallback) selectCallback(selection);

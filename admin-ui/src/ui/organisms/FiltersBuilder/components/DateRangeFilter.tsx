@@ -28,7 +28,6 @@ export const DateRangeFilter: FC<TFilterProps<FilterTypes.IFilterDateRange>> = m
     showTime = false,
     inputProps,
   }) => {
-    // const { classes } = useStyles();
     const { onChange } = useActiveFilters(code, initialValue);
 
     const changeHandler = (newValue: TDateRangeValue) => {

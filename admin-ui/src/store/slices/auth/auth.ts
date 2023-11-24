@@ -67,14 +67,11 @@ export const authSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { auth: IAuthState };
 
 export const tokenSelector = (state: TSelectorState) => state?.auth.token;
 export const fetchingGetConfiguration = (state: TSelectorState) =>
   state?.auth.fetchingGetConfiguration;
-
-// Reducers and actions
 
 export const { setUserToken } = authSlice.actions;
 

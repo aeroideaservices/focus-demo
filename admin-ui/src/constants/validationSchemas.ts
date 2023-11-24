@@ -7,21 +7,17 @@ const STRING_MENU_REGEXP =
   /^([a-zA-Zа-яА-Я0-9,._!?;:"'`\S-]+)([a-zA-Zа-яА-Я0-9\s\S,._!?;:"'`-]+)$/gm;
 const STRING_NOT_ONLY_WHITESPACE_REGEXP =
   /^([a-zA-Zа-яА-Я0-9,._!?;:"'`-]+)([a-zA-Zа-яА-Я0-9\s,._!?;:"'`-]+)$/gm;
-export const CODE_REGEXP = /^\s*$|^[a-z0-9]+(?:-[a-z0-9]+)*$/gm;
 export const STRING_PHONE_REGEXP = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/gm;
 export const PHONE_LENGHT_REGEXP =
   /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/gm;
 export const STRING_EMAIL_REGEXP = /^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/gm;
 export const STRING_LINK_REGEXP =
   /^((\/)|((?:http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)))+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
+export const CODE_REGEXP = /^\s*$|^[a-z0-9]+(?:-[a-z0-9]+)*$/gm;
 const EXTENDED_CODE_REGEXP = /^([a-z0-9-//])*$/gm;
 const EXCLUDE_SYMBOLS = /^([^\/]([a-z0-9-//])*[a-z0-9]{2})?$/gm;
 export const POSITION_REGEXP = /^[1-3]{1}$/gm;
 export const STRING_RELATIVE_OR_ABSOLUTE_LINK = /^(\/)|((?:http(s)?:\/\/))/gm;
-export const EMAIL_REGEXP =
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-export const ABS_URL =
-  /(\/)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/gm;
 export const URL_START_WITH_HTTP_REGEXP =
   /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
 export const EXCLUDE_FIRST_SLASH_URL_REGEXP = /(^[a-z0-9]+([a-z0-9-//])*[a-z0-9]$)|(^$)/gm;
@@ -67,7 +63,6 @@ export const VALIDATION_PHONE = Yup.string().matches(
   validationTexts.ONLY_NUMBER
 );
 
-// Forms
 export const NEW_CONFIGURATION_FORM = Yup.object().shape({
   name: VALIDATION_STRING,
   code: VALIDATION_CODE,
@@ -133,43 +128,6 @@ export const REVIEW_FORM = Yup.object().shape({
   }),
 });
 
-export const EMAIL_FORM = Yup.object().shape({
-  sender: Yup.string()
-    .trim()
-    .matches(EMAIL_REGEXP, validationTexts.EMAIL_ERROR)
-    .required(validationTexts.REQUIRED),
-  recipients: Yup.string()
-    .trim()
-    .required(validationTexts.REQUIRED)
-    .test('email', (value, ctx) => {
-      const firstInvalidEmail = value
-        .split(',')
-        .map((email) => email.trim())
-        .find((v) => !Yup.string().matches(EMAIL_REGEXP).isValidSync(v));
-
-      return !firstInvalidEmail
-        ? true
-        : ctx.createError({
-            message: `"${firstInvalidEmail}" - некорректный email.`,
-          });
-    }),
-  subject: Yup.string().trim().required(validationTexts.REQUIRED),
-  template: Yup.string()
-    .trim()
-    .required(validationTexts.REQUIRED)
-    .test('html', (value, ctx) => {
-      const cutTags = (str: string) => {
-        const regex = /( |<([^>]+)>)/gi;
-
-        return str.replace(regex, '');
-      };
-
-      return cutTags(value).length > 0
-        ? true
-        : ctx.createError({ message: validationTexts.REQUIRED });
-    }),
-});
-
-export const ADD_DOMAIN_FORM = Yup.object().shape({
+export const ADD_DOMAIN = Yup.object().shape({
   domain: VALIDATION_URL_WITH_HTTP,
 });

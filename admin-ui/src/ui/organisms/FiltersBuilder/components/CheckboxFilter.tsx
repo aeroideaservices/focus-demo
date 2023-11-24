@@ -24,7 +24,7 @@ export const CheckboxFilter: FC<TFilterProps<FilterTypes.IFilterCheckbox>> = ({
 }) => {
   const { onChange } = useActiveFilters(code, initialValue);
   const changeHandler = (v: 'true' | 'false' | null) => {
-    onChange(v ? valuesMap[v] : undefined);
+    onChange(v ? valuesMap[v] : initialValue);
   };
 
   return (

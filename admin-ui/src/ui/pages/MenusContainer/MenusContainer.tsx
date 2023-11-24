@@ -77,7 +77,9 @@ const MenusContainer: FC = () => {
                 config={TABLE_MENUS}
                 rows={menus}
                 buttons={MenusTableButtons}
-                sortableKeys={getSortableKeys([{ code: 'name', name: 'Название' }])}
+                sortableKeys={getSortableKeys([
+                  { code: 'name', name: 'Название', sortable: false, isTime: false },
+                ])}
               />
             </Box>
           )}

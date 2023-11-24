@@ -64,8 +64,6 @@ export const serviceSlice = createSlice({
   },
 });
 
-// Selectors
-
 type TSelectorState = { service: IServiceState };
 
 export const selectCurrentService = (state: TSelectorState) =>
@@ -79,7 +77,6 @@ export const selectServices = createSelector([selectServicesMap], (services) =>
 );
 export const selectServiceChanged = (state: TSelectorState) => state.service.hasServiceChanged;
 
-// Reducers and actions
 export const { setCurrentPlugin, setCurrentService, setServiceChanged } = serviceSlice.actions;
 
 export default serviceSlice.reducer;

@@ -90,15 +90,12 @@ export const menuSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { menu: IMenuState };
 
-// Modals
 export const selectEditMenuModal = (state: TSelectorState) => state.menu.modals.editMenuModal;
 export const selectDelMenuModal = (state: TSelectorState) => state.menu.modals.delMenuModal;
 export const selectMenu = (state: TSelectorState) => state.menu.menu;
 
-// Reducers and actions
 export const { setDelMenuModalOpen, setEditMenuModalOpen } = menuSlice.actions;
 
 export default menuSlice.reducer;

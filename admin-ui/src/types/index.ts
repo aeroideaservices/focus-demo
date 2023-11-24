@@ -8,7 +8,6 @@ export * from './common/common';
 export * from './configurations/configurations';
 export * from './enum/enum';
 export * from './formBuilder/formBuilder';
-export * from './mailsTemplates/mailsTemplates';
 export * from './media/media';
 export * from './menu/menu';
 export * from './models/models';

@@ -127,16 +127,13 @@ export const menusSlice = createSlice({
   },
 });
 
-// Selectors
 type TSelectorState = { menus: IMenuState };
 
-// Statuses
 export const selectFetchingGetMenus = (state: TSelectorState) =>
   state.menus.status.fetchingGetMenus;
 export const selectFetchingAddDomain = (state: TSelectorState) =>
   state.menus.status.fetchingAddDomain;
 
-// Modals
 export const selectModalNewMenus = (state: TSelectorState) => state.menus.modals.newMenusOpened;
 export const selectAddDomainModal = (state: TSelectorState) => state.menus.modals.addDomainModal;
 
@@ -147,7 +144,6 @@ export const selectMenusLimit = (state: TSelectorState) => state.menus.limit;
 export const selectMenusOffset = (state: TSelectorState) => state.menus.offset;
 export const selectDomains = (state: TSelectorState) => state.menus.domains;
 
-// Reducers and actions
 export const {
   setCurrentMenu,
   setMenusLimit,

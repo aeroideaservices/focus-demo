@@ -1,9 +1,9 @@
-import { TModel } from '@/types';
+import { TModelTableElement } from '@/types/models_v2/models_v2';
 
-export const getSortableKeys = (models: TModel[] | null) => {
+export const getSortableKeys = (modelViews: TModelTableElement[]) => {
   const keys: string[] = [];
 
-  if (models) models.map((model) => keys.push(model.code));
+  modelViews.map((model) => model.sortable && keys.push(model.code));
 
   return keys;
 };

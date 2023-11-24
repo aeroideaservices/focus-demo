@@ -9,7 +9,6 @@ import { OFFSET, SEARCH_LIMIT } from '@/constants/common';
 
 const urlIsAbsolute = (uri: string): boolean => uri.toLowerCase().includes('http');
 
-// TODO эту утилиту нужно перенести в общие
 export const fetching = async (
   request: TRequest,
   value?: string | string[],

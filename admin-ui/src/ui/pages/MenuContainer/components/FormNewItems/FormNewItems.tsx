@@ -69,7 +69,6 @@ const FormNewItems: FC<IFormNewOption> = ({ type, element }) => {
   useEffect(() => {
     dispatch(fetchGetDomainsAction({ offset: 0, limit: 100 }));
 
-    // TODO Это просто адский костыль, по хорошему нужно переписывать всю логику меню
     if (type === 'edit') {
       const menuItemId = element?.id as string;
 

@@ -92,15 +92,11 @@ export const configurationsSlice = createSlice({
   },
 });
 
-// Selectors
-
 type TSelectorState = { configurations: IConfigurationsState };
 
-// Statuses
 export const selectFetchingConfigurationsStatus = (state: TSelectorState) =>
   state.configurations.status.fetchingConfigurations;
 
-// Modals
 export const selectModalNewConfiguration = (state: TSelectorState) =>
   state.configurations.modals.newConfigurationsOpened;
 
@@ -110,8 +106,6 @@ export const selectConfigurationsLimit = (state: TSelectorState) => state.config
 export const selectConfigurationsOffset = (state: TSelectorState) => state.configurations.offset;
 export const selectCurrentConfiguration = (state: TSelectorState) =>
   state.configurations.currentConfiguration;
-
-// Reducers and actions
 
 export const {
   setConfigurationsLimit,
