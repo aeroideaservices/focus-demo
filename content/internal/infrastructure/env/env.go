@@ -11,10 +11,10 @@ var (
 	GinMode  = Getter("GIN_MODE", "debug")
 
 	// ------------------------ HTTP ----------------------- //
-	HTTPPort           = fmt.Sprintf(":%s", Getter("HTTP_PORT", "8187"))
+	HTTPPort           = fmt.Sprintf(":%s", Getter("HTTP_PORT", "8188"))
 	HTTPApiRoot        = Getter("HTTP_API_ROOT", "api")
 	HTTPApiVersion     = Getter("HTTP_API_VERSION", "v1")
-	HTTPApiServiceName = Getter("HTTP_API_SERVICE_NAME", "delivery")
+	HTTPApiServiceName = Getter("HTTP_API_SERVICE_NAME", "content")
 	HTTPApiFocusPath   = Getter("HTTP_API_VERSION", "admin")
 
 	// ------------------------ DB ------------------------- //
@@ -31,7 +31,7 @@ var (
 	AwsEndpoint        = Getter("AWS_ENDPOINT", "")
 	AwsAccessKeyID     = Getter("AWS_ACCESS_KEY_ID", "")
 	AwsSecretAccessKey = Getter("AWS_SECRET_ACCESS_KEY", "")
-	AwsBucket          = Getter("AWS_BUCKET", "delivery")
+	AwsBucket          = Getter("AWS_BUCKET", "content")
 	AwsRegion          = Getter("AWS_REGION", "")
 )
 

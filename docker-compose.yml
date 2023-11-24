@@ -137,3 +137,30 @@ services:
       - env/docker/.env.delivery
     depends_on:
       - postgres_delivery
+
+  postgres_content:
+    container_name: postgres_content
+    ports:
+      - "5403:5432"
+    image: postgres
+    volumes:
+      - ./.docker/postgres/content/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: content
+      POSTGRES_USER: content
+      POSTGRES_PASSWORD: content
+
+  content:
+    container_name: content
+    volumes:
+      - ./app/:/app
+    build:
+      context: ./delivery
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - "8188:8080"
+    env_file:
+      - env/common/.env.content
+      - env/docker/.env.content
+    depends_on:
+      - postgres_content

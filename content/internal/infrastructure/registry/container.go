@@ -9,15 +9,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/credentials"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"go.uber.org/zap"
-	"gorm.io/gorm"
-
-	confRest "github.com/aeroideaservices/focus/configurations/rest"
-	middleware "github.com/aeroideaservices/focus/services/gin-middleware"
-
 	cliHandlers "content/internal/adapters/cli"
 	"content/internal/adapters/postgres"
 	"content/internal/adapters/rest"
@@ -25,6 +16,12 @@ import (
 	"content/internal/infrastructure/env"
 	"content/internal/infrastructure/registry/services_definitions"
 	"content/internal/service/fixtures"
+	middleware "github.com/aeroideaservices/focus/services/gin-middleware"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Container struct {
@@ -42,10 +39,6 @@ func NewContainer() (*Container, error) {
 	}
 
 	if err = builder.Add(services_definitions.FocusDefinitions...); err != nil {
-		return nil, err
-	}
-
-	if err = builder.Add(services_definitions.ConfigurationsDefinitions...); err != nil {
 		return nil, err
 	}
 
@@ -137,8 +130,6 @@ var definitions = []di.Def{
 			logger := ctn.Get("logger").(*zap.SugaredLogger)
 			logger.Info("building router")
 			fixturesHandler := ctn.Get("fixturesHandler").(*handlers.FixturesHandler)
-			optionsHandler := ctn.Get("optionsHandler").(*handlers.OptionsHandler)
-			focusConfigurationsRouter := ctn.Get("focus.configurations.router").(*confRest.Router)
 			errorHandler := ctn.Get("focus.errorHandler").(*middleware.ErrorHandler)
 			router := rest.NewRouter(
 				env.GinMode,
@@ -149,8 +140,6 @@ var definitions = []di.Def{
 					FocusPath:   env.HTTPApiFocusPath,
 				},
 				fixturesHandler,
-				optionsHandler,
-				focusConfigurationsRouter,
 				errorHandler,
 			)
 			logger.Info("router has built")
@@ -214,10 +203,7 @@ var definitions = []di.Def{
 	{
 		Name: "fixtures",
 		Build: func(ctn di.Container) (interface{}, error) {
-			return []fixtures.Fixture{
-				fixtures.ConfigurationFixture{},
-				fixtures.OptionFixture{},
-			}, nil
+			return []fixtures.Fixture{}, nil
 		},
 	},
 	{
