@@ -1,17 +1,14 @@
+import { IService } from '@/types/services/services';
+
 import { FC, useState } from 'react';
 import { Box, CloseButton, createStyles, Flex, Menu, Text } from '@mantine/core';
 import { IconSettings } from '@tabler/icons-react';
 
-import { SERVICE_ICONS } from '@/constants/serviceIcons';
-import { ServiceCode } from '@/constants/services';
 import { useServices } from '@/hooks/useServices';
 
-import LayoutNavbarButton from '../LayoutNavbarButton/LayoutNavbarButton';
+import DynamicIcon from '@/ui/organisms/DynamicIcon/DynamicIcon';
 
-interface IService {
-  code: ServiceCode;
-  name: string;
-}
+import LayoutNavbarButton from '../LayoutNavbarButton/LayoutNavbarButton';
 
 const useStyles = createStyles((theme) => ({
   item: {
@@ -58,7 +55,7 @@ const LayoutNavbarSelect: FC = () => {
             disabled={isCurrentItem(item)}
             onClick={() => setCurrentService(item.code)}
             className={classes.item}
-            icon={SERVICE_ICONS[item.code] || SERVICE_ICONS.default}
+            icon={<DynamicIcon name={item.icon} />}
           >
             <Text>{item.name}</Text>
           </Menu.Item>
