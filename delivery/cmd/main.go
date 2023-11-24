@@ -2,14 +2,14 @@ package main
 
 import (
 	"database/sql"
-	"delivery/internal/adapters/rest"
 	"delivery/internal/infrastructure/env"
 	"delivery/internal/infrastructure/registry"
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
+	"github.com/urfave/cli/v2"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
+	"os"
 )
 
 func main() {
@@ -22,15 +22,16 @@ func main() {
 		logger.Errorf("migration error: %s", err)
 		return
 	}
-
-	server := ctn.Resolve("router").(*rest.Router)
-	_ = ctn.Resolve("db").(*gorm.DB)
-	router := server.Router()
-	err := router.Run(env.HTTPPort)
+	// Запуск приложения
+	app := ctn.Resolve("cli").(*cli.App)
+	err := app.Run(os.Args)
 	if err != nil {
-		logger.Fatal(err)
+		panic(err)
 	}
-	_ = ctn.Clean()
+	err = ctn.Clean()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func migration() error {

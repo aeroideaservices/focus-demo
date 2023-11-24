@@ -1,4 +1,4 @@
-package cli_handlers
+package cli
 
 import (
 	"delivery/internal/service/fixtures"

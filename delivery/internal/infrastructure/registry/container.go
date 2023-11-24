@@ -96,20 +96,16 @@ var definitions = []di.Def{
 		Name: "db", // Database
 		Build: func(ctn di.Container) (interface{}, error) {
 			logger := ctn.Get("logger").(*zap.SugaredLogger)
-
 			conn := fmt.Sprintf("host=%s port=%s dbname=%s user=%s sslmode=%s",
 				env.DbHost, env.DbPort, env.DbName, env.DbUser, env.DbSslMode)
-
 			c1 := make(chan *gorm.DB, 1)
 			go func() {
 				// Получение лог-сервиса из контейнера
 				logger.Info("Try to connect to database")
-
 				_, err := os.ReadFile(env.DbSslCertPath)
 				if env.DbSslMode != "disable" && env.DbSslCertPath != "" && err != nil {
 					logger.Fatal("cannot open cert file")
 				}
-
 				// dsn
 				dsn := conn + " sslrootcert=" + env.DbSslCertPath + " password=" + env.DbPassword
 				dbConn, err := postgres.NewDatabase(dsn)
@@ -123,13 +119,9 @@ var definitions = []di.Def{
 				}
 				c1 <- dbConn
 			}()
-
 			// Listen on our channel AND a timeout channel - which ever happens first.
 			select {
 			case db := <-c1:
-				_ = db.AutoMigrate(
-				// todo
-				)
 				return db, nil
 			case <-time.After(30 * time.Second):
 				err := errors.New("5 seconds timeout error")
@@ -200,8 +192,16 @@ var definitions = []di.Def{
 			fixturesService := ctn.Get("fixturesService").(*fixtures.FixtureService)
 			fixtureHandler := cliHandlers.NewFixtureHandler(fixturesService)
 
+			router := ctn.Get("router").(*rest.Router)
+			restHandler := cliHandlers.NewServerHandler(router.Router())
+
 			app.Usage = "collection of workers"
 			app.Commands = []*cli.Command{
+				{
+					Name:   "start",
+					Usage:  "Start rest server",
+					Action: restHandler.Start,
+				},
 				{
 					Name:   "run_fixtures",
 					Usage:  "This command runs fixtures",

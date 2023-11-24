@@ -131,7 +131,7 @@ services:
       context: ./delivery
       dockerfile: ./.docker/Dockerfile
     ports:
-      - "8187:8187"
+      - "8187:8080"
     env_file:
       - env/common/.env.delivery
       - env/docker/.env.delivery

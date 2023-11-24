@@ -3,6 +3,7 @@ package env
 import (
 	"fmt"
 	"os"
+	"strconv"
 )
 
 var (
@@ -26,9 +27,6 @@ var (
 	DbSslMode     = Getter("DB_SSL_MODE", "disable")
 	DbSslCertPath = Getter("DB_SSL_CERT_PATH", "")
 
-	// ------------------------ JAEGER ----------------------- //
-	TraceHeader = Getter("TRACE_HEADER", "x-b3-traceid")
-
 	// ----------------------- AWS S3 ---------------------- //
 	AwsEndpoint        = Getter("AWS_ENDPOINT", "")
 	AwsAccessKeyID     = Getter("AWS_ACCESS_KEY_ID", "")
@@ -42,6 +40,32 @@ func Getter(key, defaultValue string) string {
 	env, ok := os.LookupEnv(key)
 	if ok {
 		return env
+	}
+	return defaultValue
+}
+
+// GetterInt -
+func GetterInt(key string, defaultValue int) int {
+	env, ok := os.LookupEnv(key)
+	if !ok {
+		return defaultValue
+	}
+	intEnv, err := strconv.Atoi(env)
+	if err != nil {
+		return defaultValue
+	}
+
+	return intEnv
+}
+
+// GetterBool -
+func GetterBool(key string, defaultValue bool) bool {
+	env, ok := os.LookupEnv(key)
+	if ok {
+		res, err := strconv.ParseBool(env)
+		if err == nil {
+			return res
+		}
 	}
 	return defaultValue
 }
