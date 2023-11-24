@@ -5,6 +5,7 @@ export interface IService {
   code: ServiceCode;
   name: string;
   plugins: PluginCode[];
+  icon: string;
 }
 
 export type TServicesMap = { [key in ServiceCode]?: IService };
