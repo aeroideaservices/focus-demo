@@ -4,12 +4,13 @@ go 1.21
 
 require (
 	github.com/WinterYukky/gorm-extra-clause-plugin v0.1.6
-	github.com/aeroideaservices/focus/configurations/plugin v1.0.0
-	github.com/aeroideaservices/focus/configurations/postgres v1.0.0
 	github.com/aeroideaservices/focus/configurations/rest v1.0.0
 	github.com/aeroideaservices/focus/media/rest v1.0.0
+	github.com/aeroideaservices/focus/menu/plugin v1.0.0
+	github.com/aeroideaservices/focus/menu/postgres v1.0.0
 	github.com/aeroideaservices/focus/menu/rest v1.0.0
 	github.com/aeroideaservices/focus/models/rest v1.0.0
+	github.com/aeroideaservices/focus/services/callbacks v1.0.0
 	github.com/aeroideaservices/focus/services/error-translator v1.0.0
 	github.com/aeroideaservices/focus/services/gin-middleware v1.0.0
 	github.com/aeroideaservices/focus/services/validation v1.0.0
@@ -29,10 +30,10 @@ require (
 )
 
 require (
+	github.com/aeroideaservices/focus/configurations/plugin v1.0.0 // indirect
 	github.com/aeroideaservices/focus/media/plugin v1.0.0 // indirect
-	github.com/aeroideaservices/focus/menu/plugin v1.0.0 // indirect
 	github.com/aeroideaservices/focus/models/plugin v1.0.0 // indirect
-	github.com/aeroideaservices/focus/services/callbacks v1.0.0 // indirect
+	github.com/aeroideaservices/focus/services/db/clause v1.0.0 // indirect
 	github.com/aeroideaservices/focus/services/db/db_types v1.0.0 // indirect
 	github.com/aeroideaservices/focus/services/errors v1.0.0 // indirect
 	github.com/aeroideaservices/focus/services/formatting/strings v1.0.0 // indirect

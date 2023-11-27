@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	menuRest "github.com/aeroideaservices/focus/menu/rest"
 	"github.com/sarulabs/di/v2"
 	"github.com/urfave/cli/v2"
 	"os"
@@ -39,6 +40,10 @@ func NewContainer() (*Container, error) {
 	}
 
 	if err = builder.Add(services_definitions.FocusDefinitions...); err != nil {
+		return nil, err
+	}
+
+	if err = builder.Add(services_definitions.MenuDefinitions...); err != nil {
 		return nil, err
 	}
 
@@ -130,6 +135,7 @@ var definitions = []di.Def{
 			logger := ctn.Get("logger").(*zap.SugaredLogger)
 			logger.Info("building router")
 			fixturesHandler := ctn.Get("fixturesHandler").(*handlers.FixturesHandler)
+			focusMenuRouter := ctn.Get("focus.menu.router").(*menuRest.Router)
 			errorHandler := ctn.Get("focus.errorHandler").(*middleware.ErrorHandler)
 			router := rest.NewRouter(
 				env.GinMode,
@@ -140,6 +146,7 @@ var definitions = []di.Def{
 					FocusPath:   env.HTTPApiFocusPath,
 				},
 				fixturesHandler,
+				focusMenuRouter,
 				errorHandler,
 			)
 			logger.Info("router has built")

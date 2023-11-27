@@ -14,7 +14,7 @@ import (
 	"content/internal/infrastructure/registry/services_definitions/translations"
 )
 
-func appendDef[T any](defs ...[]T) []T {
+func appendArr[T any](defs ...[]T) []T {
 	var res []T
 	for _, def := range defs {
 		res = append(res, def...)
