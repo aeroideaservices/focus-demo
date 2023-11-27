@@ -36,14 +36,16 @@ func NewRouter(
 	apiSettings APISettings,
 	fixturesHandler *handlers.FixturesHandler,
 	focusMenuRouter *rest.Router,
+	focusMediaRouter *mediaRest.Router,
 	errorHandler *middleware.ErrorHandler,
 ) *Router {
 	return &Router{
-		ginMode:         ginMode,
-		apiSettings:     apiSettings,
-		fixturesHandler: fixturesHandler,
-		focusMenuRouter: focusMenuRouter,
-		errorHandler:    errorHandler,
+		ginMode:          ginMode,
+		apiSettings:      apiSettings,
+		fixturesHandler:  fixturesHandler,
+		focusMenuRouter:  focusMenuRouter,
+		focusMediaRouter: focusMediaRouter,
+		errorHandler:     errorHandler,
 	}
 }
 
@@ -75,5 +77,6 @@ func (r Router) Router() *gin.Engine {
 	focus := v1.Group(r.apiSettings.FocusPath)
 	focus.Group("health").Group("check").GET("", healthCheck)
 	r.focusMenuRouter.SetRoutes(focus)
+	r.focusMediaRouter.SetRoutes(focus)
 	return router
 }

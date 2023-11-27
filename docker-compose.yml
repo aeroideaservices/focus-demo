@@ -77,8 +77,11 @@ services:
       /bin/sh -c "
       /usr/bin/mc config host add local_minio http://minio:9000 minio1234567890 minio1234567890;
       /usr/bin/mc rm -r --force local_minio/demo;
+      /usr/bin/mc rm -r --force local_minio/content;
       /usr/bin/mc mb local_minio/demo;
+      /usr/bin/mc mb local_minio/content;
       /usr/bin/mc policy download local_minio/demo;
+      /usr/bin/mc policy download local_minio/content;
       exit 0;
       "
 

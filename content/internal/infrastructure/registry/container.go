@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	mediaRest "github.com/aeroideaservices/focus/media/rest"
 	menuRest "github.com/aeroideaservices/focus/menu/rest"
 	"github.com/sarulabs/di/v2"
 	"github.com/urfave/cli/v2"
@@ -44,6 +45,10 @@ func NewContainer() (*Container, error) {
 	}
 
 	if err = builder.Add(services_definitions.MenuDefinitions...); err != nil {
+		return nil, err
+	}
+
+	if err = builder.Add(services_definitions.MediaDefinitions...); err != nil {
 		return nil, err
 	}
 
@@ -136,6 +141,7 @@ var definitions = []di.Def{
 			logger.Info("building router")
 			fixturesHandler := ctn.Get("fixturesHandler").(*handlers.FixturesHandler)
 			focusMenuRouter := ctn.Get("focus.menu.router").(*menuRest.Router)
+			focusMediaRouter := ctn.Get("focus.media.router").(*mediaRest.Router)
 			errorHandler := ctn.Get("focus.errorHandler").(*middleware.ErrorHandler)
 			router := rest.NewRouter(
 				env.GinMode,
@@ -147,6 +153,7 @@ var definitions = []di.Def{
 				},
 				fixturesHandler,
 				focusMenuRouter,
+				focusMediaRouter,
 				errorHandler,
 			)
 			logger.Info("router has built")

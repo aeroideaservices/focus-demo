@@ -6,8 +6,12 @@ github.com/aeroideaservices/focus/configurations/plugin v1.0.0 h1:q+S8O6lLyoDAZx
 github.com/aeroideaservices/focus/configurations/plugin v1.0.0/go.mod h1:rflOUKyBHU+zWPD5SuDb4YQ5MI+V3UbUTmXeNexPJ0I=
 github.com/aeroideaservices/focus/configurations/rest v1.0.0 h1:2dy4f+eJT/xLzGva6JhDU5IKg0e3pVFJScXbWnepNCU=
 github.com/aeroideaservices/focus/configurations/rest v1.0.0/go.mod h1:fZPE/JmCYoxj4QQvnYGC5kIb9zHuBHw7NZ8hm5PMXAg=
+github.com/aeroideaservices/focus/media/aws-s3 v1.0.0 h1:FJMGOZKpAZvlHRP6PcFGNO5hQrgCV4u7nyp1VJgVO/k=
+github.com/aeroideaservices/focus/media/aws-s3 v1.0.0/go.mod h1:8jDUkKTlxSjZvgFpEF3qBTEwsZfFJZOIQoSr7jRkoTo=
 github.com/aeroideaservices/focus/media/plugin v1.0.0 h1:k4if5OIqFvG8dEr3PwLfgiRFz5VwfBXBOPXqAjgqdx8=
 github.com/aeroideaservices/focus/media/plugin v1.0.0/go.mod h1:o6AsBK0RTK4YwelxpExVUSCoCnz/5TxcJ7a0Rd+W0Sc=
+github.com/aeroideaservices/focus/media/postgres v1.0.0 h1:TNOC1Szox91KZ9i3dpM9mUqCO/d4LzkQ9NRiTZDILHs=
+github.com/aeroideaservices/focus/media/postgres v1.0.0/go.mod h1:oyh8VS9UlC3uZ0jeANrrBrLemcpUuVTtRo/8M4fNo2M=
 github.com/aeroideaservices/focus/media/rest v1.0.0 h1:o/O1u4yC3l6HrHkOHPAvkFCTZFI0aPGx6Nbwc6w33xU=
 github.com/aeroideaservices/focus/media/rest v1.0.0/go.mod h1:oM3nRKvxHc8sTDdNQYH2+7TQhyv1G8LRnAJvlua5AEw=
 github.com/aeroideaservices/focus/menu/plugin v1.0.0 h1:w23GDXF46oyoYA92+sEgbTtFbtWpDFHYXs4QNALuv8c=
