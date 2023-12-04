@@ -12,6 +12,10 @@ docker-compose exec -t postgres_keycloak pg_dumpall -c -U keycloak > keycloak/du
 
 ```
 
+## Для фронта
+
+1. Поднять контейнеры: ```bash docker-compose up -d postgres_keycloak keycloak minio postgres_dms1 dms1 admin-connector```
+
 ## Установка
 
 1. Поднять контейнеры: ```bash docker-compose up -d```
