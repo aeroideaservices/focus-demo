@@ -224,11 +224,10 @@ const MenuContainer: FC = () => {
           acc = newTreeData.find((el: any) => el.id === innerItem);
           changedBranchTraiceAdd.push(acc);
         } else if (innerIndex === splittedFromWhere.length - 1) {
-          const items = [...acc[acc.id]];
+          const items = acc[acc.id] ? [...acc[acc.id]] : [];
           items.splice(prevIndex, 0, addedElem);
           acc = { ...acc, [acc.id]: items };
           parentIdToSend = acc.id;
-
           const newDropAccept = changedBranchTraiceAdd.reduce(
             (dropAcc: any, dropItem: any, dropIndex: any) => {
               if (!dropIndex) dropAcc = dropItem.id;
