@@ -52,18 +52,22 @@ const ellipsisBreadcrumbsItem = {
  * @returns {Array<IFolderType | IFileType>}
  */
 const getMappedMedia = (items: Array<IFolderType | IFileType>) => {
+  const result: Array<IFolderType | IFileType> = [];
+
   if (items) {
     items.map((item) => {
-      if (item.resourceType === ResourceType.FILE && item.fileFields.url)
-        return {
+      if (item.resourceType === ResourceType.FILE && item.fileFields.url) {
+        result.push({
           ...item,
           fileFields: { ...item.fileFields, url: `${item.fileFields.url}?${item.fileFields.id}` },
-        };
-      return item;
+        });
+      } else {
+        result.push(item);
+      }
     });
   }
 
-  return [];
+  return result;
 };
 
 export const fetchGetMedia = createAxiosThunk('getMedia', apiGetMedia);
