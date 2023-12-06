@@ -11,7 +11,9 @@ SET standard_conforming_strings = on;
 -- Drop databases (except postgres and template1)
 --
 
-DROP DATABASE keycloak;
+
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
 
 
 
