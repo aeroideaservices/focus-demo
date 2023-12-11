@@ -29,7 +29,9 @@ export const getTableHeaders = (
 
         return (
           <th key={`${el.name}${index}`}>
-            <Text sx={{ whiteSpace: 'nowrap' }}>{el.name}</Text>
+            <Text sx={{ whiteSpace: 'nowrap' }} color={'gray.5'}>
+              {el.name}
+            </Text>
           </th>
         );
       })}

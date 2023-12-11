@@ -50,7 +50,7 @@ const FileInputLibraryExplorer: FC<FileInputLibraryExplorerProps> = ({
   const [loading, setLoading] = useState(false);
   const [preselect, setPreselect] = useState<string[]>([]);
   const [atBottom, setAtBottom] = useState(false);
-  const { colors } = useMantineTheme();
+  const theme = useMantineTheme();
   const listRef = useRef<HTMLDivElement>(null);
 
   const fetchContents = async (offset = 0) => {
@@ -149,7 +149,13 @@ const FileInputLibraryExplorer: FC<FileInputLibraryExplorerProps> = ({
       <Flex align="flex-end" gap="sm" mb="sm">
         {breadcrumbs.length > 0 && (
           <UnstyledButton onClick={handleBack}>
-            <IconChevronLeft color={colors['science-blue'][9]} />
+            <IconChevronLeft
+              color={
+                theme.colorScheme === 'dark'
+                  ? theme.colors['jungle-mist'][7]
+                  : theme.colors['science-blue'][9]
+              }
+            />
           </UnstyledButton>
         )}
         <Title size="1.5rem" mb="sm" my={0}>
@@ -180,7 +186,7 @@ const FileInputLibraryExplorer: FC<FileInputLibraryExplorerProps> = ({
                   onSelect={handleSelect}
                   onPreselect={handlePreselect}
                   selected={preselect.includes(item.fileFields.id)}
-                  bg={colors.gray[1]}
+                  bg={theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]}
                   selectable
                 />
               ) : (
@@ -190,7 +196,7 @@ const FileInputLibraryExplorer: FC<FileInputLibraryExplorerProps> = ({
                   name={item.folderFields.name}
                   service={serviceCode}
                   onSelect={handleSelect}
-                  bg={colors.gray[1]}
+                  bg={theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]}
                   selectable
                 />
               )}
@@ -207,14 +213,16 @@ const FileInputLibraryExplorer: FC<FileInputLibraryExplorerProps> = ({
         pt="xl"
         gap="sm"
         sx={{
-          borderTop: `1px solid ${colors.gray[2]}`,
+          borderTop: `1px solid ${
+            theme.colorScheme === 'dark' ? theme.colors.gray[8] : theme.colors.gray[2]
+          }`,
         }}
         align="center"
       >
         {preselect.length > 0 && (
           <>
             <Box>
-              <Text display="inline" color={colors.gray[5]}>
+              <Text display="inline" color={theme.colors.gray[5]}>
                 Выбрано:{' '}
               </Text>
               <Text display="inline">{preselect.length}</Text>

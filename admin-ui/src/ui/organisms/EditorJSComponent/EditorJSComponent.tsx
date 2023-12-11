@@ -27,7 +27,10 @@ const useStyles = createStyles((theme) => ({
     width: '100%',
     minHeight: 320,
     padding: '16px 0 1px 50px',
-    border: `1px solid ${theme.colors.gray[4]}`,
+    border:
+      theme.colorScheme === 'dark'
+        ? `1px solid ${theme.colors.gray[8]}`
+        : `1px solid ${theme.colors.gray[4]}`,
     borderRadius: 4,
     marginBottom: 5,
     zIndex: 'auto',

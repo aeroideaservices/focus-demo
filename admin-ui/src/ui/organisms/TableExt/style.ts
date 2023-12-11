@@ -8,6 +8,7 @@ export const useStyles = createStyles((theme) => ({
   header: {
     position: 'sticky',
     top: 0,
+    color: theme.colorScheme === 'dark' ? theme.colors.gray[1] : theme.colors.gray[2],
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[2],
     transition: 'box-shadow 150ms ease',
     zIndex: 1,

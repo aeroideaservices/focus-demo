@@ -98,7 +98,7 @@ const MediaButtons: FC = () => {
   return (
     <Box
       sx={(theme) => ({
-        background: theme.colors.gray[2],
+        background: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2],
         borderRadius: 6,
         padding: 16,
       })}

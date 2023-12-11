@@ -12,8 +12,11 @@ import DraggableItem from './components/DraggableItem/DraggableItem';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
-    border: `1px solid ${theme.colors.gray[4]}`,
-    borderRadius: 4,
+    border:
+      theme.colorScheme === 'dark'
+        ? `1px solid ${theme.colors.gray[8]}`
+        : `1px solid ${theme.colors.gray[4]}`,
+    borderRadius: 2,
     width: '100%',
     marginBottom: 12,
   },
@@ -21,7 +24,10 @@ const useStyles = createStyles((theme) => ({
     padding: 12,
     width: '100%',
     display: 'flex',
-    borderBottom: `1px solid ${theme.colors.gray[4]}`,
+    borderBottom:
+      theme.colorScheme === 'dark'
+        ? `1px solid ${theme.colors.gray[8]}`
+        : `1px solid ${theme.colors.gray[4]}`,
   },
   headerText: {
     fontWeight: 700,

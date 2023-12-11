@@ -58,7 +58,7 @@ const FileInputMediaElement: FC<FileInputMediaElementProps> = ({
   const [size, setSize] = useState<string | null>(null);
   const [fileType, setFileType] = useState('');
   const [ext, setExt] = useState('');
-  const { colors } = useMantineTheme();
+  const theme = useMantineTheme();
 
   const fetchFileInfo = async () => {
     setLoading(true);
@@ -102,7 +102,11 @@ const FileInputMediaElement: FC<FileInputMediaElementProps> = ({
   const wrapperStyles = useMemo(() => {
     if (!selectable) return { overflow: 'hidden' };
     return {
-      border: selected ? `2px solid ${colors['science-blue'][9]}` : '2px solid transparent',
+      border: selected
+        ? theme.colorScheme === 'dark'
+          ? `2px solid ${theme.colors['jungle-mist'][7]}`
+          : `2px solid ${theme.colors['science-blue'][9]}`
+        : '2px solid transparent',
       borderRadius: 4,
       overflow: 'hidden',
     };
@@ -116,7 +120,7 @@ const FileInputMediaElement: FC<FileInputMediaElementProps> = ({
       <UnstyledButton
         display="block"
         w="100%"
-        bg={colors.red[1]}
+        bg={theme.colors.red[1]}
         sx={wrapperStyles}
         style={{
           background: 'transparent',
@@ -137,7 +141,7 @@ const FileInputMediaElement: FC<FileInputMediaElementProps> = ({
             </Flex>
             <LoadingOverlay
               overlayBlur={2}
-              overlayColor={colors.gray[0]}
+              overlayColor={theme.colors.gray[0]}
               overlayOpacity={0.4}
               visible={loading}
             />

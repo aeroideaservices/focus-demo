@@ -33,9 +33,12 @@ const useStyles = createStyles((theme) => ({
     flexDirection: 'column',
     width: '100%',
     maxHeight: '100%',
-    border: `1px solid ${theme.colors.gray[3]}`,
+    border:
+      theme.colorScheme === 'dark'
+        ? `1px solid ${theme.colors.gray[8]}`
+        : `1px solid ${theme.colors.gray[3]}`,
     borderRadius: theme.radius.md,
-    background: theme.colors.gray[1],
+    background: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
     boxSizing: 'border-box',
     overflow: 'hidden',
   },
@@ -45,17 +48,17 @@ const useStyles = createStyles((theme) => ({
     flexShrink: 0,
     justifyContent: 'center',
     width: '100%',
-    color: theme.colors.gray[5],
+    color: theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.gray[5],
   },
   mediaBody: {
     padding: '28px 12px 28px 24px',
   },
   mediaLink: {
     textDecoration: 'none',
-    color: theme.colors.blue,
+    color: theme.colorScheme === 'dark' ? theme.colors['jungle-mist'][7] : theme.colors.blue,
     transition: 'color .25s ease-in-out',
     '&:hover': {
-      color: theme.colors.blue[7],
+      color: theme.colorScheme === 'dark' ? theme.colors['jungle-mist'][5] : theme.colors.blue[7],
     },
   },
 }));
@@ -97,7 +100,12 @@ const MediaSummary: FC = () => {
                 alt={currentFile.alt || currentFile.name}
                 withPlaceholder
                 placeholder={<IconPhoto size={100} color={theme.colors.gray[5]} />}
-                styles={{ placeholder: { backgroundColor: theme.colors.gray[1] } }}
+                styles={{
+                  placeholder: {
+                    backgroundColor:
+                      theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[5],
+                  },
+                }}
               />
             )}
         </Box>

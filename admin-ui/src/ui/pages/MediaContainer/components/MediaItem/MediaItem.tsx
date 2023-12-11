@@ -11,7 +11,13 @@ import { isImage } from '../../utils/isImage';
 const useStyles = createStyles((theme, { selected = false }: { selected?: boolean }) => ({
   mediaItemWrapper: {
     background: 'transparent',
-    border: `4px solid ${selected ? theme.colors.blue[5] : 'transparent'}`,
+    border: `4px solid ${
+      selected
+        ? theme.colorScheme === 'dark'
+          ? theme.colors['jungle-mist'][7]
+          : theme.colors.blue[5]
+        : 'transparent'
+    }`,
     margin: '-4px',
     borderRadius: theme.radius.md,
   },
@@ -19,10 +25,13 @@ const useStyles = createStyles((theme, { selected = false }: { selected?: boolea
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    border: `1px solid ${theme.colors.gray[2]}`,
+    border:
+      theme.colorScheme === 'dark'
+        ? `1px solid ${theme.colors.gray[8]}`
+        : `1px solid ${theme.colors.gray[2]}`,
     borderRadius: theme.radius.sm,
     padding: theme.spacing.xs,
-    background: theme.colors.gray[1],
+    background: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
     boxSizing: 'border-box',
     overflow: 'hidden',
     [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
@@ -36,7 +45,7 @@ const useStyles = createStyles((theme, { selected = false }: { selected?: boolea
     flexShrink: 0,
     width: '96px',
     height: '64px',
-    color: theme.colors.gray[5],
+    color: theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.gray[5],
     overflow: 'hidden',
     borderRadius: 8,
   },
@@ -98,7 +107,12 @@ const MediaItem: FC<
               alt={item.alt || item.name}
               withPlaceholder
               placeholder={<IconPhoto size={64} color={theme.colors.gray[5]} />}
-              styles={{ placeholder: { backgroundColor: theme.colors.gray[1] } }}
+              styles={{
+                placeholder: {
+                  backgroundColor:
+                    theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
+                },
+              }}
             />
           )}
         </div>
@@ -106,7 +120,7 @@ const MediaItem: FC<
           <Text
             lineClamp={1}
             sx={{ wordBreak: 'break-all' }}
-            color={theme.colors.dark[8]}
+            color={theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.dark[8]}
             weight={400}
             className={classes.mediaInfo}
           >

@@ -158,7 +158,10 @@ const MediaContainer: FC = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   height: '100%',
-                  border: `1px solid ${theme.colors.gray[1]}`,
+                  border:
+                    theme.colorScheme === 'dark'
+                      ? `1px solid ${theme.colors.dark[5]}`
+                      : `1px solid ${theme.colors.gray[1]}`,
                   borderRadius: 6,
                 })}
               >

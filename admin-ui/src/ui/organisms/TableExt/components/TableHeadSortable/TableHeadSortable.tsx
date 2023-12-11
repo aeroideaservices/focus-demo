@@ -29,7 +29,7 @@ const TableHeadSortable: FC<ITableHeadSortable> = ({ name, reversed, sorted, onS
           <Center className={classes.icon}>
             <Icon size={14} />
           </Center>
-          <Text weight={700} size="sm" sx={{ whiteSpace: 'nowrap' }}>
+          <Text weight={700} size="sm" sx={{ whiteSpace: 'nowrap' }} color={'gray.5'}>
             {name}
           </Text>
         </Group>

@@ -35,14 +35,18 @@ interface IMonitor {
 const useStyles = createStyles((theme) => ({
   base: {
     width: '100%',
-    border: '1px solid #E8ECF0',
-    borderRadius: 4,
+    border:
+      theme.colorScheme === 'dark' ? `1px solid ${theme.colors.gray[6]}` : '1px solid #E8ECF0',
+    borderRadius: theme.colorScheme === 'dark' ? 2 : 4,
     padding: '10px 12px 12px 12px',
     cursor: 'pointer',
     display: 'flex',
   },
   dragged: {
-    border: `1px solid ${theme.colors.blue[5]}`,
+    border:
+      theme.colorScheme === 'dark'
+        ? `1px solid ${theme.colors['jungle-mist'][7]}`
+        : `1px solid ${theme.colors.blue[5]}`,
   },
   placeholderBase: {
     marginBottom: 4,
@@ -51,7 +55,10 @@ const useStyles = createStyles((theme) => ({
     border: '1px solid transparent',
   },
   placeholderDragged: {
-    border: `1px dashed ${theme.colors.blue[5]}`,
+    border:
+      theme.colorScheme === 'dark'
+        ? `1px dashed ${theme.colors['jungle-mist'][7]}`
+        : `1px dashed ${theme.colors.blue[5]}`,
   },
 }));
 
@@ -185,7 +192,7 @@ const DroppableDropDown: FC<IDroppableDropDown> = ({
               <ActionIcon
                 variant={'outline'}
                 size={'lg'}
-                color="gray"
+                color="gray.6"
                 onClick={() => {
                   dispatch(setAddMenuItemsModalOpened(true));
                   dispatch(setParentId(item?.data?.id));

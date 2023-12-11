@@ -51,12 +51,18 @@ type FileInputValue<M extends boolean> = (M extends true ? string[] : string) | 
 
 const useStyles = createStyles((theme) => ({
   bordersTop: {
-    border: `1px solid ${theme.colors.gray[3]}`,
+    border:
+      theme.colorScheme === 'dark'
+        ? `1px solid ${theme.colors.gray[8]}`
+        : `1px solid ${theme.colors.gray[4]}`,
     borderWidth: '1px 1px 0 1px',
     borderRadius: '4px 4px 0 0',
   },
   bordersBottom: {
-    border: `1px solid ${theme.colors.gray[3]}`,
+    border:
+      theme.colorScheme === 'dark'
+        ? `1px solid ${theme.colors.gray[8]}`
+        : `1px solid ${theme.colors.gray[4]}`,
     borderWidth: '0 1px 1px 1px',
     borderRadius: '0 0 4px 4px',
   },
@@ -91,7 +97,7 @@ export function FileInput<M extends boolean = false>({
   const [maxFilesError, setMaxFilesError] = useState<string | null>(null);
   const paperRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { colors } = useMantineTheme();
+  const theme = useMantineTheme();
   const { currentService } = useServices();
   const service = useMemo(
     () => serviceCode || currentService?.code || ServiceCode.CONTENT,
@@ -234,11 +240,21 @@ export function FileInput<M extends boolean = false>({
         mb={5}
         p="md"
         pos="relative"
-        c={colors.gray[7]}
+        c={theme.colors.gray[7]}
         sx={{
           width: '100%',
           border: `2px dashed ${
-            props.error ? colors.red[6] : showDropMessage ? colors.blue[5] : colors.gray[4]
+            theme.colorScheme === 'dark'
+              ? props.error
+                ? theme.colors.red[6]
+                : showDropMessage
+                ? theme.colors['jungle-mist'][7]
+                : theme.colors.gray[8]
+              : props.error
+              ? theme.colors.red[6]
+              : showDropMessage
+              ? theme.colors.blue[5]
+              : theme.colors.gray[4]
           }`,
           transition: '0.2s',
         }}
@@ -262,14 +278,14 @@ export function FileInput<M extends boolean = false>({
                     className={classes.bordersTop}
                     aspect={1.05}
                   />
-                  <Box py={4} px={12} className={classes.bordersBottom} bg={colors.gray[1]}>
+                  <Box py={4} px={12} className={classes.bordersBottom} bg={theme.colors.gray[1]}>
                     <ActionIcon
                       p={0}
                       ml="auto"
                       onClick={() => handleRemoveFile(file)}
                       title="Удалить файл"
                     >
-                      <IconTrash size="1rem" color={colors.gray[6]} />
+                      <IconTrash size="1rem" color={theme.colors.gray[6]} />
                     </ActionIcon>
                   </Box>
                 </Grid.Col>
@@ -277,7 +293,7 @@ export function FileInput<M extends boolean = false>({
               {loadingQueue.length > 0 &&
                 loadingQueue.map(({ id }) => (
                   <Grid.Col span={4} key={id}>
-                    <Paper bg={colors.gray[2]} withBorder pos="relative">
+                    <Paper bg={theme.colors.gray[2]} withBorder pos="relative">
                       <AspectRatio ratio={1.05}>
                         <LoadingOverlay visible />
                       </AspectRatio>
@@ -287,8 +303,8 @@ export function FileInput<M extends boolean = false>({
             </Grid>
           ) : (
             <Flex direction="column" gap="md" align="center">
-              <IconPhoto size="4rem" color={colors.gray[5]} />
-              <Text color={colors.gray[6]}>Перетащите файлы в эту область</Text>
+              <IconPhoto size="4rem" color={theme.colors.gray[5]} />
+              <Text color={theme.colors.gray[6]}>Перетащите файлы в эту область</Text>
             </Flex>
           )}
         </Flex>
