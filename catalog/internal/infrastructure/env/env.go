@@ -30,10 +30,7 @@ var (
 	TraceHeader = Getter("TRACE_HEADER", "x-b3-traceid")
 
 	// ------------------------ FOCUS ----------------------- //
-	EditorJSMediaFolderName = Getter("EDITOR_JS_MEDIA_FOLDER_NAME", "editor_js")
-	ProductMediaFolderName  = Getter("PRODUCT_MEDIA_FOLDER_NAME", "product_media")
-	StoreMediaFolderName    = Getter("STORE_MEDIA_FOLDER_NAME", "store_media")
-	PromoMediaFolderName    = Getter("PROMO_MEDIA_FOLDER_NAME", "promo_media")
+	PluginsMediaFolderName = Getter("PLUGINS_MEDIA_FOLDER_NAME", ".plugins_media")
 
 	// ----------------------- AWS S3 ---------------------- //
 	AwsEndpoint        = Getter("AWS_ENDPOINT", "")
