@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="go build admin-connector" type="GoApplicationRunConfiguration" factoryName="Go Application">
+  <configuration default="false" name="admin-connector" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="focus-demo" />
     <working_directory value="$PROJECT_DIR$/admin-connector" />
     <go_parameters value="-ldflags=&quot;-linkmode internal&quot;" />
