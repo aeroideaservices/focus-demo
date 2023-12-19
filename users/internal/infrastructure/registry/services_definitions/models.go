@@ -30,10 +30,7 @@ var ModelsDefinitions = appendArr([]di.Def{
 			}
 
 			return []any{
-				&demoEntity.Category{},
-				&demoEntity.Product{},
-				&demoEntity.Store{},
-				&demoEntity.Promo{},
+				&demoEntity.User{},
 			}, nil
 		},
 	},

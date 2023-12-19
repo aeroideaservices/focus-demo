@@ -8,6 +8,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"os"
 	"time"
+	entity "users/internal/domain/entitiy"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/credentials"
@@ -143,7 +144,7 @@ var definitions = []di.Def{
 			select {
 			case db := <-c1:
 				_ = db.AutoMigrate(
-				// todo
+					&entity.User{},
 				)
 				return db, nil
 			case <-time.After(30 * time.Second):

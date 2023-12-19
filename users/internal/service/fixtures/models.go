@@ -11,7 +11,7 @@ import (
 type CategoryFixture struct{}
 
 func (CategoryFixture) GetEntity() any {
-	return &entity.Category{}
+	return &entity.User{}
 }
 
 func (f CategoryFixture) FixturesData() (any, error) {
