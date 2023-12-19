@@ -30,10 +30,8 @@ var ModelsDefinitions = appendArr([]di.Def{
 			}
 
 			return []any{
-				&demoEntity.Category{},
-				&demoEntity.Product{},
-				&demoEntity.Store{},
 				&demoEntity.Promo{},
+				&demoEntity.News{},
 			}, nil
 		},
 	},
@@ -43,10 +41,7 @@ var ModelsDefinitions = appendArr([]di.Def{
 			callbacksTest := ctn.Get("focus.callbacks.test").(func(plugin, entity string) callbacks.Callbacks)
 
 			return map[string]callbacks.Callbacks{
-				"categories": callbacksTest("models", "categories"),
-				"products":   callbacksTest("models", "products"),
-				"stores":     callbacksTest("models", "stores"),
-				"promos":     callbacksTest("models", "promos"),
+				"promos": callbacksTest("models", "promos"),
 			}, nil
 		},
 	},

@@ -1,6 +1,7 @@
 package registry
 
 import (
+	entity "content/internal/domain/entitiy"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -143,7 +144,7 @@ var definitions = []di.Def{
 			select {
 			case db := <-c1:
 				_ = db.AutoMigrate(
-				// todo
+					&entity.News{},
 				)
 				return db, nil
 			case <-time.After(30 * time.Second):
@@ -236,9 +237,6 @@ var definitions = []di.Def{
 		Name: "fixtures",
 		Build: func(ctn di.Container) (interface{}, error) {
 			return []fixtures.Fixture{
-				fixtures.CategoryFixture{},
-				fixtures.ProductFixture{},
-				fixtures.StoreFixture{},
 				fixtures.PromoFixture{},
 				fixtures.ConfigurationFixture{},
 				fixtures.OptionFixture{},
