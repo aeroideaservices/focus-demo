@@ -1,0 +1,611 @@
+### fixtures
+POST {{demoBaseUrl}}/fixtures/run
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+    })
+%}
+
+### auth
+POST http://127.0.0.1:8088/auth/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+grant_type=password&client_id=focus&client_secret=wg4tu0juuDYombim5Ri7ZEVUR3TaPKrJ&username={{username}}&password={{password}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.hasOwnProperty("access_token"), "Dont have access_token")
+    })
+
+    client.global.set("access", response.body.access_token)
+%}
+
+### categories field values
+GET {{baseUrl}}/models-v2/{{category-model-code}}/fields/{{category-field-code}}?offset={{offset}}&limit={{limit}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+    })
+%}
+
+### categories short list
+POST {{baseUrl}}/models-v2/{{category-model-code}}/elements/list?offset={{offset}}&limit={{limit}}&query=dom
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "fields":["{{category-field-code}}"]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("category.identifierCode")), "Items has not property " + request.environment.get("category.identifierCode"))
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("category-field-code")), "Items has not property " + request.environment.get("category-field-code"))
+    })
+%}
+
+### categories short list
+POST {{baseUrl}}/models-v2/{{category-model-code}}/elements/list?offset={{offset}}&limit={{limit}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "fields":["{{category-field-code}}"],
+    "filter": {
+    "id": ["a65e662d-2164-4db4-90df-03ac4fb4e7bd", "35a756a1-5c1e-49af-bd09-b2b17d714438"]
+    }
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("category.identifierCode")), "Items has not property " + request.environment.get("category.identifierCode"))
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("category-field-code")), "Items has not property " + request.environment.get("category-field-code"))
+    })
+%}
+
+### categories list
+POST {{baseUrl}}/models-v2/{{category-model-code}}/elements/list?offset={{offset}}&limit={{limit}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "filter": {
+        "code": [
+            "kompyutery",
+            "dom-i-sad"
+        ]
+    }
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("category.identifierCode")), "Items has not property " + request.environment.get("category.identifierCode"))
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("category-field-code")), "Items has not property " + request.environment.get("category-field-code"))
+    })
+%}
+
+### create category elements
+POST {{baseUrl}}/models-v2/{{category-model-code}}/elements
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name":     "{{category.name}}",
+    "code":     "{{category.code}}",
+    "category": "{{category.category}}"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Body has not property id")
+    })
+    client.global.set("categoryElementId", response.body.id)
+%}
+
+### get category element
+GET {{baseUrl}}/models-v2/{{category-model-code}}/elements/{{categoryElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        const env = request.environment
+        client.assert(response.body.id == client.global.get("categoryElementId"), "Element identifier is not " + client.global.get("categoryElementId"))
+        client.assert(response.body.name == env.get("category.name"), "Element name is not " + env.get("category.name"))
+        client.assert(response.body.code == env.get("category.code"), "Element code is not " + env.get("category.code"))
+        client.assert(response.body.category == env.get("category.category"), "Element category is not " + env.get("category.category"))
+    })
+%}
+
+### update category element
+PUT {{baseUrl}}/models-v2/{{category-model-code}}/elements/{{categoryElementId}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name":     "{{category.new.name}}",
+    "code":     "{{category.code}}",
+    "category": "{{category.new.category}}"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Response status is not 204")
+        client.assert(response.body == null, "Response body is not empty")
+    })
+%}
+
+### get category element
+GET {{baseUrl}}/models-v2/{{category-model-code}}/elements/{{categoryElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        const env = request.environment
+        client.assert(response.body.id == client.global.get("categoryElementId"), "Element identifier is not " + client.global.get("categoryElementId"))
+        client.assert(response.body.name == env.get("category.new.name"), "Element name is not " + env.get("category.new.name"))
+        client.assert(response.body.code == env.get("category.code"), "Element code is not " + env.get("category.code"))
+        client.assert(response.body.category == env.get("category.new.category"), "Element category is not " + env.get("category.new.category"))
+    })
+%}
+
+### --------------------------------- PRODUCTS --------------------------------------------
+
+### product field values
+GET {{baseUrl}}/models-v2/{{product-model-code}}/fields/{{product-field-code}}?offset={{offset}}&limit={{limit}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+    })
+%}
+
+### product short list
+GET {{baseUrl}}/models-v2/{{product-model-code}}/elements?fields={{product-field-code}}&offset={{offset}}&
+    limit={{limit}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        const env = request.environment
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+        client.assert(response.body.items[0].hasOwnProperty(env.get("product.identifierCode")), "Items has not property " + env.get("product.identifierCode"))
+        client.assert(response.body.items[0].hasOwnProperty(env.get("product-field-code")), "Items has not property " + env.get("product-field-code"))
+    })
+%}
+
+### product list
+POST {{baseUrl}}/models-v2/{{product-model-code}}/elements/list?offset={{offset}}&limit={{limit}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "filter": {
+        "externalId": [
+            231414,
+            123113
+        ]
+    }
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        const env = request.environment
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+        client.assert(response.body.items[0].hasOwnProperty(env.get("product.identifierCode")), "Items has not property " + env.get("product.identifierCode"))
+        client.assert(response.body.items[0].hasOwnProperty(env.get("product-field-code")), "Items has not property " + env.get("product-field-code"))
+    })
+%}
+
+### create product elements
+POST {{baseUrl}}/models-v2/{{product-model-code}}/elements
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name":       "{{product.name}}",
+    "externalId": 123,
+    "category":   "{{product.category}}",
+    "colors":     ["{{product.color1}}", "{{product.color2}}"]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Body has not property id")
+    })
+    client.global.set("productElementId", response.body.id)
+%}
+
+### get product element
+GET {{baseUrl}}/models-v2/{{product-model-code}}/elements/{{productElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        const env = request.environment
+        client.assert(response.body.id == client.global.get("productElementId"), "Element identifier is not " + client.global.get("productElementId"))
+        client.assert(response.body.name == env.get("product.name"), "Element name is not " + env.get("product.name"))
+        client.assert(response.body.externalId == env.get("product.externalId"), "Element externalId is not " + env.get("product.externalId"))
+        client.assert(response.body.category == env.get("product.category"), "Element category is not " + env.get("product.category"))
+    })
+%}
+
+### update product element
+PUT {{baseUrl}}/models-v2/{{product-model-code}}/elements/{{productElementId}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name":       "{{product.new.name}}",
+    "externalId": 1234,
+    "category":   "{{categoryElementId}}"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Response status is not 204")
+        // client.assert(response.body == null, "Response body is not empty")
+    })
+%}
+
+### get product element
+GET {{baseUrl}}/models-v2/{{product-model-code}}/elements/{{productElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        const env = request.environment
+        const glob = client.global
+        client.assert(response.body.id == client.global.get("productElementId"), "Element identifier is not " + client.global.get("productElementId"))
+        client.assert(response.body.name == env.get("product.new.name"), "Element name is not " + env.get("product.new.name"))
+        client.assert(response.body.externalId == env.get("product.new.externalId"), "Element externalId is not " + env.get("product.externalId"))
+        client.assert(response.body.category == glob.get("categoryElementId"), "Element category is not " + glob.get("categoryElementId"))
+    })
+%}
+
+### --------------------------------- STORES --------------------------------------------
+
+### update store element
+PUT {{baseUrl}}/models-v2/{{category-model-code}}/elements/{{categoryElementId}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name":     "{{category.new.name}}",
+    "code":     "{{category.new.code}}",
+    "category": "{{category.new.category}}"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Response status is not 204")
+        client.assert(response.body == null, "Response body is not empty")
+    })
+%}
+
+### get category element
+GET {{baseUrl}}/models-v2/{{category-model-code}}/elements/{{categoryElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        const env = request.environment
+        client.assert(response.body.id == client.global.get("categoryElementId"), "Element identifier is not " + client.global.get("categoryElementId"))
+        client.assert(response.body.name == env.get("category.new.name"), "Element name is not " + env.get("category.new.name"))
+        client.assert(response.body.code == env.get("category.code"), "Element code is not " + env.get("category.code"))
+        client.assert(response.body.category == env.get("category.new.category"), "Element category is not " + env.get("category.new.category"))
+    })
+%}
+
+### stores field values
+GET {{baseUrl}}/models-v2/{{store-model-code}}/fields/{{store-field-code}}?offset={{offset}}&limit={{limit}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+    })
+%}
+
+### stores short list
+GET {{baseUrl}}/models-v2/{{store-model-code}}/elements?fields={{store-field-code}}&offset={{offset}}&limit={{limit}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("store.identifierCode")), "Items has not property " + request.environment.get("store.identifierCode"))
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("store-field-code")), "Items has not property " + request.environment.get("store-field-code"))
+    })
+%}
+
+### stores list
+POST {{baseUrl}}/models-v2/{{store-model-code}}/elements/list?offset={{offset}}&limit={{limit}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "filter": {
+        "name": [
+            "Продуктовый 24/7",
+            "Компуктеры"
+        ]
+    }
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.total > 0, "Total is 0")
+        client.assert(response.body.items.length > 0, "Items length is 0")
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("store.identifierCode")), "Items has not property " + request.environment.get("store.identifierCode"))
+        client.assert(response.body.items[0].hasOwnProperty(request.environment.get("store-field-code")), "Items has not property " + request.environment.get("store-field-code"))
+    })
+%}
+
+### create strore elements
+POST {{baseUrl}}/models-v2/{{store-model-code}}/elements
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name":         "{{store.name}}",
+    "latitude":     57.6299,
+    "longitude":    39.8737,
+    "contactEmail": "{{store.contactEmail}}",
+    "contactPhone": "{{store.contactPhone}}",
+    "openingTime":  "{{store.openingTime}}",
+    "closingTime":  "{{store.closingTime}}",
+    "description":  "{{store.description}}",
+    "products":     []
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Body has not property id")
+    })
+    client.global.set("storeElementId", response.body.id)
+%}
+
+### get strore element
+GET {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        const env = request.environment
+        client.assert(response.body.id == client.global.get("storeElementId"), "Element identifier is not " + client.global.get("storeElementId"))
+        client.assert(response.body.name == env.get("store.name"), "Element name is not " + env.get("store.name"))
+        client.assert(response.body.latitude == env.get("store.latitude"), "Element latitude is not " + env.get("store.latitude"))
+        client.assert(response.body.longitude == env.get("store.longitude"), "Element longitude is not " + env.get("store.longitude"))
+        client.assert(response.body.contactEmail == env.get("store.contactEmail"), "Element contactEmail is not " + env.get("store.contactEmail"))
+        client.assert(response.body.contactPhone == env.get("store.contactPhone"), "Element contactPhone is not " + env.get("store.contactPhone"))
+        client.assert(response.body.openingTime == env.get("store.openingTime"), "Element openingTime is not " + env.get("store.openingTime"))
+        client.assert(response.body.closingTime == env.get("store.closingTime"), "Element closingTime is not " + env.get("store.closingTime"))
+    })
+%}
+
+### update store element
+PUT {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name":         "{{store.new.name}}",
+    "latitude":     58.6299,
+    "longitude":    38.8737,
+    "contactEmail": "{{store.new.contactEmail}}",
+    "contactPhone": "{{store.new.contactPhone}}",
+    "openingTime":  "{{store.new.openingTime}}",
+    "closingTime":  "{{store.new.closingTime}}",
+    "description":  "{{store.new.description}}",
+    "products":     ["552f331e-be9e-4c3a-a860-7071fd5fd359"]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Response status is not 204")
+        client.assert(response.body == null, "Response body is not empty")
+    })
+%}
+
+### get strore element
+GET {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        const env = request.environment
+        client.assert(response.body.id == client.global.get("storeElementId"), "Element identifier is not " + client.global.get("storeElementId"))
+        client.assert(response.body.name == env.get("store.new.name"), "Element name is not " + env.get("store.new.name"))
+        client.assert(response.body.latitude == env.get("store.new.latitude"), "Element latitude is not " + env.get("store.new.latitude"))
+        client.assert(response.body.longitude == env.get("store.new.longitude"), "Element longitude is not " + env.get("store.new.longitude"))
+        client.assert(response.body.contactEmail == env.get("store.new.contactEmail"), "Element contactEmail is not " + env.get("store.new.contactEmail"))
+        client.assert(response.body.contactPhone == env.get("store.new.contactPhone"), "Element contactPhone is not " + env.get("store.new.contactPhone"))
+        client.assert(response.body.openingTime == env.get("store.new.openingTime"), "Element openingTime is not " + env.get("store.new.openingTime"))
+        client.assert(response.body.closingTime == env.get("store.new.closingTime"), "Element closingTime is not " + env.get("store.new.closingTime"))
+    })
+%}
+
+### delete strore element
+DELETE {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Response status is not 204")
+        client.assert(response.body == null, "Response body is not empty")
+    })
+%}
+
+### get strore element
+GET {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 404, "Response status is not 200")
+    })
+%}
+
+### --------------------------------- END STORES --------------------------------------------
+
+### delete product element
+DELETE {{baseUrl}}/models-v2/{{product-model-code}}/elements/{{productElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Response status is not 204")
+        client.assert(response.body == null, "Response body is not empty")
+    })
+%}
+
+### get product element
+GET {{baseUrl}}/models-v2/{{product-model-code}}/elements/{{productElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 404, "Response status is not 200")
+    })
+%}
+
+### --------------------------------- END PRODUCTS --------------------------------------------
+
+### delete category element
+DELETE {{baseUrl}}/models-v2/{{category-model-code}}/elements/{{categoryElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 204, "Response status is not 204")
+        client.assert(response.body == null, "Response body is not empty")
+    })
+%}
+
+### get category element
+GET {{baseUrl}}/models-v2/{{category-model-code}}/elements/{{categoryElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 404, "Response status is not 200")
+    })
+%}

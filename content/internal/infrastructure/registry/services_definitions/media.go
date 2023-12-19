@@ -5,12 +5,13 @@ import (
 
 	"github.com/sarulabs/di/v2"
 
-	"content/internal/infrastructure/env"
 	s3 "github.com/aeroideaservices/focus/media/aws-s3"
 	"github.com/aeroideaservices/focus/media/plugin"
 	"github.com/aeroideaservices/focus/media/postgres"
 	"github.com/aeroideaservices/focus/media/rest"
 	"github.com/aeroideaservices/focus/services/callbacks"
+
+	"content/internal/infrastructure/env"
 )
 
 var MediaDefinitions = appendArr([]di.Def{

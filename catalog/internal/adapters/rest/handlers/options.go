@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	tracerAdapter "demo/internal/service/utils/tracer"
+	tracerAdapter "catalog/internal/service/utils/tracer"
 	"github.com/aeroideaservices/focus/configurations/plugin/actions"
 	"github.com/aeroideaservices/focus/services/validation"
 	"github.com/gin-gonic/gin"

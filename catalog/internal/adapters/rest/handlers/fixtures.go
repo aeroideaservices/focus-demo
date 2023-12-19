@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"demo/internal/service/fixtures"
+	"catalog/internal/service/fixtures"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

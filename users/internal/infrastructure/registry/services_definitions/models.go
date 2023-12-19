@@ -2,7 +2,6 @@ package services_definitions
 
 import (
 	"context"
-	demoEntity "demo/internal/domain/entitiy"
 	"github.com/aeroideaservices/focus/media/plugin/actions"
 	"github.com/aeroideaservices/focus/media/plugin/entity"
 	models_s3 "github.com/aeroideaservices/focus/models/aws_s3"
@@ -15,8 +14,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/sarulabs/di/v2"
 	"net/http"
+	demoEntity "users/internal/domain/entitiy"
 
-	"demo/internal/infrastructure/env"
+	"users/internal/infrastructure/env"
 )
 
 var ModelsDefinitions = appendArr([]di.Def{

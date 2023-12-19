@@ -1,7 +1,7 @@
 package cli_handlers
 
 import (
-	"demo/internal/service/fixtures"
+	"catalog/internal/service/fixtures"
 	"github.com/urfave/cli/v2"
 )
 

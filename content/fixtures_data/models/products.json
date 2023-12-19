@@ -1,0 +1,26 @@
+[
+    {
+        "id": "552f331e-be9e-4c3a-a860-7071fd5fd359",
+        "name": "Монитор",
+        "externalId": 123456,
+        "categoryId": "32386480-26bb-4859-b849-b5a0e89092c3"
+    },
+    {
+        "id": "09d15146-a76e-4abd-8a1d-ff84dfb84d2a",
+        "name": "Системный блок",
+        "externalId": 231414,
+        "categoryId": "32386480-26bb-4859-b849-b5a0e89092c3"
+    },
+    {
+        "id": "361b245b-3197-4fbf-b2ca-d8d923fd3e42",
+        "name": "Тапочки",
+        "externalId": 123113,
+        "categoryId": "35a756a1-5c1e-49af-bd09-b2b17d714438"
+    },
+    {
+        "id": "c0011de7-6d69-4b85-a77f-bf63a947d1a4",
+        "name": "Комплект садовой мебели",
+        "externalId": 853113,
+        "categoryId": "35a756a1-5c1e-49af-bd09-b2b17d714438"
+    }
+]

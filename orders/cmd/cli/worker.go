@@ -1,10 +1,10 @@
 package main
 
 import (
-	"demo/internal/infrastructure/registry"
 	"github.com/urfave/cli/v2"
 	"go.uber.org/zap"
 	"log"
+	"orders/internal/infrastructure/registry"
 	"os"
 )
 

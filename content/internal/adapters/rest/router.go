@@ -17,6 +17,7 @@ type Router struct {
 	ginMode                   string
 	apiSettings               APISettings
 	fixturesHandler           *handlers.FixturesHandler
+	optionsHandler            *handlers.OptionsHandler
 	focusConfigurationsRouter *confRest.Router
 	focusMediaRouter          *mediaRest.Router
 	focusMenuRouter           *rest.Router
@@ -35,17 +36,23 @@ func NewRouter(
 	ginMode string,
 	apiSettings APISettings,
 	fixturesHandler *handlers.FixturesHandler,
-	focusMenuRouter *rest.Router,
+	optionsHandler *handlers.OptionsHandler,
+	focusConfigurationsRouter *confRest.Router,
 	focusMediaRouter *mediaRest.Router,
+	focusMenuRouter *rest.Router,
+	focusModelsRouter *modelsRest.Router,
 	errorHandler *middleware.ErrorHandler,
 ) *Router {
 	return &Router{
-		ginMode:          ginMode,
-		apiSettings:      apiSettings,
-		fixturesHandler:  fixturesHandler,
-		focusMenuRouter:  focusMenuRouter,
-		focusMediaRouter: focusMediaRouter,
-		errorHandler:     errorHandler,
+		ginMode:                   ginMode,
+		apiSettings:               apiSettings,
+		fixturesHandler:           fixturesHandler,
+		optionsHandler:            optionsHandler,
+		focusConfigurationsRouter: focusConfigurationsRouter,
+		focusMediaRouter:          focusMediaRouter,
+		focusMenuRouter:           focusMenuRouter,
+		focusModelsRouter:         focusModelsRouter,
+		errorHandler:              errorHandler,
 	}
 }
 
@@ -73,10 +80,18 @@ func (r Router) Router() *gin.Engine {
 	fixtures := service.Group("fixtures")
 	fixtures.POST("run", r.fixturesHandler.RunFixtures)
 
+	configurationsRoutes := service.Group("configurations")
+	confRoutes := configurationsRoutes.Group(":configuration-code")
+	optRoutes := confRoutes.Group("options")
+	optRoutes.GET("", r.optionsHandler.List)
+
 	// cms focus
 	focus := v1.Group(r.apiSettings.FocusPath)
 	focus.Group("health").Group("check").GET("", healthCheck)
-	r.focusMenuRouter.SetRoutes(focus)
+	r.focusConfigurationsRouter.SetRoutes(focus)
 	r.focusMediaRouter.SetRoutes(focus)
+	r.focusMenuRouter.SetRoutes(focus)
+	r.focusModelsRouter.SetRoutes(focus)
+
 	return router
 }

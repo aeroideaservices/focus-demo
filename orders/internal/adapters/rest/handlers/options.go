@@ -1,11 +1,11 @@
 package handlers
 
 import (
-	tracerAdapter "demo/internal/service/utils/tracer"
 	"github.com/aeroideaservices/focus/configurations/plugin/actions"
 	"github.com/aeroideaservices/focus/services/validation"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	tracerAdapter "orders/internal/service/utils/tracer"
 )
 
 type OptionsHandler struct {

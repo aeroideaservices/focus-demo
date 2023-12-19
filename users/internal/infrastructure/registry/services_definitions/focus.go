@@ -11,7 +11,7 @@ import (
 	middleware "github.com/aeroideaservices/focus/services/gin-middleware"
 	"github.com/aeroideaservices/focus/services/validation"
 
-	"demo/internal/infrastructure/registry/services_definitions/translations"
+	"users/internal/infrastructure/registry/services_definitions/translations"
 )
 
 var FocusDefinitions = []di.Def{

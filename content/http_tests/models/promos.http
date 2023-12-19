@@ -1,0 +1,251 @@
+### auth
+POST http://127.0.0.1:8088/auth/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+grant_type=password&client_id=focus&client_secret=wg4tu0juuDYombim5Ri7ZEVUR3TaPKrJ&username={{username}}&password={{password}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.hasOwnProperty("access_token"), "Dont have access_token")
+    })
+
+    client.global.set("access", response.body.access_token)
+%}
+
+### получение краткого списка акций: неверный офсет
+GET {{baseUrl}}/models-v2/{{promo-model-code}}/fields/{{promo-field-code}}?offset=-1&limit={{limit}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+    })
+%}
+
+### получение краткого списка акций: неверный лимит
+GET {{baseUrl}}/models-v2/{{promo-model-code}}/fields/{{promo-field-code}}?offset={{offset}}&limit=-1
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+    })
+%}
+
+### получение краткого списка акций: неверный sort order
+GET {{baseUrl}}/models-v2/{{promo-model-code}}/fields/{{promo-field-code}}?offset=-1&limit=10000
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+    })
+%}
+
+### promos short list
+POST {{baseUrl}}/models-v2/{{promo-model-code}}/elements/list?offset={{offset}}&limit={{limit}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+Content-Type: application/json
+
+{
+
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+    })
+%}
+
+### promos list
+POST {{baseUrl}}/models-v2/{{promo-model-code}}/elements/list?offset={{offset}}&limit={{limit}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "filter": {
+        "activeFrom": ["2023-05-30T15:04:05Z","2023-06-02T15:04:05Z"]
+    }
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+    })
+%}
+
+### create strore elements
+POST {{baseUrl}}/models-v2/{{promo-model-code}}/elements
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "title": "Супер акция!",
+    "code": "code-11",
+    "image": null,
+    "active": false,
+    "activeFrom": "2023-06-01T13:00:00Z",
+    "activeTo": "2023-06-20T13:00:00Z",
+    "redirectLink": "https://dev.farmperspektiva.aeroidea.ru/catalog/vitaminy-i-bady/bady/bady-dlia-nervnoi-sistemy",
+    "includedKladrIds": null,
+    "sort": 123,
+    "filteredCatalogLink": "https://dev.farmperspektiva.aeroidea.ru/catalog/vitaminy-i-bady/bady/bady-dlia-nervnoi-sistemy",
+    "products": [],
+    "uint": 10,
+    "float": 123.123,
+    "infoEmail": "mail@mail.ru",
+    "infoPhone": "+79999999999",
+    "rating": 3,
+    "date": "2023-06-01T13:00:00Z",
+    "shortDescription": "123",
+    "previewDescription": "123",
+    "description": "{\"text\": \"123456\"}"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Body has not property id")
+    })
+    client.global.set("promoElementId", response.body.id)
+%}
+
+### get strore element
+GET {{baseUrl}}/models-v2/{{promo-model-code}}/elements/{{promoElementId}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.id == client.global.get("promoElementId"), "Element identifier is not " + client.global.get("promoElementId"))
+    })
+%}
+
+###
+PUT {{baseUrl}}/models-v2/{{promo-model-code}}/elements/30f0487e-b304-4926-8665-cd2c8dd74f3d
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "title": "Супер акция!",
+    "code": "code-6",
+    "image": "297473ed-90f5-4d67-93df-16c2e1a5138d",
+    "active": false,
+    "activeFrom": "2023-06-01T13:00:00Z",
+    "activeTo": "2023-06-20T13:00:00Z",
+    "redirectLink": "https://dev.farmperspektiva.aeroidea.ru/catalog/vitaminy-i-bady/bady/bady-dlia-nervnoi-sistemy",
+    "includedKladrIds": null,
+    "sort": 123,
+    "filteredCatalogLink": "https://dev.farmperspektiva.aeroidea.ru/catalog/vitaminy-i-bady/bady/bady-dlia-nervnoi-sistemy",
+    "products": [
+        "c0011de7-6d69-4b85-a77f-bf63a947d1a4",
+        "552f331e-be9e-4c3a-a860-7071fd5fd359"
+    ]
+}
+
+
+#### update promo element
+#PUT {{baseUrl}}/models-v2/{{promo-model-code}}/elements/{{promoElementId}}
+#Content-Type: application/json
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#{
+#    "name":         "{{promo.new.name}}",
+#    "latitude":     58.6299,
+#    "longitude":    38.8737,
+#    "contactEmail": "{{promo.new.contactEmail}}",
+#    "contactPhone": "{{promo.new.contactPhone}}",
+#    "openingTime":  "{{promo.new.openingTime}}",
+#    "closingTime":  "{{promo.new.closingTime}}",
+#    "description":  "{{promo.new.description}}",
+#    "promos":     ["552f331e-be9e-4c3a-a860-7071fd5fd359"]
+#}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        client.assert(response.status === 204, "Response status is not 204")
+#        client.assert(response.body == null, "Response body is not empty")
+#    })
+#%}
+#
+#### get strore element
+#GET {{baseUrl}}/models-v2/{{promo-model-code}}/elements/{{promoElementId}}
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        const type = response.contentType.mimeType
+#        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+#        client.assert(response.status === 200, "Response status is not 200")
+#        const env = request.environment
+#        client.assert(response.body.id == client.global.get("promoElementId"), "Element identifier is not " + client.global.get("promoElementId"))
+#        client.assert(response.body.name == env.get("promo.new.name"), "Element name is not " + env.get("promo.new.name"))
+#        client.assert(response.body.latitude == env.get("promo.new.latitude"), "Element latitude is not " + env.get("promo.new.latitude"))
+#        client.assert(response.body.longitude == env.get("promo.new.longitude"), "Element longitude is not " + env.get("promo.new.longitude"))
+#        client.assert(response.body.contactEmail == env.get("promo.new.contactEmail"), "Element contactEmail is not " + env.get("promo.new.contactEmail"))
+#        client.assert(response.body.contactPhone == env.get("promo.new.contactPhone"), "Element contactPhone is not " + env.get("promo.new.contactPhone"))
+#        client.assert(response.body.openingTime == env.get("promo.new.openingTime"), "Element openingTime is not " + env.get("promo.new.openingTime"))
+#        client.assert(response.body.closingTime == env.get("promo.new.closingTime"), "Element closingTime is not " + env.get("promo.new.closingTime"))
+#    })
+#%}
+#
+#### delete strore element
+#DELETE {{baseUrl}}/models-v2/{{promo-model-code}}/elements/{{promoElementId}}
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        client.assert(response.status === 204, "Response status is not 204")
+#        client.assert(response.body == null, "Response body is not empty")
+#    })
+#%}
+#
+#### get strore element
+#GET {{baseUrl}}/models-v2/{{promo-model-code}}/elements/{{promoElementId}}
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        const type = response.contentType.mimeType
+#        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+#        client.assert(response.status === 404, "Response status is not 200")
+#    })
+#%}
+
+### --------------------------------- END STORES --------------------------------------------

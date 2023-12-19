@@ -1,0 +1,278 @@
+### auth
+POST http://127.0.0.1:8088/auth/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+grant_type=password&client_id=focus&client_secret=wg4tu0juuDYombim5Ri7ZEVUR3TaPKrJ&username={{username}}&password={{password}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.hasOwnProperty("access_token"), "Dont have access_token")
+    })
+
+    client.global.set("access", response.body.access_token)
+%}
+
+### получение краткого списка магазинов: неверный офсет
+GET {{baseUrl}}/models-v2/{{store-model-code}}/fields/{{store-field-code}}?offset=-1&limit={{limit}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+        client.assert(response.body.message === "Некорректный запрос, отсутствует один из обязательных параметров или один из параметров некорректный.", "wrong message")
+    })
+%}
+
+### получение краткого списка магазинов: неверный лимит
+GET {{baseUrl}}/models-v2/{{store-model-code}}/fields/{{store-field-code}}?offset={{offset}}&limit=-1
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+        client.assert(response.body.message === "Некорректный запрос, отсутствует один из обязательных параметров или один из параметров некорректный.", "wrong message")
+    })
+%}
+
+### получение краткого списка магазинов: неверный sort order
+GET {{baseUrl}}/models-v2/{{store-model-code}}/fields/{{store-field-code}}?offset=-1&limit=10000
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+        client.assert(response.body.message === "Некорректный запрос, отсутствует один из обязательных параметров или один из параметров некорректный.", "wrong message")
+    })
+%}
+
+### stores short list
+GET {{baseUrl}}/models-v2/{{store-model-code}}/elements?fields=sdfsdf&offset={{offset}}&limit={{limit}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+        client.assert(response.body.message === "Некорректный запрос, отсутствует один из обязательных параметров или один из параметров некорректный.", "wrong message")
+    })
+%}
+
+### stores list
+POST {{baseUrl}}/models-v2/{{store-model-code}}/elements/list?offset={{offset}}&limit={{limit}}&sort=sdf&order=sdf
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "filter": {
+        "name": [
+            "Продуктовый 24/7",
+            "Компуктеры"
+        ]
+    }
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+        client.assert(response.body.message === "Некорректный запрос, отсутствует один из обязательных параметров или один из параметров некорректный.", "wrong message")
+    })
+%}
+
+### create strore elements
+POST {{baseUrl}}/models-v2/{{store-model-code}}/elements
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name":         "name",
+    "latitude":     57.6299,
+    "longitude":    39.8737,
+    "contactEmail": "mail@mail.ru",
+    "contactPhone": "+79999999999",
+    "openingTime":  "11:30:00",
+    "closingTime":  "12:30:00",
+    "description":  "[12]",
+    "image":        "{{image-id}}",
+    "products":     ["{{product-id}}"]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+        client.assert(response.body.message === "Некорректный запрос, отсутствует один из обязательных параметров или один из параметров некорректный.", "wrong message")
+    })
+
+    client.global.set("store-id", response.body.id)
+%}
+
+### update strore elements
+PUT {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{store-id}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name": "name",
+    "latitude": 57.6299,
+    "longitude": 39.8737,
+    "contactEmail": "mail@mail.ru",
+    "contactPhone": "+79999999999",
+    "openingTime": "11:30:00",
+    "closingTime": "12:30:00",
+    "description": "[12]",
+    "image": null,
+    "products": []
+}
+
+### update strore elements
+GET {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{store-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 400, "Response status is not 400")
+        client.assert(response.body.code === 400, "code is not 400")
+        client.assert(response.body.error === "Bad Request", "error is not Bad Request")
+        client.assert(response.body.message === "Некорректный запрос, отсутствует один из обязательных параметров или один из параметров некорректный.", "wrong message")
+    })
+
+    client.global.set("store-id", response.body.id)
+%}
+
+###
+GET {{baseUrl}}/models-v2/product/fields/name?offset=0&limit=20
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+#### get strore element
+#GET {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        const type = response.contentType.mimeType
+#        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+#        client.assert(response.status === 200, "Response status is not 200")
+#        const env = request.environment
+#        client.assert(response.body.id == client.global.get("storeElementId"), "Element identifier is not " + client.global.get("storeElementId"))
+#        client.assert(response.body.name == env.get("store.name"), "Element name is not " + env.get("store.name"))
+#        client.assert(response.body.latitude == env.get("store.latitude"), "Element latitude is not " + env.get("store.latitude"))
+#        client.assert(response.body.longitude == env.get("store.longitude"), "Element longitude is not " + env.get("store.longitude"))
+#        client.assert(response.body.contactEmail == env.get("store.contactEmail"), "Element contactEmail is not " + env.get("store.contactEmail"))
+#        client.assert(response.body.contactPhone == env.get("store.contactPhone"), "Element contactPhone is not " + env.get("store.contactPhone"))
+#        client.assert(response.body.openingTime == env.get("store.openingTime"), "Element openingTime is not " + env.get("store.openingTime"))
+#        client.assert(response.body.closingTime == env.get("store.closingTime"), "Element closingTime is not " + env.get("store.closingTime"))
+#    })
+#%}
+#
+#### update store element
+#PUT {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+#Content-Type: application/json
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#{
+#    "name":         "{{store.new.name}}",
+#    "latitude":     58.6299,
+#    "longitude":    38.8737,
+#    "contactEmail": "{{store.new.contactEmail}}",
+#    "contactPhone": "{{store.new.contactPhone}}",
+#    "openingTime":  "{{store.new.openingTime}}",
+#    "closingTime":  "{{store.new.closingTime}}",
+#    "description":  "{{store.new.description}}",
+#    "products":     ["552f331e-be9e-4c3a-a860-7071fd5fd359"]
+#}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        client.assert(response.status === 204, "Response status is not 204")
+#        client.assert(response.body == null, "Response body is not empty")
+#    })
+#%}
+#
+#### get strore element
+#GET {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        const type = response.contentType.mimeType
+#        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+#        client.assert(response.status === 200, "Response status is not 200")
+#        const env = request.environment
+#        client.assert(response.body.id == client.global.get("storeElementId"), "Element identifier is not " + client.global.get("storeElementId"))
+#        client.assert(response.body.name == env.get("store.new.name"), "Element name is not " + env.get("store.new.name"))
+#        client.assert(response.body.latitude == env.get("store.new.latitude"), "Element latitude is not " + env.get("store.new.latitude"))
+#        client.assert(response.body.longitude == env.get("store.new.longitude"), "Element longitude is not " + env.get("store.new.longitude"))
+#        client.assert(response.body.contactEmail == env.get("store.new.contactEmail"), "Element contactEmail is not " + env.get("store.new.contactEmail"))
+#        client.assert(response.body.contactPhone == env.get("store.new.contactPhone"), "Element contactPhone is not " + env.get("store.new.contactPhone"))
+#        client.assert(response.body.openingTime == env.get("store.new.openingTime"), "Element openingTime is not " + env.get("store.new.openingTime"))
+#        client.assert(response.body.closingTime == env.get("store.new.closingTime"), "Element closingTime is not " + env.get("store.new.closingTime"))
+#    })
+#%}
+#
+#### delete strore element
+#DELETE {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        client.assert(response.status === 204, "Response status is not 204")
+#        client.assert(response.body == null, "Response body is not empty")
+#    })
+#%}
+#
+#### get strore element
+#GET {{baseUrl}}/models-v2/{{store-model-code}}/elements/{{storeElementId}}
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        const type = response.contentType.mimeType
+#        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+#        client.assert(response.status === 404, "Response status is not 200")
+#    })
+#%}
+
+### --------------------------------- END STORES --------------------------------------------
+

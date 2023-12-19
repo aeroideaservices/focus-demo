@@ -4,12 +4,22 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	mediaRest "github.com/aeroideaservices/focus/media/rest"
-	menuRest "github.com/aeroideaservices/focus/menu/rest"
 	"github.com/sarulabs/di/v2"
 	"github.com/urfave/cli/v2"
 	"os"
 	"time"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
+
+	confRest "github.com/aeroideaservices/focus/configurations/rest"
+	mediaRest "github.com/aeroideaservices/focus/media/rest"
+	menuRest "github.com/aeroideaservices/focus/menu/rest"
+	modelsRest "github.com/aeroideaservices/focus/models/rest"
+	middleware "github.com/aeroideaservices/focus/services/gin-middleware"
 
 	cliHandlers "content/internal/adapters/cli"
 	"content/internal/adapters/postgres"
@@ -18,12 +28,6 @@ import (
 	"content/internal/infrastructure/env"
 	"content/internal/infrastructure/registry/services_definitions"
 	"content/internal/service/fixtures"
-	middleware "github.com/aeroideaservices/focus/services/gin-middleware"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/credentials"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type Container struct {
@@ -44,11 +48,19 @@ func NewContainer() (*Container, error) {
 		return nil, err
 	}
 
-	if err = builder.Add(services_definitions.MenuDefinitions...); err != nil {
+	if err = builder.Add(services_definitions.ConfigurationsDefinitions...); err != nil {
 		return nil, err
 	}
 
 	if err = builder.Add(services_definitions.MediaDefinitions...); err != nil {
+		return nil, err
+	}
+
+	if err = builder.Add(services_definitions.MenuDefinitions...); err != nil {
+		return nil, err
+	}
+
+	if err = builder.Add(services_definitions.ModelsDefinitions...); err != nil {
 		return nil, err
 	}
 
@@ -99,16 +111,20 @@ var definitions = []di.Def{
 		Name: "db", // Database
 		Build: func(ctn di.Container) (interface{}, error) {
 			logger := ctn.Get("logger").(*zap.SugaredLogger)
+
 			conn := fmt.Sprintf("host=%s port=%s dbname=%s user=%s sslmode=%s",
 				env.DbHost, env.DbPort, env.DbName, env.DbUser, env.DbSslMode)
+
 			c1 := make(chan *gorm.DB, 1)
 			go func() {
 				// Получение лог-сервиса из контейнера
 				logger.Info("Try to connect to database")
+
 				_, err := os.ReadFile(env.DbSslCertPath)
 				if env.DbSslMode != "disable" && env.DbSslCertPath != "" && err != nil {
 					logger.Fatal("cannot open cert file")
 				}
+
 				// dsn
 				dsn := conn + " sslrootcert=" + env.DbSslCertPath + " password=" + env.DbPassword
 				dbConn, err := postgres.NewDatabase(dsn)
@@ -122,9 +138,13 @@ var definitions = []di.Def{
 				}
 				c1 <- dbConn
 			}()
+
 			// Listen on our channel AND a timeout channel - which ever happens first.
 			select {
 			case db := <-c1:
+				_ = db.AutoMigrate(
+				// todo
+				)
 				return db, nil
 			case <-time.After(30 * time.Second):
 				err := errors.New("5 seconds timeout error")
@@ -140,8 +160,11 @@ var definitions = []di.Def{
 			logger := ctn.Get("logger").(*zap.SugaredLogger)
 			logger.Info("building router")
 			fixturesHandler := ctn.Get("fixturesHandler").(*handlers.FixturesHandler)
-			focusMenuRouter := ctn.Get("focus.menu.router").(*menuRest.Router)
+			optionsHandler := ctn.Get("optionsHandler").(*handlers.OptionsHandler)
+			focusConfigurationsRouter := ctn.Get("focus.configurations.router").(*confRest.Router)
 			focusMediaRouter := ctn.Get("focus.media.router").(*mediaRest.Router)
+			focusMenuRouter := ctn.Get("focus.menu.router").(*menuRest.Router)
+			focusModelsRouter := ctn.Get("focus.models.router").(*modelsRest.Router)
 			errorHandler := ctn.Get("focus.errorHandler").(*middleware.ErrorHandler)
 			router := rest.NewRouter(
 				env.GinMode,
@@ -152,8 +175,11 @@ var definitions = []di.Def{
 					FocusPath:   env.HTTPApiFocusPath,
 				},
 				fixturesHandler,
-				focusMenuRouter,
+				optionsHandler,
+				focusConfigurationsRouter,
 				focusMediaRouter,
+				focusMenuRouter,
+				focusModelsRouter,
 				errorHandler,
 			)
 			logger.Info("router has built")
@@ -195,16 +221,8 @@ var definitions = []di.Def{
 			fixturesService := ctn.Get("fixturesService").(*fixtures.FixtureService)
 			fixtureHandler := cliHandlers.NewFixtureHandler(fixturesService)
 
-			router := ctn.Get("router").(*rest.Router)
-			restHandler := cliHandlers.NewServerHandler(router.Router())
-
 			app.Usage = "collection of workers"
 			app.Commands = []*cli.Command{
-				{
-					Name:   "start",
-					Usage:  "Start rest server",
-					Action: restHandler.Start,
-				},
 				{
 					Name:   "run_fixtures",
 					Usage:  "This command runs fixtures",
@@ -217,7 +235,14 @@ var definitions = []di.Def{
 	{
 		Name: "fixtures",
 		Build: func(ctn di.Container) (interface{}, error) {
-			return []fixtures.Fixture{}, nil
+			return []fixtures.Fixture{
+				fixtures.CategoryFixture{},
+				fixtures.ProductFixture{},
+				fixtures.StoreFixture{},
+				fixtures.PromoFixture{},
+				fixtures.ConfigurationFixture{},
+				fixtures.OptionFixture{},
+			}, nil
 		},
 	},
 	{

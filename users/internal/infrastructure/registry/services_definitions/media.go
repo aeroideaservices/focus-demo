@@ -11,7 +11,7 @@ import (
 	"github.com/aeroideaservices/focus/media/rest"
 	"github.com/aeroideaservices/focus/services/callbacks"
 
-	"demo/internal/infrastructure/env"
+	"users/internal/infrastructure/env"
 )
 
 var MediaDefinitions = appendArr([]di.Def{

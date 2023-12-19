@@ -1,0 +1,169 @@
+### auth
+POST http://127.0.0.1:8088/auth/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+grant_type=password&client_id=focus&client_secret=wg4tu0juuDYombim5Ri7ZEVUR3TaPKrJ&username={{username}}&password={{password}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.hasOwnProperty("access_token"), "Dont have access_token")
+    })
+
+    client.global.set("access", response.body.access_token)
+%}
+
+###
+GET    {{baseUrl}}/media
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+GET    {{baseUrl}}/media/folders
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+POST   {{baseUrl}}/media/folders
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name": "Новая папка 1"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Dont have id")
+    })
+
+    client.global.set("folder-id", response.body.id)
+%}
+
+###
+GET    {{baseUrl}}/media/folders/{{folder-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+PATCH  {{baseUrl}}/media/folders/{{folder-id}}/move
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{}
+
+###
+PATCH  {{baseUrl}}/media/folders/{{folder-id}}/rename
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name": "Новая папка 2"
+}
+
+###
+POST   {{baseUrl}}/media/files
+Content-Type: multipart/form-data; boundary=boundary
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="/C:/Users/polet/OneDrive/Изображения/Снимки экрана/Снимок экрана 2023-03-03 135016.png"
+Content-Type: image/png
+
+(data)
+--boundary
+Content-Disposition: form-data; name="alt"
+
+lala
+--boundary
+Content-Disposition: form-data; name="title"
+
+lala
+--boundary
+Content-Disposition: form-data; name="folderId"
+
+{{folder-id}}
+--boundary--
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Dont have id")
+    })
+
+    client.global.set("media-id", response.body.id)
+%}
+
+
+###
+#POST   {{baseUrl}}/media/files/upload
+#Content-Type: multipart/form-data; boundary=boundary
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#--boundary
+#Content-Disposition: form-data; name="file"; filename="/C:/Users/polet/OneDrive/Изображения/Снимки экрана/Снимок экрана 2023-03-03 135016.png"
+#Content-Type: image/png
+#
+#(data)
+#--boundary
+#Content-Disposition: form-data; name="alt"
+#
+#lala
+#--boundary
+#Content-Disposition: form-data; name="title"
+#
+#lala
+#--boundary--
+
+####
+#POST   {{baseUrl}}/media/files/upload-list
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+
+###
+GET    {{baseUrl}}/media/files/{{media-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+PATCH  {{baseUrl}}/media/files/{{media-id}}/move
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "folderId": null
+}
+
+###
+PATCH  {{baseUrl}}/media/files/{{media-id}}/rename
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name": "Новый файл 2"
+}
+
+###
+DELETE {{baseUrl}}/media/files/{{media-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+DELETE {{baseUrl}}/media/folders/{{folder-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}

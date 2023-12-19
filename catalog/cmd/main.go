@@ -11,10 +11,10 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
-	"demo/internal/adapters/rest"
-	"demo/internal/infrastructure/env"
-	"demo/internal/infrastructure/registry"
-	"demo/internal/service/utils/tracer"
+	"catalog/internal/adapters/rest"
+	"catalog/internal/infrastructure/env"
+	"catalog/internal/infrastructure/registry"
+	"catalog/internal/service/utils/tracer"
 )
 
 func main() {

@@ -1,18 +1,27 @@
 package main
 
 import (
-	"content/internal/infrastructure/env"
-	"content/internal/infrastructure/registry"
 	"database/sql"
 	"fmt"
+	"io"
+
 	_ "github.com/lib/pq"
+	"github.com/opentracing/opentracing-go"
 	"github.com/pressly/goose/v3"
-	"github.com/urfave/cli/v2"
 	"go.uber.org/zap"
-	"os"
+	"gorm.io/gorm"
+
+	"content/internal/adapters/rest"
+	"content/internal/infrastructure/env"
+	"content/internal/infrastructure/registry"
+	"content/internal/service/utils/tracer"
 )
 
 func main() {
+	if tracer, closer, err := tracer.SetJaegerTracer(env.TraceHeader); err == nil {
+		opentracing.SetGlobalTracer(tracer)
+		defer func(closer io.Closer) { _ = closer.Close() }(closer)
+	}
 
 	// Инициализация контейнера зависимостей
 	ctn, _ := registry.NewContainer()
@@ -22,16 +31,15 @@ func main() {
 		logger.Errorf("migration error: %s", err)
 		return
 	}
-	// Запуск приложения
-	app := ctn.Resolve("cli").(*cli.App)
-	err := app.Run(os.Args)
+
+	server := ctn.Resolve("router").(*rest.Router)
+	_ = ctn.Resolve("db").(*gorm.DB)
+	router := server.Router()
+	err := router.Run(env.HTTPPort)
 	if err != nil {
-		panic(err)
+		logger.Fatal(err)
 	}
-	err = ctn.Clean()
-	if err != nil {
-		panic(err)
-	}
+	_ = ctn.Clean()
 }
 
 func migration() error {

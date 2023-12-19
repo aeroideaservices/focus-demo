@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"demo/internal/service/fixtures"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"orders/internal/service/fixtures"
 )
 
 type FixturesHandler struct {

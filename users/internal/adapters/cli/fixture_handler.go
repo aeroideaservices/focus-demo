@@ -1,8 +1,8 @@
 package cli_handlers
 
 import (
-	"demo/internal/service/fixtures"
 	"github.com/urfave/cli/v2"
+	"users/internal/service/fixtures"
 )
 
 type FixtureHandler struct {

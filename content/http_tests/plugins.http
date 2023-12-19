@@ -1,0 +1,40 @@
+### auth
+POST https://keycloak.farmperspektiva.aeroidea.ru/auth/realms/Test/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+grant_type=password&client_id=focus&client_secret=d5d89a18-e76d-47da-af94-8dafb8c1c250&username={{username}}&password={{password}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.hasOwnProperty("access_token"), "Dont have access_token")
+    })
+
+    client.global.set("access", response.body.access_token)
+%}
+
+###
+GET {{baseUrl}}/services
+Authorization: {{access}}
+
+###
+GET {{baseUrl}}/services/demo
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.hasOwnProperty("plugins"), "Dont have plugins")
+        client.assert(response.body.code === "demo", "Service code is not demo")
+        client.assert(response.body.name === "Демо", "Service name is not Демо")
+        client.assert(response.body.plugins[0] === "configurations", "Dont have plugins.configurations")
+        client.assert(response.body.plugins[1] === "forms", "Dont have plugins.forms")
+        client.assert(response.body.plugins[2] === "media", "Dont have plugins.media")
+        client.assert(response.body.plugins[3] === "models-v2", "Dont have plugins.models-v2")
+    })
+%}

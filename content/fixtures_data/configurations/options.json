@@ -1,0 +1,142 @@
+[
+  {
+    "id": "2cc4a687-b420-43a8-8fa1-16f1e040a05f",
+    "confId": "158e0cdd-959e-4cab-9acd-8cc2d2760328",
+    "code": "email",
+    "name": "Email поддержки",
+    "type": "string",
+    "value": "aplus@email.ru",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-09-26 07:28:42.642437 +00:00"
+  },
+  {
+    "id": "2ac18995-90d1-4b39-afce-6c891d547018",
+    "confId": "158e0cdd-959e-4cab-9acd-8cc2d2760328",
+    "code": "user-agreement",
+    "name": "Пользовательское соглашение",
+    "type": "string",
+    "value": "/user-agreement/",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-09-26 07:28:42.645398 +00:00"
+  },
+  {
+    "id": "6bc84d90-5215-4869-9b00-99be4ea7b232",
+    "confId": "158e0cdd-959e-4cab-9acd-8cc2d2760328",
+    "code": "privacy-link",
+    "name": "Конфиденциальность",
+    "type": "string",
+    "value": "/privacy/",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-09-26 07:28:42.647360 +00:00"
+  },
+  {
+    "id": "88f994e1-e730-4b24-b145-d366287078a1",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "areaName",
+    "name": "Область",
+    "type": "string",
+    "value": " ",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "83fbbe42-07cc-4017-93a0-61dfbca4b22c",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "cityName",
+    "name": "Город",
+    "type": "string",
+    "value": "Москва",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "f53d69b3-7ac1-4822-b402-7abbb14bafaf",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "fiasId",
+    "name": "FIAS",
+    "type": "string",
+    "value": "0c5b2444-70a0-4932-980c-b4dc0d3f02b5",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "17c4daac-84d6-4995-a3d8-3b2b4554d4bb",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "kladrId",
+    "name": "КЛАДР",
+    "type": "string",
+    "value": "7700000000000",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "6949c488-2e8f-460f-a0cd-a83fa9e2966f",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "regionFiasId",
+    "name": "FIAS региона",
+    "type": "string",
+    "value": "0c5b2444-70a0-4932-980c-b4dc0d3f02b5",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "92cea142-c597-4fe9-b73d-f347e140aa32",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "regionName",
+    "name": "Регион",
+    "type": "string",
+    "value": "Москва город",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "0dcdb2ec-24b6-4d19-a44b-42695e3ab6e3",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "rusRegionId",
+    "name": "ID региона",
+    "type": "string",
+    "value": "77",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "35666b14-defb-4195-873e-c31cc0b57612",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "settlementName",
+    "name": "Населенный пункт",
+    "type": "string",
+    "value": "",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "dc70666d-f22b-45e6-946f-f4ca21c6185e",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "typeCode",
+    "name": "Код типа",
+    "type": "string",
+    "value": "city",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "9a5c9525-d1aa-4ad0-851c-3e9ee880c802",
+    "confId": "81458c0c-0b16-4c33-8ada-69c989e96b80",
+    "code": "typeName",
+    "name": "Наименование типа",
+    "type": "string",
+    "value": "город",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  },
+  {
+    "id": "a3853153-26b6-4b21-8c62-0be6062a9849",
+    "confId": "73712653-69dc-4696-b348-b547bbf8b35e",
+    "code": "qr-link",
+    "name": "QR Код",
+    "type": "string",
+    "value": "https://chart.googleapis.com/chart?cht=qr&chl=Hello%20world&chs=180x180&choe=UTF-8&chld=L|2",
+    "createdAt": "2023-08-10 13:11:03.257492 +00:00",
+    "updatedAt": "2023-08-10 13:11:03.257492 +00:00"
+  }
+]

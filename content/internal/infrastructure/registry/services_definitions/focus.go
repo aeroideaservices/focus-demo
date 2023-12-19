@@ -14,15 +14,6 @@ import (
 	"content/internal/infrastructure/registry/services_definitions/translations"
 )
 
-func appendArr[T any](defs ...[]T) []T {
-	var res []T
-	for _, def := range defs {
-		res = append(res, def...)
-	}
-
-	return res
-}
-
 var FocusDefinitions = []di.Def{
 	{
 		Name: "focus.logger",

@@ -1,10 +1,10 @@
 package fixtures
 
 import (
-	entity "demo/internal/domain/entitiy"
 	"encoding/json"
 	"github.com/aeroideaservices/focus/models/examples"
 	"io"
+	entity "orders/internal/domain/entitiy"
 	"os"
 )
 

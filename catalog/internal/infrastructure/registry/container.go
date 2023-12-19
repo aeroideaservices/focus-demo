@@ -21,13 +21,13 @@ import (
 	modelsRest "github.com/aeroideaservices/focus/models/rest"
 	middleware "github.com/aeroideaservices/focus/services/gin-middleware"
 
-	cliHandlers "demo/internal/adapters/cli"
-	"demo/internal/adapters/postgres"
-	"demo/internal/adapters/rest"
-	"demo/internal/adapters/rest/handlers"
-	"demo/internal/infrastructure/env"
-	"demo/internal/infrastructure/registry/services_definitions"
-	"demo/internal/service/fixtures"
+	cliHandlers "catalog/internal/adapters/cli"
+	"catalog/internal/adapters/postgres"
+	"catalog/internal/adapters/rest"
+	"catalog/internal/adapters/rest/handlers"
+	"catalog/internal/infrastructure/env"
+	"catalog/internal/infrastructure/registry/services_definitions"
+	"catalog/internal/service/fixtures"
 )
 
 type Container struct {

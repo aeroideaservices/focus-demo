@@ -1,10 +1,10 @@
 package rest
 
 import (
-	"demo/internal/adapters/rest/handlers"
 	confRest "github.com/aeroideaservices/focus/configurations/rest"
 	"github.com/aeroideaservices/focus/menu/rest"
 	"net/http"
+	"orders/internal/adapters/rest/handlers"
 
 	"github.com/gin-gonic/gin"
 

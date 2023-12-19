@@ -1,4 +1,4 @@
-module demo
+module users
 
 go 1.21
 

@@ -1,7 +1,7 @@
 package services_definitions
 
 import (
-	"demo/internal/adapters/rest/handlers"
+	"catalog/internal/adapters/rest/handlers"
 	"github.com/aeroideaservices/focus/services/callbacks"
 	"github.com/sarulabs/di/v2"
 

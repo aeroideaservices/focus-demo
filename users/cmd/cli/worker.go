@@ -1,11 +1,11 @@
 package main
 
 import (
-	"demo/internal/infrastructure/registry"
 	"github.com/urfave/cli/v2"
 	"go.uber.org/zap"
 	"log"
 	"os"
+	"users/internal/infrastructure/registry"
 )
 
 func main() {

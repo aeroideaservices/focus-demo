@@ -1,11 +1,11 @@
 package fixtures
 
 import (
-	entity "demo/internal/domain/entitiy"
 	"encoding/json"
 	"github.com/aeroideaservices/focus/models/examples"
 	"io"
 	"os"
+	entity "users/internal/domain/entitiy"
 )
 
 type CategoryFixture struct{}
