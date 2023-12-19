@@ -1,0 +1,26 @@
+[
+    {
+        "id": "a65e662d-2164-4db4-90df-03ac4fb4e7bd",
+        "name": "Электроника",
+        "code": "elektronika",
+        "categoryId": null
+    },
+    {
+        "id": "35a756a1-5c1e-49af-bd09-b2b17d714438",
+        "name": "Дом и сад",
+        "code": "dom-i-sad",
+        "categoryId": null
+    },
+    {
+        "id": "32386480-26bb-4859-b849-b5a0e89092c3",
+        "name": "Компьютеры",
+        "code": "kompyutery",
+        "categoryId": "a65e662d-2164-4db4-90df-03ac4fb4e7bd"
+    },
+    {
+        "id": "92d5d205-2eda-469d-a265-bb35d8e2f248",
+        "name": "БАДы",
+        "code": "badi",
+        "categoryId": "a65e662d-2164-4db4-90df-03ac4fb4e7bd"
+    }
+]

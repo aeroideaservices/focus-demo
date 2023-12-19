@@ -1,0 +1,131 @@
+### auth
+POST http://127.0.0.1:8088/auth/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+grant_type=password&client_id=focus&client_secret=wg4tu0juuDYombim5Ri7ZEVUR3TaPKrJ&username={{username}}&password={{password}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.hasOwnProperty("access_token"), "Dont have access_token")
+    })
+
+    client.global.set("access", response.body.access_token)
+%}
+
+###
+GET    {{baseUrl}}/configurations
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+POST   {{baseUrl}}/configurations
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+  "name": "Конфигурация 1",
+  "code": "conf-1"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Dont have id")
+    })
+
+    client.global.set("configuration-id", response.body.id)
+%}
+
+
+###
+GET    {{baseUrl}}/configurations/{{configuration-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+PUT    {{baseUrl}}/configurations/{{configuration-id}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "name": "Конфигурация 1",
+    "code": "conf-1"
+}
+
+###
+GET    {{baseUrl}}/configurations/{{configuration-id}}/options
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+POST   {{baseUrl}}/configurations/{{configuration-id}}/options
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+  "code": "seo-text-title",
+  "name": "Заголовок в блоке СЕО-текста",
+  "type": "string"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 201, "Response status is not 201")
+        client.assert(response.body.hasOwnProperty("id"), "Dont have id")
+    })
+
+    client.global.set("option-id", response.body.id)
+%}
+
+
+###
+PUT    {{baseUrl}}/configurations/{{configuration-id}}/options
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+[
+  {
+    "code": "seo-text-title",
+    "value": ""
+  }
+]
+
+###
+GET    {{baseUrl}}/configurations/{{configuration-id}}/options/{{option-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+PUT    {{baseUrl}}/configurations/{{configuration-id}}/options/{{option-id}}
+Content-Type: application/json
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+{
+    "code": "seo-text-title",
+    "name": "Заголовок в блоке СЕО-текста",
+    "type": "string"
+}
+
+###
+DELETE {{baseUrl}}/configurations/{{configuration-id}}/options/{{option-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+###
+DELETE {{baseUrl}}/configurations/{{configuration-id}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+

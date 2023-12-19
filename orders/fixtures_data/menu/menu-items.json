@@ -1,0 +1,20 @@
+[
+    {
+        "id": "66d77299-214c-4ce6-be32-cc6bc8bc08db",
+        "name": "Родительский пункт",
+        "url": "/first-level",
+        "position": 1,
+        "additionalFields": "{}",
+        "parentMenuItemId": null,
+        "menuId": "f3530b84-adab-4e62-be93-6c4a6bb5b1cb"
+    },
+    {
+        "id": "e88e6787-5d4c-4a5d-8f43-ce506bf946bd",
+        "name": "Дочерний пункт",
+        "url": "/abc",
+        "position": 1,
+        "additionalFields": "{}",
+        "parentMenuItemId": "66d77299-214c-4ce6-be32-cc6bc8bc08db",
+        "menuId": "f3530b84-adab-4e62-be93-6c4a6bb5b1cb"
+    }
+]

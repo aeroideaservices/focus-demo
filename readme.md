@@ -9,7 +9,7 @@ docker-compose exec -t postgres_keycloak pg_dumpall -c -U keycloak > keycloak/du
 ## Восстановить БД из kc
 
 ```sql
-
+docker-compose exec -T postgres_keycloak psql -U keycloak < keycloak/dump_keycloak.sql
 ```
 
 ## Установка

@@ -1,0 +1,274 @@
+### auth
+POST http://127.0.0.1:8088/auth/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+grant_type=password&client_id=focus&client_secret=wg4tu0juuDYombim5Ri7ZEVUR3TaPKrJ&username={{username}}&password={{password}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        const type = response.contentType.mimeType
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'")
+        client.assert(response.status === 200, "Response status is not 200")
+        client.assert(response.body.hasOwnProperty("access_token"), "Dont have access_token")
+    })
+
+    client.global.set("access", response.body.access_token)
+%}
+
+### health-check
+GET {{healthCheck}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.status == "ok", "Response body status is not \"ok\"")
+    });
+
+    let urlCode = (Math.random().toString(36).substring(2, 10) + '-' + Math.random().toString(36).substring(2, 8) + '-' + Math.random().toString(36).substring(2, 8)).toLowerCase();
+    client.global.set("randomUrlCode", urlCode);
+%}
+
+### get models
+GET {{baseUrl}}/models-v2?offset={{offset}}&limit={{limit}}&sort{{store-sort}}&order={{order}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.total == 4, "Response body total is not 3")
+        client.assert(response.body.items != null, "Items is null")
+        client.assert(response.body.items.length == 4, "Items length is not 3")
+
+        client.assert(response.body.items[0].name == "Товары", "First item name is not Товары")
+        client.assert(response.body.items[0].code == "products", "First item code is not products")
+
+        client.assert(response.body.items[1].name == "Магазины", "Second item name is not Магазины")
+        client.assert(response.body.items[1].code == "stores", "Second item code is not stores")
+
+        client.assert(response.body.items[2].name == "Категории", "Third item name is not Категории")
+        client.assert(response.body.items[2].code == "categories", "Third item code is not categories")
+
+        client.assert(response.body.items[3].name == "Акции", "4th item name is not Акции")
+        client.assert(response.body.items[3].code == "promos", "4th item code is not promos")
+    });
+%}
+
+### get store description
+GET {{baseUrl}}/models-v2/{{store-model-code}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.code == request.environment.get("store-model-code"), "Model code is not " + request.environment.get("store-model-code"))
+        client.assert(response.body.name == "Магазины", "Model name is not Магазины")
+        client.assert(response.body.identifierCode == request.environment.get("store.identifierCode"), "Model identifier code is not " + request.environment.get("store.identifierCode"))
+        client.assert(response.body.hasOwnProperty("views"), "Response body has not prop view")
+
+        client.assert(response.body.views.hasOwnProperty("create"), "Response body has not prop view.create")
+        client.assert(response.body.views.create.hasOwnProperty("formFields"), "Response body has not prop view.create.formFields")
+        client.assert(response.body.views.create.hasOwnProperty("validation"), "Response body has not prop view.create.validation")
+
+        client.assert(response.body.views.hasOwnProperty("update"), "Response body has not prop view.update")
+        client.assert(response.body.views.update.hasOwnProperty("formFields"), "Response body has not prop view.update.formFields")
+        client.assert(response.body.views.update.hasOwnProperty("validation"), "Response body has not prop view.update.validation")
+
+        client.assert(response.body.views.hasOwnProperty("list"), "Response body has not prop view.list")
+        client.assert(response.body.views.list.hasOwnProperty("fields"), "Response body has not prop view.list.fields")
+
+        client.assert(response.body.views.hasOwnProperty("filter"), "Response body has not prop view.filter")
+        client.assert(response.body.views.filter.hasOwnProperty("formFields"), "Response body has not prop view.filter.formFields")
+    });
+%}
+
+### get category description
+GET {{baseUrl}}/models-v2/{{category-model-code}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.code == request.environment.get("category-model-code"), "Model code is not " + request.environment.get("category-model-code"))
+        client.assert(response.body.name == "Категории", "Model name is not Категории")
+        client.assert(response.body.identifierCode == request.environment.get("category.identifierCode"), "Model identifier code is not " + request.environment.get("category.identifierCode"))
+        client.assert(response.body.hasOwnProperty("views"), "Response body has not prop view")
+
+        client.assert(response.body.views.hasOwnProperty("create"), "Response body has not prop view.create")
+        client.assert(response.body.views.create.hasOwnProperty("formFields"), "Response body has not prop view.create.formFields")
+        client.assert(response.body.views.create.hasOwnProperty("validation"), "Response body has not prop view.create.validation")
+
+        client.assert(response.body.views.hasOwnProperty("update"), "Response body has not prop view.update")
+        client.assert(response.body.views.update.hasOwnProperty("formFields"), "Response body has not prop view.update.formFields")
+        client.assert(response.body.views.update.hasOwnProperty("validation"), "Response body has not prop view.update.validation")
+
+        client.assert(response.body.views.hasOwnProperty("list"), "Response body has not prop view.list")
+        client.assert(response.body.views.list.hasOwnProperty("fields"), "Response body has not prop view.list.fields")
+
+        client.assert(response.body.views.hasOwnProperty("filter"), "Response body has not prop view.filter")
+        client.assert(response.body.views.filter.hasOwnProperty("formFields"), "Response body has not prop view.filter.formFields")
+    });
+%}
+
+### get product description
+GET {{baseUrl}}/models-v2/{{product-model-code}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.code == request.environment.get("product-model-code"), "Model code is not " + request.environment.get("product-model-code"))
+        client.assert(response.body.name == "Товары", "Model name is not Товары")
+        client.assert(response.body.identifierCode == request.environment.get("product.identifierCode"), "Model identifier code is not " + request.environment.get("product.identifierCode"))
+        client.assert(response.body.hasOwnProperty("views"), "Response body has not prop view")
+
+        client.assert(response.body.views.hasOwnProperty("create"), "Response body has not prop view.create")
+        client.assert(response.body.views.create.hasOwnProperty("formFields"), "Response body has not prop view.create.formFields")
+        client.assert(response.body.views.create.hasOwnProperty("validation"), "Response body has not prop view.create.validation")
+
+        client.assert(response.body.views.hasOwnProperty("update"), "Response body has not prop view.update")
+        client.assert(response.body.views.update.hasOwnProperty("formFields"), "Response body has not prop view.update.formFields")
+        client.assert(response.body.views.update.hasOwnProperty("validation"), "Response body has not prop view.update.validation")
+
+        client.assert(response.body.views.hasOwnProperty("list"), "Response body has not prop view.list")
+        client.assert(response.body.views.list.hasOwnProperty("fields"), "Response body has not prop view.list.fields")
+
+        client.assert(response.body.views.hasOwnProperty("filter"), "Response body has not prop view.filter")
+        client.assert(response.body.views.filter.hasOwnProperty("formFields"), "Response body has not prop view.filter.formFields")
+    });
+%}
+
+### get promos description
+GET {{baseUrl}}/models-v2/{{promo-model-code}}
+Service-Code: {{service-code}}
+Authorization: {{access}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.code == request.environment.get("promo-model-code"), "Model code is not " + request.environment.get("promo-model-code"))
+        client.assert(response.body.name == "Акции", "Model name is not Акции")
+        client.assert(response.body.identifierCode == request.environment.get("promos.identifierCode"), "Model identifier code is not " + request.environment.get("promos.identifierCode"))
+        client.assert(response.body.hasOwnProperty("views"), "Response body has not prop view")
+
+        client.assert(response.body.views.hasOwnProperty("create"), "Response body has not prop view.create")
+        client.assert(response.body.views.create.hasOwnProperty("formFields"), "Response body has not prop view.create.formFields")
+        client.assert(response.body.views.create.hasOwnProperty("validation"), "Response body has not prop view.create.validation")
+
+        client.assert(response.body.views.hasOwnProperty("update"), "Response body has not prop view.update")
+        client.assert(response.body.views.update.hasOwnProperty("formFields"), "Response body has not prop view.update.formFields")
+        client.assert(response.body.views.update.hasOwnProperty("validation"), "Response body has not prop view.update.validation")
+
+        client.assert(response.body.views.hasOwnProperty("list"), "Response body has not prop view.list")
+        client.assert(response.body.views.list.hasOwnProperty("fields"), "Response body has not prop view.list.fields")
+
+        client.assert(response.body.views.hasOwnProperty("filter"), "Response body has not prop view.filter")
+        client.assert(response.body.views.filter.hasOwnProperty("formFields"), "Response body has not prop view.filter.formFields")
+    });
+%}
+
+
+#### export categories
+#POST {{baseUrl}}/models-v2/{{category-model-code}}/export
+#Content-Type: application/x-www-form-urlencoded
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        client.assert(response.status === 204, "Response status is not 204");
+#        client.assert(response.body == null, "Response body is not empty")
+#    });
+#%}
+#
+#### categories export info
+#GET {{baseUrl}}/models-v2/{{category-model-code}}/export
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        var type = response.contentType.mimeType;
+#        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+#        const env = request.environment
+#        client.assert(response.status === 200, "Response status is not 200");
+#        client.assert(response.body.modelCode == env.get("category-model-code"), "modelCode is not " + env.get("category-model-code"))
+#        client.assert(response.body.status == "succeed" || response.body.status == "pending", "Status is not succeed or pending")
+#    });
+#%}
+#
+#### export products
+#POST {{baseUrl}}/models-v2/{{product-model-code}}/export
+#Content-Type: application/x-www-form-urlencoded
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        client.assert(response.status === 204, "Response status is not 204");
+#        client.assert(response.body == null, "Response body is not empty")
+#    });
+#%}
+#
+#### products export info
+#GET {{baseUrl}}/models-v2/{{product-model-code}}/export
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        var type = response.contentType.mimeType;
+#        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+#        const env = request.environment
+#        client.assert(response.status === 200, "Response status is not 200");
+#        client.assert(response.body.modelCode == env.get("product-model-code"), "modelCode is not " + env.get("product-model-code"))
+#        client.assert(response.body.status == "succeed" || response.body.status == "pending", "Status is not succeed or pending")
+#    });
+#%}
+#
+#### export stores
+#POST {{baseUrl}}/models-v2/{{store-model-code}}/export
+#Content-Type: application/x-www-form-urlencoded
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        client.assert(response.status === 204, "Response status is not 204");
+#        client.assert(response.body == null, "Response body is not empty")
+#    });
+#%}
+#
+#### stores export info
+#GET {{baseUrl}}/models-v2/{{store-model-code}}/export
+#Service-Code: {{service-code}}
+#Authorization: {{access}}
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        var type = response.contentType.mimeType;
+#        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+#        const env = request.environment
+#        client.assert(response.status === 200, "Response status is not 200");
+#        client.assert(response.body.modelCode == env.get("store-model-code"), "modelCode is not " + env.get("store-model-code"))
+#        client.assert(response.body.status == "succeed" || response.body.status == "pending", "Status is not succeed or pending")
+#    });
+#%}

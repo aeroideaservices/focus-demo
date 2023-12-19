@@ -5,28 +5,6 @@ volumes:
     driver: local
 
 services:
-  admin-ui:
-    container_name: admin-ui
-    build:
-      context: ./admin-ui
-      dockerfile: ./.docker/Dockerfile
-    ports:
-      - "3000:3000"
-    env_file:
-      - env/common/.env.admin-ui
-  admin-connector:
-    container_name: admin-connector
-    volumes:
-      - ./app/:/app
-    build:
-      context: ./admin-connector
-      dockerfile: ./.docker/Dockerfile
-    ports:
-      - "8081:8081"
-    env_file:
-      - env/common/.env.admin-connector
-      - env/docker/.env.admin-connector
-
   postgres_keycloak:
     container_name: postgres_keycloak
     image: postgres
@@ -76,70 +54,23 @@ services:
     entrypoint: >
       /bin/sh -c "
       /usr/bin/mc config host add local_minio http://minio:9000 minio1234567890 minio1234567890;
-      /usr/bin/mc rm -r --force local_minio/demo;
       /usr/bin/mc rm -r --force local_minio/content;
-      /usr/bin/mc mb local_minio/demo;
       /usr/bin/mc mb local_minio/content;
-      /usr/bin/mc policy download local_minio/demo;
       /usr/bin/mc policy download local_minio/content;
+      
+      /usr/bin/mc rm -r --force local_minio/catalog;
+      /usr/bin/mc mb local_minio/catalog;
+      /usr/bin/mc policy download local_minio/catalog;
+      
+      /usr/bin/mc rm -r --force local_minio/orders;
+      /usr/bin/mc mb local_minio/orders;
+      /usr/bin/mc policy download local_minio/orders;
+      
+      /usr/bin/mc rm -r --force local_minio/users;
+      /usr/bin/mc mb local_minio/users;
+      /usr/bin/mc policy download local_minio/users;
       exit 0;
       "
-
-  postgres_dms1:
-    container_name: postgres_dms1
-    ports:
-      - "5401:5432"
-    image: postgres
-    volumes:
-      - ./.docker/postgres/dms1/postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: dms1
-      POSTGRES_USER: dms1
-      POSTGRES_PASSWORD: dms1
-
-  dms1:
-    container_name: dms1
-    volumes:
-      - ./app/:/app
-    build:
-      context: ./demo-service-1
-      dockerfile: ./.docker/Dockerfile
-    ports:
-      - "8080:8080"
-    env_file:
-      - env/common/.env.dms1
-      - env/docker/.env.dms1
-    depends_on:
-      - minio
-      - createbuckets
-      - postgres_dms1
-
-  postgres_delivery:
-    container_name: postgres_delivery
-    ports:
-      - "5402:5432"
-    image: postgres
-    volumes:
-      - ./.docker/postgres/delivery/postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: delivery
-      POSTGRES_USER: delivery
-      POSTGRES_PASSWORD: delivery
-
-  delivery:
-    container_name: delivery
-    volumes:
-      - ./app/:/app
-    build:
-      context: ./delivery
-      dockerfile: ./.docker/Dockerfile
-    ports:
-      - "8187:8080"
-    env_file:
-      - env/common/.env.delivery
-      - env/docker/.env.delivery
-    depends_on:
-      - postgres_delivery
 
   postgres_content:
     container_name: postgres_content
@@ -152,18 +83,39 @@ services:
       POSTGRES_DB: content
       POSTGRES_USER: content
       POSTGRES_PASSWORD: content
-
-  content:
-    container_name: content
-    volumes:
-      - ./app/:/app
-    build:
-      context: ./delivery
-      dockerfile: ./.docker/Dockerfile
+        
+  postgres_orders:
+    container_name: postgres_orders
     ports:
-      - "8188:8080"
-    env_file:
-      - env/common/.env.content
-      - env/docker/.env.content
-    depends_on:
-      - postgres_content
+      - "5405:5432"
+    image: postgres
+    volumes:
+      - ./.docker/postgres/orders/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: orders
+      POSTGRES_PASSWORD: orders
+      
+  postgres_catalog:
+    container_name: postgres_catalog
+    ports:
+      - "5406:5432"
+    image: postgres
+    volumes:
+      - ./.docker/postgres/catalog/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: catalog
+      POSTGRES_USER: catalog
+      POSTGRES_PASSWORD: catalog
+      
+  postgres_users:
+    container_name: postgres_users
+    ports:
+      - "5407:5432"
+    image: postgres
+    volumes:
+      - ./.docker/postgres/users/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: users
+      POSTGRES_USER: users
+      POSTGRES_PASSWORD: users

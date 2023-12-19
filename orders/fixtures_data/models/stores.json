@@ -1,0 +1,37 @@
+[
+    {
+        "id": "5ff0e047-9415-476b-8c4c-adfabd043ca6",
+        "name": "Продуктовый 24/7",
+        "latitude": 48.799617,
+        "longitude": 45.503517,
+        "contactEmail": "mail@mail.ru",
+        "contactPhone": "+79999999999",
+        "openingTime": "8:00",
+        "closingTime": "23:00",
+        "description": "{}",
+        "products": [
+            {
+                "id": "361b245b-3197-4fbf-b2ca-d8d923fd3e42"
+            }
+        ]
+    },
+    {
+        "id": "f2c25399-6d14-47f6-bd6f-4ef9b1791ee6",
+        "name": "Компуктеры",
+        "latitude": 48.799617,
+        "longitude": 45.503517,
+        "contactEmail": "tech@mail.ru",
+        "contactPhone": "+79109999999",
+        "openingTime": "10:00",
+        "closingTime": "21:00",
+        "description": "{}",
+        "products": [
+            {
+                "id": "552f331e-be9e-4c3a-a860-7071fd5fd359"
+            },
+            {
+                "id": "09d15146-a76e-4abd-8a1d-ff84dfb84d2a"
+            }
+        ]
+    }
+]
