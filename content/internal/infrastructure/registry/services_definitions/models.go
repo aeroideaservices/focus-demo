@@ -32,6 +32,7 @@ var ModelsDefinitions = appendArr([]di.Def{
 			return []any{
 				&demoEntity.Promo{},
 				&demoEntity.News{},
+				&demoEntity.Sliders{},
 			}, nil
 		},
 	},

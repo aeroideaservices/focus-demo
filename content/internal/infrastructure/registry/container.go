@@ -145,6 +145,7 @@ var definitions = []di.Def{
 			case db := <-c1:
 				_ = db.AutoMigrate(
 					&entity.News{},
+					&entity.Sliders{},
 				)
 				return db, nil
 			case <-time.After(30 * time.Second):
