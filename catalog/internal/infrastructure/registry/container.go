@@ -146,6 +146,10 @@ var definitions = []di.Def{
 				_ = db.AutoMigrate(
 					&entity.Brand{},
 					&entity.Model{},
+					&entity.Color{},
+					&entity.Rim{},
+					&entity.Equipment{},
+					&entity.Car{},
 				)
 				return db, nil
 			case <-time.After(30 * time.Second):

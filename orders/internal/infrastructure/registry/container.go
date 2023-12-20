@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/sarulabs/di/v2"
 	"github.com/urfave/cli/v2"
+	entity "orders/internal/domain/entitiy"
 	"os"
 	"time"
 
@@ -143,7 +144,8 @@ var definitions = []di.Def{
 			select {
 			case db := <-c1:
 				_ = db.AutoMigrate(
-				// todo
+					&entity.Order{},
+					&entity.Status{},
 				)
 				return db, nil
 			case <-time.After(30 * time.Second):
@@ -236,7 +238,6 @@ var definitions = []di.Def{
 		Name: "fixtures",
 		Build: func(ctn di.Container) (interface{}, error) {
 			return []fixtures.Fixture{
-				fixtures.CategoryFixture{},
 				fixtures.ProductFixture{},
 				fixtures.StoreFixture{},
 				fixtures.PromoFixture{},

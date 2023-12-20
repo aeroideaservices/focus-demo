@@ -4,15 +4,10 @@ import (
 	"encoding/json"
 	"github.com/aeroideaservices/focus/models/examples"
 	"io"
-	entity "orders/internal/domain/entitiy"
 	"os"
 )
 
 type CategoryFixture struct{}
-
-func (CategoryFixture) GetEntity() any {
-	return &entity.Category{}
-}
 
 func (f CategoryFixture) FixturesData() (any, error) {
 	jsonFile, err := os.Open("fixtures_data/models/categories.json")

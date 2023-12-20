@@ -30,10 +30,8 @@ var ModelsDefinitions = appendArr([]di.Def{
 			}
 
 			return []any{
-				&demoEntity.Category{},
-				&demoEntity.Product{},
-				&demoEntity.Store{},
-				&demoEntity.Promo{},
+				&demoEntity.Order{},
+				&demoEntity.Status{},
 			}, nil
 		},
 	},
@@ -126,11 +124,11 @@ var ModelsDefinitions = appendArr([]di.Def{
 						},
 					},
 				},
-				"categorySelect": form.ViewExtras{
+				"statusSelect": form.ViewExtras{
 					"identifier": "id",
 					"display":    []string{"name"},
 					"request": form.Request{
-						URI:  "/models-v2/categories/elements/list",
+						URI:  "/models-v2/statuses/elements/list",
 						Meth: http.MethodPost,
 						Body: map[string]any{
 							"fields": []string{"name"},

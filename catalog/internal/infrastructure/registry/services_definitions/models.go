@@ -30,6 +30,10 @@ var ModelsDefinitions = appendArr([]di.Def{
 			return []any{
 				&demoEntity.Brand{},
 				&demoEntity.Model{},
+				&demoEntity.Color{},
+				&demoEntity.Rim{},
+				&demoEntity.Equipment{},
+				&demoEntity.Car{},
 			}, nil
 		},
 	},
@@ -50,13 +54,71 @@ var ModelsDefinitions = appendArr([]di.Def{
 				}
 				mediaUploadURI += "?folderId=" + folderId.String()
 			}
-
+			var pluginsMediaFolderId *uuid.UUID
+			if env.PluginsMediaFolderName != "" {
+				var err error
+				pluginsMediaFolderId, err = getFolderIdOrCreateFolder(ctn, context.Background(), env.PluginsMediaFolderName)
+				if err != nil {
+					return nil, err
+				}
+			}
 			return form.ViewsExtras{
+				"pluginsMedia": form.ViewExtras{
+					"folderId": pluginsMediaFolderId,
+				},
 				"brandSelect": form.ViewExtras{
 					"identifier": "id",
 					"display":    []string{"name"},
 					"request": form.Request{
 						URI:  "/models-v2/brands/elements/list",
+						Meth: http.MethodPost,
+						Body: map[string]any{
+							"fields": []string{"name"},
+						},
+						Paginated: true,
+					},
+				},
+				"modelSelect": form.ViewExtras{
+					"identifier": "id",
+					"display":    []string{"name"},
+					"request": form.Request{
+						URI:  "/models-v2/models/elements/list",
+						Meth: http.MethodPost,
+						Body: map[string]any{
+							"fields": []string{"name"},
+						},
+						Paginated: true,
+					},
+				},
+				"colorSelect": form.ViewExtras{
+					"identifier": "id",
+					"display":    []string{"name"},
+					"request": form.Request{
+						URI:  "/models-v2/colors/elements/list",
+						Meth: http.MethodPost,
+						Body: map[string]any{
+							"fields": []string{"name"},
+						},
+						Paginated: true,
+					},
+				},
+				"rimSelect": form.ViewExtras{
+					"identifier": "id",
+					"display":    []string{"name"},
+					"request": form.Request{
+						URI:  "/models-v2/rim/elements/list",
+						Meth: http.MethodPost,
+						Body: map[string]any{
+							"fields": []string{"name"},
+						},
+						Paginated: true,
+					},
+				},
+				"equipmentSelect": form.ViewExtras{
+					"identifier": "id",
+					"display":    []string{"name"},
+					"request": form.Request{
+						URI:  "/models-v2/equipments/elements/list",
 						Meth: http.MethodPost,
 						Body: map[string]any{
 							"fields": []string{"name"},
